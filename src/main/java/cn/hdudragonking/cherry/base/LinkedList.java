@@ -1,73 +1,70 @@
 package cn.hdudragonking.cherry.base;
 
 /**
- * å•å‘é“¾è¡¨çš„æ¥å£
+ * Ë«ÏòÁ´±íµÄ½Ó¿Ú
  * @author realDragonKing
  */
 public interface LinkedList {
 
     /**
-     * åœ¨å°¾éƒ¨æ’å…¥ä¸€ä¸ªæ–°çš„èŠ‚ç‚¹
+     * ÔÚÄ©¶Ë²åÈëÒ»¸öĞÂµÄ½Úµã
      *
-     * @param node èŠ‚ç‚¹
+     * @param node ½Úµã
      */
-    void insertTail(Node node);
+    void add(Node node);
 
     /**
-     * åœ¨å¤´éƒ¨æ’å…¥ä¸€ä¸ªæ–°çš„èŠ‚ç‚¹
+     * ÔÚÖ¸Õë´¦²åÈëÒ»¸öĞÂµÄ½Úµã
      *
-     * @param node èŠ‚ç‚¹
+     * @param node ½Úµã
      */
-    void insertHead(Node node);
+    void insert(Node node);
 
     /**
-     * åœ¨æŒ‡å®šä½ç½®æ’å…¥ä¸€ä¸ªæ–°çš„èŠ‚ç‚¹
+     * É¾³ı²¢µ¯³öÖ¸Õë´¦µÄ½Úµã
      *
-     * @param node èŠ‚ç‚¹
-     * @param position æŒ‡å®šä½ç½®
+     * @return µ¯³öµÄ½Úµã
      */
-    void insert(Node node, int position);
+    Node remove();
 
     /**
-     * åˆ é™¤å¹¶å¼¹å‡ºå°¾éƒ¨çš„èŠ‚ç‚¹
-     *
-     * @return å¼¹å‡ºçš„èŠ‚ç‚¹
+     * ÒÆ¶¯Ö¸Õëµ½ÏÂÒ»¸ö½Úµã
      */
-    Node deleteTail();
+    void moveNext();
 
     /**
-     * åˆ é™¤å¹¶å¼¹å‡ºå¤´éƒ¨çš„èŠ‚ç‚¹
-     *
-     * @return å¼¹å‡ºçš„èŠ‚ç‚¹
+     * ÒÆ¶¯Ö¸Õëµ½ÉÏÒ»¸ö½Úµã
      */
-    Node deleteHead();
+    void movePrevious();
 
     /**
-     * åˆ é™¤å¹¶å¼¹å‡ºæŒ‡å®šä½ç½®çš„èŠ‚ç‚¹
-     *
-     * @param position æŒ‡å®šä½ç½®
-     * @return å¼¹å‡ºçš„èŠ‚ç‚¹
+     * ÖØÖÃÖ¸Õëµ½Í·½Úµã
      */
-    Node delete(int position);
+    void resetHead();
 
     /**
-     * è·å–å¹¶ç§»åŠ¨åˆ°ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
-     *
-     * @return ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
+     * ÖØÖÃÖ¸Õëµ½Î²½Úµã
      */
-    Node next();
+    void resetTail();
 
     /**
-     * è·å–å¹¶ç§»åŠ¨åˆ°ä¸Šä¸€ä¸ªèŠ‚ç‚¹
+     * »ñÈ¡Ö¸ÕëËùÖ¸µÄ½Úµã
      *
-     * @return ä¸Šä¸€ä¸ªèŠ‚ç‚¹
+     * @return ½Úµã
      */
-    Node last();
+    Node getPointer();
 
     /**
-     * è·å–é“¾è¡¨çš„å¤§å°
+     * »ñÈ¡Ö¸ÕëËùÖ¸½ÚµãµÄÎ»ÖÃ
      *
-     * @return é“¾è¡¨çš„å¤§å°
+     * @return Î»ÖÃ
+     */
+    int getPointerPosition();
+
+    /**
+     * »ñÈ¡Á´±íµÄ´óĞ¡
+     *
+     * @return Á´±íµÄ´óĞ¡
      */
     int size();
 

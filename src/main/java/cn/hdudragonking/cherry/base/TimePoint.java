@@ -4,16 +4,16 @@ import cn.hdudragonking.cherry.utils.BaseUtils;
 import cn.hdudragonking.cherry.utils.TimeUtils;
 
 /**
- * æ—¶é—´ç‚¹
+ * Ê±¼äµã
  * @author realDragonKing
  */
 public class TimePoint {
 
     /**
-     * æ ¹æ®å­—ç¬¦ä¸²æ—¶é—´ï¼Œåˆ›å»ºä¸€ä¸ªæ—¶é—´ç‚¹å¯¹è±¡ï¼Œå¹¶è¿›è¡Œä¸¥æ ¼æ ¡éªŒ
+     * ¸ù¾İ×Ö·û´®Ê±¼ä£¬´´½¨Ò»¸öÊ±¼äµã¶ÔÏó£¬²¢½øĞĞÑÏ¸ñĞ£Ñé
      *
-     * @param time Stringæ ¼å¼æ—¶é—´
-     * @return æ—¶é—´ç‚¹
+     * @param time String¸ñÊ½Ê±¼ä
+     * @return Ê±¼äµã
      */
     public static TimePoint parse(String time) {
         if (time.length() != 12 || (! BaseUtils.checkStringOfNumber(time))) {
@@ -42,68 +42,68 @@ public class TimePoint {
     }
 
     /**
-     * æ—¶é—´ä¿¡æ¯å­˜å‚¨å•å…ƒ
+     * Ê±¼äĞÅÏ¢´æ´¢µ¥Ôª
      */
     private final int[] timeUnitStorage;
 
     /**
-     * è·å–å¹´ä»½
+     * »ñÈ¡Äê·İ
      *
-     * @return å¹´ä»½
+     * @return Äê·İ
      */
     public final int getYear(){
         return timeUnitStorage[0];
     }
 
     /**
-     * è·å–æœˆä»½
+     * »ñÈ¡ÔÂ·İ
      *
-     * @return æœˆä»½
+     * @return ÔÂ·İ
      */
     public final int getMonth(){
         return timeUnitStorage[1];
     }
 
     /**
-     * è·å–æœˆä»½å†…å¤©æ•°
+     * »ñÈ¡ÔÂ·İÄÚÌìÊı
      *
-     * @return æœˆä»½å†…å¤©æ•°
+     * @return ÔÂ·İÄÚÌìÊı
      */
     public final int getDay(){
         return timeUnitStorage[2];
     }
 
     /**
-     * è·å–å°æ—¶æ•°
+     * »ñÈ¡Ğ¡Ê±Êı
      *
-     * @return è·å–å°æ—¶æ•°
+     * @return »ñÈ¡Ğ¡Ê±Êı
      */
     public final int getHour(){
         return timeUnitStorage[3];
     }
 
     /**
-     * è·å–åˆ†é’Ÿæ•°
+     * »ñÈ¡·ÖÖÓÊı
      *
-     * @return åˆ†é’Ÿæ•°
+     * @return ·ÖÖÓÊı
      */
     public final int getMinute(){
         return timeUnitStorage[4];
     }
 
     /**
-     * è·å–å¹´å†…å¤©æ•°
+     * »ñÈ¡ÄêÄÚÌìÊı
      *
-     * @return å¹´å†…å¤©æ•°
+     * @return ÄêÄÚÌìÊı
      */
     public final int getDaysOfYear(){
         return TimeUtils.calDays(getYear(), getMonth(), getDay());
     }
 
     /**
-     * è¿”å›å­—ç¬¦ä¸²å‹æ—¶é—´æ•°æ®
+     * ·µ»Ø×Ö·û´®ĞÍÊ±¼äÊı¾İ
      *
-     * @return å­—ç¬¦ä¸²å‹æ—¶é—´æ•°æ®
+     * @return ×Ö·û´®ĞÍÊ±¼äÊı¾İ
      */
     @Override
     public final String toString(){
@@ -116,9 +116,9 @@ public class TimePoint {
     }
 
     /**
-     * è¿”å›é•¿æ•´å‹æ—¶é—´æ•°æ®
+     * ·µ»Ø³¤ÕûĞÍÊ±¼äÊı¾İ
      *
-     * @return é•¿æ•´å‹æ—¶é—´æ•°æ®
+     * @return ³¤ÕûĞÍÊ±¼äÊı¾İ
      */
     public final long toLong(){
         return Long.parseLong(this.toString());

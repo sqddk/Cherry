@@ -3,85 +3,86 @@ package cn.hdudragonking.cherry.base;
 import cn.hdudragonking.cherry.task.Task;
 
 /**
- * ç¯å½¢é“¾è¡¨çš„èŠ‚ç‚¹
+ * »·ĞÎÁ´±íµÄ½Úµã
  * @author realDragonKing
  */
 public class Node {
 
     private Node next;
-    private Node last;
+    private Node previous;
     private LinkedList linkedList;
     private Task task;
+    public int id;
 
     public Node(){}
 
     /**
-     * æ”¾å…¥é“¾è¡¨
+     * ·ÅÈëÁ´±í
      *
-     * @param linkedList é“¾è¡¨
+     * @param linkedList Á´±í
      */
     public void setLinkedList(LinkedList linkedList) {
         this.linkedList = linkedList;
     }
 
     /**
-     * å°è¯•è·å–é“¾è¡¨
+     * ³¢ÊÔ»ñÈ¡Á´±í
      *
-     * @return é“¾è¡¨ or null
+     * @return Á´±í or null
      */
     public LinkedList getLinkedList(){
         return this.linkedList;
     }
 
     /**
-     * æ”¾å…¥å®šæ—¶ä»»åŠ¡
+     * ·ÅÈë¶¨Ê±ÈÎÎñ
      *
-     * @param task å®šæ—¶ä»»åŠ¡
+     * @param task ¶¨Ê±ÈÎÎñ
      */
     public void setTask(Task task) {
         this.task = task;
     }
 
     /**
-     * å°è¯•è·å–å®šæ—¶ä»»åŠ¡
+     * ³¢ÊÔ»ñÈ¡¶¨Ê±ÈÎÎñ
      *
-     * @return å®šæ—¶ä»»åŠ¡ or null
+     * @return ¶¨Ê±ÈÎÎñ or null
      */
     public Task getTask() {
         return task;
     }
 
     /**
-     * è·å–ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
+     * »ñÈ¡ÏÂÒ»¸ö½Úµã
      *
-     * @return ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
+     * @return ÏÂÒ»¸ö½Úµã
      */
     public Node getNext(){
         return this.next;
     }
 
     /**
-     * è·å–ä¸Šä¸€ä¸ªèŠ‚ç‚¹
+     * »ñÈ¡ÉÏÒ»¸ö½Úµã
      *
-     * @return ä¸Šä¸€ä¸ªèŠ‚ç‚¹
+     * @return ÉÏÒ»¸ö½Úµã
      */
-    public Node getLast() {
-        return last;
+    public Node getPrevious() {
+        return previous;
     }
 
     /**
-     * è®¾ç½®ä¸Šä¸€ä¸ªèŠ‚ç‚¹çš„å¼•ç”¨æŒ‡å‘
+     * ÉèÖÃÉÏÒ»¸ö½ÚµãµÄÒıÓÃÖ¸Ïò
      *
-     * @param last ä¸Šä¸€ä¸ªèŠ‚ç‚¹
+     * @param previous ÉÏÒ»¸ö½Úµã
      */
-    public void setLast(Node last) {
-        this.last = last;
+    public void setPrevious(Node previous) {
+        this.previous = previous;
     }
 
     /**
-     * è®¾ç½®ä¸‹ä¸€ä¸ªèŠ‚ç‚¹çš„å¼•ç”¨æŒ‡å‘
+     * ÉèÖÃÏÂÒ»¸ö½ÚµãµÄÒıÓÃÖ¸Ïò
      *
-     * @param next ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
+     * @param next ÏÂÒ»¸ö½Úµã
      */
     public void setNext(Node next) {
         this.next = next;

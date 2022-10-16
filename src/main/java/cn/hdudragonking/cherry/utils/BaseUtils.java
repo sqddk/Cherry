@@ -1,20 +1,44 @@
 package cn.hdudragonking.cherry.utils;
 
+import cn.hdudragonking.cherry.base.Node;
+
 public final class BaseUtils {
 
     private BaseUtils(){}
 
     /**
-     * æ£€æŸ¥å­—ç¬¦ä¸²æ˜¯å¦å…¨ä¸ºæ•°å­—
+     * ¼ì²é×Ö·û´®ÊÇ·ñÈ«ÎªÊı×Ö
      *
-     * @param s å¾…æ£€æŸ¥çš„å­—ç¬¦ä¸²
-     * @return æ˜¯å¦å…¨ä¸ºæ•°å­—
+     * @param s ´ı¼ì²éµÄ×Ö·û´®
+     * @return ÊÇ·ñÈ«ÎªÊı×Ö
      */
     public static boolean checkStringOfNumber(String s){
         for(char c : s.toCharArray()){
             if(c < 48 || c > 57) return false;
         }
         return true;
+    }
+
+    /**
+     * ¶ÔÁ½¸ö½Úµã½øĞĞ»¥Ïà°ó¶¨
+     *
+     * @param previous Ç°½Úµã
+     * @param next ºó½Úµã
+     */
+    public static void bind(Node previous, Node next){
+        previous.setNext(next);
+        next.setPrevious(previous);
+    }
+
+    /**
+     * ¶ÔÁ½¸ö½Úµã½øĞĞ½â°ó
+     *
+     * @param previous Ç°½Úµã
+     * @param next ºó½Úµã
+     */
+    public static void unBind(Node previous, Node next){
+        previous.setNext(null);
+        next.setPrevious(null);
     }
 
 }

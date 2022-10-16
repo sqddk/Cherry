@@ -2,110 +2,185 @@ package cn.hdudragonking.cherry.base;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static cn.hdudragonking.cherry.utils.BaseUtils.*;
+
 /**
- * å•å‘é“¾è¡¨çš„é»˜è®¤å®ç°ç±»
+ * Ë«ÏòÁ´±íµÄÄ¬ÈÏÊµÏÖÀà
  * @author realDragonKing
  */
 public class DefaultLinkedList implements LinkedList {
 
-    private final AtomicInteger atomicInteger;
+    private final AtomicInteger size;
+    private final AtomicInteger position;
     private Node pointer;
     private Node head;
     private Node tail;
+
     public DefaultLinkedList(){
-        this.atomicInteger = new AtomicInteger(0);
+        this.size = new AtomicInteger(0);
+        this.position = new AtomicInteger(-1);
     }
 
     /**
-     * åœ¨å°¾éƒ¨æ’å…¥ä¸€ä¸ªæ–°çš„èŠ‚ç‚¹
+     * ÔÚÄ©¶Ë²åÈëÒ»¸öĞÂµÄ½Úµã
      *
-     * @param node èŠ‚ç‚¹
+     * @param node ½Úµã
      */
     @Override
-    public void insertTail(Node node) {
-
+    public void add(Node node) {
+        int size = this.size.getAndAdd(1);
+        node.id = size;
+        if (size == 0) {
+            this.head = node;
+            this.resetHead();
+            return;
+        }
+        bind(size == 1 ? this.head : this.tail, node);
+        this.tail = node;
     }
 
     /**
-     * åœ¨å¤´éƒ¨æ’å…¥ä¸€ä¸ªæ–°çš„èŠ‚ç‚¹
+     * ÔÚÖ¸Õë´¦²åÈëÒ»¸öĞÂµÄ½Úµã
      *
-     * @param node èŠ‚ç‚¹
+     * @param node ½Úµã
      */
     @Override
-    public void insertHead(Node node) {
-
+    public void insert(Node node) {
+        node.id = this.size();
+        int position = this.getPointerPosition();
+        if (position == -1) return;
+        this.size.getAndAdd(1);
+        Node previous = this.pointer.getPrevious();
+        bind(previous, node);
+        bind(node, pointer);
+        this.pointer = node;
     }
 
     /**
-     * åœ¨æŒ‡å®šä½ç½®æ’å…¥ä¸€ä¸ªæ–°çš„èŠ‚ç‚¹
+     * É¾³ı²¢µ¯³öÖ¸Õë´¦µÄ½Úµã
      *
-     * @param node     èŠ‚ç‚¹
-     * @param position æŒ‡å®šä½ç½®
+     * @return µ¯³öµÄ½Úµã
      */
     @Override
-    public void insert(Node node, int position) {
-
+    public Node remove() {
+        int position = this.getPointerPosition();
+        if (position == -1) return null;
+        this.size.getAndAdd(-1);
+        Node previous = this.pointer.getPrevious(),
+             next = this.pointer.getNext(),
+             pointer = this.pointer;
+        if (previous != null) unBind(previous, pointer);
+        if (next == null) {
+            this.pointer = previous;
+            this.position.getAndAdd(-1);
+        } else {
+            unBind(pointer, next);
+            if (previous != null) bind(previous, next);
+            this.pointer = next;
+        }
+        return pointer;
     }
 
     /**
-     * åˆ é™¤å¹¶å¼¹å‡ºå°¾éƒ¨çš„èŠ‚ç‚¹
-     *
-     * @return å¼¹å‡ºçš„èŠ‚ç‚¹
+     * ÒÆ¶¯Ö¸Õëµ½ÏÂÒ»¸ö½Úµã
      */
     @Override
-    public Node deleteTail() {
-        return null;
+    public void moveNext() {
+        if (this.pointer != null) {
+            Node next = this.pointer.getNext();
+            if (next != null) {
+                this.pointer = next;
+                this.position.getAndAdd(1);
+            }
+        }
     }
 
     /**
-     * åˆ é™¤å¹¶å¼¹å‡ºå¤´éƒ¨çš„èŠ‚ç‚¹
-     *
-     * @return å¼¹å‡ºçš„èŠ‚ç‚¹
+     * ÒÆ¶¯Ö¸Õëµ½ÉÏÒ»¸ö½Úµã
      */
     @Override
-    public Node deleteHead() {
-        return null;
+    public void movePrevious() {
+        if (this.pointer != null) {
+            Node previous = this.pointer.getPrevious();
+            if (previous != null) {
+                this.pointer = previous;
+                this.position.getAndAdd(-1);
+            }
+        }
     }
 
     /**
-     * åˆ é™¤å¹¶å¼¹å‡ºæŒ‡å®šä½ç½®çš„èŠ‚ç‚¹
-     *
-     * @param position æŒ‡å®šä½ç½®
-     * @return å¼¹å‡ºçš„èŠ‚ç‚¹
+     * ÖØÖÃÖ¸Õëµ½Í·½Úµã
      */
     @Override
-    public Node delete(int position) {
-        return null;
+    public void resetHead() {
+        this.pointer = this.head;
+        this.position.set(0);
     }
 
     /**
-     * è·å–å¹¶ç§»åŠ¨åˆ°ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
-     *
-     * @return ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
+     * ÖØÖÃÖ¸Õëµ½Î²½Úµã
      */
     @Override
-    public Node next() {
-        return null;
+    public void resetTail() {
+        if (size() <= 1) {
+            this.resetHead();
+        } else {
+            this.pointer = this.tail;
+            this.position.set(this.size() - 1);
+        }
     }
 
     /**
-     * è·å–å¹¶ç§»åŠ¨åˆ°ä¸Šä¸€ä¸ªèŠ‚ç‚¹
+     * »ñÈ¡Ö¸ÕëËùÖ¸µÄ½Úµã
      *
-     * @return ä¸Šä¸€ä¸ªèŠ‚ç‚¹
+     * @return ½Úµã
      */
     @Override
-    public Node last() {
-        return null;
+    public Node getPointer() {
+        return this.pointer;
     }
 
     /**
-     * è·å–é“¾è¡¨çš„å¤§å°
+     * »ñÈ¡Ö¸ÕëËùÖ¸½ÚµãµÄÎ»ÖÃ
      *
-     * @return é“¾è¡¨çš„å¤§å°
+     * @return Î»ÖÃ
+     */
+    @Override
+    public int getPointerPosition() {
+        return this.position.get();
+    }
+
+    /**
+     * »ñÈ¡Á´±íµÄ´óĞ¡
+     *
+     * @return Á´±íµÄ´óĞ¡
      */
     @Override
     public int size() {
-        return this.atomicInteger.get();
+        return this.size.get();
     }
 
+    /**
+     * ·µ»Ø×Ö·û´®ĞÍÁ´±í
+     *
+     * @return ×Ö·û´®ĞÍµÄÁ´±í
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder().append('[');
+        if (this.size() == 0) {
+            return builder.append(']').toString();
+        }
+        Node pointer = this.head;
+        while (pointer != null) {
+            builder.append(pointer.id);
+            if (pointer.getNext() != null) {
+                builder.append(',').append(' ');
+            }
+            pointer = pointer.getNext();
+        }
+        builder.append(']');
+        return builder.toString();
+    }
 }

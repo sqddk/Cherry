@@ -3,15 +3,15 @@ package cn.hdudragonking.cherry.scheduler;
 import cn.hdudragonking.cherry.task.Task;
 
 /**
- * è°ƒåº¦è€…çš„é»˜è®¤å®ç°ç±»ï¼Œä½¿ç”¨æ—¶é—´è½®ç®—æ³•è¿›è¡Œä»»åŠ¡è°ƒåº¦
+ * µ÷¶ÈÕßµÄÄ¬ÈÏÊµÏÖÀà£¬Ê¹ÓÃÊ±¼äÂÖËã·¨½øĞĞÈÎÎñµ÷¶È
  * @author realDragonKing
  */
 public class DefaultScheduler implements Scheduler {
 
     /**
-     * æäº¤ä¸€ä¸ªæ–°çš„å®šæ—¶ä»»åŠ¡
+     * Ìá½»Ò»¸öĞÂµÄ¶¨Ê±ÈÎÎñ
      *
-     * @param task å®šæ—¶ä»»åŠ¡
+     * @param task ¶¨Ê±ÈÎÎñ
      */
     @Override
     public void submit(Task task) {
