@@ -1,31 +1,31 @@
 package cn.hdudragonking.cherry.base;
 
 /**
- * 双向链表的接口
+ * 指针链表的接口
  * @author realDragonKing
  */
-public interface LinkedList {
+public interface PointerLinkedList<E> {
 
     /**
      * 在末端插入一个新的节点
      *
-     * @param node 节点
+     * @param item 节点值
      */
-    void add(Node node);
+    void add(E item);
 
     /**
      * 在指针处插入一个新的节点
      *
-     * @param node 节点
+     * @param item 节点值
      */
-    void insert(Node node);
+    void insert(E item);
 
     /**
      * 删除并弹出指针处的节点
      *
      * @return 弹出的节点
      */
-    Node remove();
+    Node<E> remove();
 
     /**
      * 移动指针到下一个节点
@@ -52,7 +52,7 @@ public interface LinkedList {
      *
      * @return 节点
      */
-    Node getPointer();
+    Node<E> getPointer();
 
     /**
      * 获取指针所指节点的位置

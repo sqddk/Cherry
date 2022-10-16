@@ -19,26 +19,4 @@ public final class BaseUtils {
         return true;
     }
 
-    /**
-     * 对两个节点进行互相绑定
-     *
-     * @param previous 前节点
-     * @param next 后节点
-     */
-    public static void bind(Node previous, Node next){
-        previous.setNext(next);
-        next.setPrevious(previous);
-    }
-
-    /**
-     * 对两个节点进行解绑
-     *
-     * @param previous 前节点
-     * @param next 后节点
-     */
-    public static void unBind(Node previous, Node next){
-        previous.setNext(null);
-        next.setPrevious(null);
-    }
-
 }

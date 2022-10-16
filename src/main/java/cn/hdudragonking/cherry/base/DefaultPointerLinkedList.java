@@ -1,58 +1,61 @@
 package cn.hdudragonking.cherry.base;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static cn.hdudragonking.cherry.utils.BaseUtils.*;
-
 /**
- * 双向链表的默认实现类
+ * 指针链表的默认实现类
  * @author realDragonKing
  */
-public class DefaultLinkedList implements LinkedList {
+public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
 
-    private final AtomicInteger size;
-    private final AtomicInteger position;
-    private Node pointer;
-    private Node head;
-    private Node tail;
+    private int size;
+    private int position;
+    private Node<E> pointer;
+    private Node<E> head;
+    private Node<E> tail;
 
-    public DefaultLinkedList(){
-        this.size = new AtomicInteger(0);
-        this.position = new AtomicInteger(-1);
+    public DefaultPointerLinkedList(){
+        this.size = 0;
+        this.position = -1;
     }
 
     /**
      * 在末端插入一个新的节点
      *
-     * @param node 节点
+     * @param item 节点值
      */
     @Override
-    public void add(Node node) {
-        int size = this.size.getAndAdd(1);
-        node.id = size;
-        if (size == 0) {
+    public void add(E item) {
+        Node<E> node = new Node<>(item);
+        if (this.size == 0) {
             this.head = node;
             this.resetHead();
             return;
         }
-        bind(size == 1 ? this.head : this.tail, node);
+        if (size == 1) {
+            this.head.next = node;
+            node.prev = this.head;
+        } else {
+            this.tail.next = node;
+            node.prev = this.tail;
+        }
         this.tail = node;
     }
 
     /**
      * 在指针处插入一个新的节点
      *
-     * @param node 节点
+     * @param item 节点值
      */
     @Override
-    public void insert(Node node) {
-        node.id = this.size();
+    public void insert(E item) {
         int position = this.getPointerPosition();
         if (position == -1) return;
-        this.size.getAndAdd(1);
-        Node previous = this.pointer.getPrevious();
-        bind(previous, node);
-        bind(node, pointer);
+        this.size++;
+        Node<E> prev = this.pointer.prev,
+                node = new Node<>(item);
+        prev.next = node;
+        node.prev = prev;
+        node.next = this.pointer;
+        this.pointer.prev = node;
         this.pointer = node;
     }
 
@@ -62,20 +65,28 @@ public class DefaultLinkedList implements LinkedList {
      * @return 弹出的节点
      */
     @Override
-    public Node remove() {
-        int position = this.getPointerPosition();
-        if (position == -1) return null;
-        this.size.getAndAdd(-1);
-        Node previous = this.pointer.getPrevious(),
-             next = this.pointer.getNext(),
+    public Node<E> remove() {
+        if (this.getPointerPosition() == -1) {
+            return null;
+        }
+        this.size--;
+        Node<E> prev = this.pointer.prev,
+             next = this.pointer.next,
              pointer = this.pointer;
-        if (previous != null) unBind(previous, pointer);
+        if (prev != null) {
+            prev.next = null;
+            pointer.prev = null;
+        }
         if (next == null) {
-            this.pointer = previous;
-            this.position.getAndAdd(-1);
+            this.pointer = prev;
+            this.position--;
         } else {
-            unBind(pointer, next);
-            if (previous != null) bind(previous, next);
+            pointer.next = null;
+            next.prev = null;
+            if (prev != null) {
+                prev.next = next;
+                next.prev = prev;
+            }
             this.pointer = next;
         }
         return pointer;
@@ -87,10 +98,10 @@ public class DefaultLinkedList implements LinkedList {
     @Override
     public void moveNext() {
         if (this.pointer != null) {
-            Node next = this.pointer.getNext();
+            Node<E> next = this.pointer.next;
             if (next != null) {
                 this.pointer = next;
-                this.position.getAndAdd(1);
+                this.position++;
             }
         }
     }
@@ -101,10 +112,10 @@ public class DefaultLinkedList implements LinkedList {
     @Override
     public void movePrevious() {
         if (this.pointer != null) {
-            Node previous = this.pointer.getPrevious();
-            if (previous != null) {
-                this.pointer = previous;
-                this.position.getAndAdd(-1);
+            Node<E> prev = this.pointer.prev;
+            if (prev != null) {
+                this.pointer = prev;
+                this.position--;
             }
         }
     }
@@ -115,7 +126,7 @@ public class DefaultLinkedList implements LinkedList {
     @Override
     public void resetHead() {
         this.pointer = this.head;
-        this.position.set(0);
+        this.position = 0;
     }
 
     /**
@@ -127,7 +138,7 @@ public class DefaultLinkedList implements LinkedList {
             this.resetHead();
         } else {
             this.pointer = this.tail;
-            this.position.set(this.size() - 1);
+            this.position = this.size() - 1;
         }
     }
 
@@ -137,7 +148,7 @@ public class DefaultLinkedList implements LinkedList {
      * @return 节点
      */
     @Override
-    public Node getPointer() {
+    public Node<E> getPointer() {
         return this.pointer;
     }
 
@@ -148,7 +159,7 @@ public class DefaultLinkedList implements LinkedList {
      */
     @Override
     public int getPointerPosition() {
-        return this.position.get();
+        return this.position;
     }
 
     /**
@@ -158,7 +169,7 @@ public class DefaultLinkedList implements LinkedList {
      */
     @Override
     public int size() {
-        return this.size.get();
+        return this.size;
     }
 
     /**
@@ -172,13 +183,13 @@ public class DefaultLinkedList implements LinkedList {
         if (this.size() == 0) {
             return builder.append(']').toString();
         }
-        Node pointer = this.head;
+        Node<E> pointer = this.head;
         while (pointer != null) {
-            builder.append(pointer.id);
-            if (pointer.getNext() != null) {
+            builder.append(pointer.item.toString());
+            if (pointer.next != null) {
                 builder.append(',').append(' ');
             }
-            pointer = pointer.getNext();
+            pointer = pointer.next;
         }
         builder.append(']');
         return builder.toString();
