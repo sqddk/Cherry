@@ -26,6 +26,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     public void add(E item) {
         Node<E> node = new Node<>(item);
         if (this.size == 0) {
+            this.size++;
             this.head = node;
             this.resetHead();
             return;
@@ -37,6 +38,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
             this.tail.next = node;
             node.prev = this.tail;
         }
+        this.size++;
         this.tail = node;
     }
 
@@ -138,7 +140,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
             this.resetHead();
         } else {
             this.pointer = this.tail;
-            this.position = this.size() - 1;
+            this.position = this.size - 1;
         }
     }
 
