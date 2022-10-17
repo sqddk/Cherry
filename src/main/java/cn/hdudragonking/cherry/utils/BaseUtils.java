@@ -1,7 +1,5 @@
 package cn.hdudragonking.cherry.utils;
 
-import cn.hdudragonking.cherry.base.Node;
-
 public final class BaseUtils {
 
     private BaseUtils(){}

@@ -1,5 +1,7 @@
 package cn.hdudragonking.cherry.utils;
 
+import cn.hdudragonking.cherry.base.TimePoint;
+
 import java.util.List;
 
 public class TimeUtils {
@@ -81,6 +83,17 @@ public class TimeUtils {
             sum += BigMonthList.contains(i) ? 31 : 30;
         }
         return sum;
+    }
+
+    /**
+     * 对两个时间点的差值进行计算
+     *
+     * @param t1 时间点 1
+     * @param t2 时间点 2
+     * @return 差值
+     */
+    public static int calDifference(TimePoint t1, TimePoint t2) {
+        return 0;
     }
 
 }
