@@ -9,13 +9,6 @@ import cn.hdudragonking.cherry.base.TimePoint;
 public interface Task {
 
     /**
-     * 设置执行的时间点
-     *
-     * @param timePoint 时间点
-     */
-    void setTimePoint(TimePoint timePoint);
-
-    /**
      * 获取执行的时间点
      *
      * @return 时间点

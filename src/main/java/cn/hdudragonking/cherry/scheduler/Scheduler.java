@@ -3,16 +3,21 @@ package cn.hdudragonking.cherry.scheduler;
 import cn.hdudragonking.cherry.task.Task;
 
 /**
- * å®šæ—¶è°ƒåº¦è€…çš„æ¥å£
+ * ¶¨Ê±µ÷¶ÈÕßµÄ½Ó¿Ú
  * @author realDragonKing
  */
 public interface Scheduler {
 
     /**
-     * æäº¤ä¸€ä¸ªæ–°çš„å®šæ—¶ä»»åŠ¡
+     * Ìá½»Ò»¸öĞÂµÄ¶¨Ê±ÈÎÎñ
      *
-     * @param task å®šæ—¶ä»»åŠ¡
+     * @param task ¶¨Ê±ÈÎÎñ
      */
     void submit(Task task);
+
+    /**
+     * Ê±¼äÂÖ½øĞĞÒ»´Î×ª¶¯
+     */
+    void turn();
 
 }

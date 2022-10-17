@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="完善了指针链表的remove方法">
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/DefaultPointerLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/DefaultPointerLinkedList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/Node.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/PointerLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/PointerLinkedList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/DefaultPointerLinkedRing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/scheduler/DefaultScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/scheduler/DefaultScheduler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/scheduler/Scheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/scheduler/Scheduler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/task/ReminderTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/task/ReminderTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/task/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/task/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/utils/BaseUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/utils/BaseUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/utils/TimeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/utils/TimeUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,22 +47,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11 (4)&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/realDragonKing/Desktop/JavaProjects/Cherry&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "dart.analysis.tool.window.visible": "false",
+    "jdk.selected.JAVA_MODULE": "11 (4)",
+    "last_opened_file_path": "C:/Users/realDragonKing/Desktop/JavaProjects/小安考研咨询服务平台",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "File.Encoding",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cn.hdudragonking.cherry.Main" />
+      <module name="Cherry.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.hdudragonking.cherry.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="应用程序.Main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
@@ -77,7 +103,8 @@
       <workItem from="1665969763694" duration="1137000" />
       <workItem from="1665971956854" duration="7336000" />
       <workItem from="1665981837550" duration="2160000" />
-      <workItem from="1665998733629" duration="1027000" />
+      <workItem from="1665998733629" duration="1768000" />
+      <workItem from="1666002678080" duration="7864000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -121,7 +148,21 @@
       <option name="project" value="LOCAL" />
       <updated>1665999508712</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="完善了指针链表的remove方法">
+      <created>1666000284156</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1666000284156</updated>
+    </task>
+    <task id="LOCAL-00008" summary="完善了指针链表的remove方法">
+      <created>1666000486786</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1666000486786</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

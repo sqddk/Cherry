@@ -8,16 +8,9 @@ import cn.hdudragonking.cherry.base.TimePoint;
  */
 public class ReminderTask implements Task {
 
-    private TimePoint timePoint;
+    private final TimePoint timePoint;
 
-    /**
-     * 设置执行的时间点
-     *
-     * @param timePoint 时间点
-     * @return 时间点是否有效
-     */
-    @Override
-    public void setTimePoint(TimePoint timePoint) {
+    public ReminderTask (TimePoint timePoint) {
         this.timePoint = timePoint;
     }
 
