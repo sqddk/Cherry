@@ -14,11 +14,11 @@ public interface PointerLinkedList<E> {
     void add(E item);
 
     /**
-     * 删除并弹出指针处的节点
+     * 删除并弹出指针处的节点值
      *
-     * @return 弹出的节点
+     * @return 弹出的节点值
      */
-    Node<E> remove();
+    E remove();
 
     /**
      * 移动指针到下一个节点
@@ -41,18 +41,18 @@ public interface PointerLinkedList<E> {
     void resetTail();
 
     /**
-     * 获取指针所指的节点
+     * 获取指针所指的节点值
      *
-     * @return 节点
+     * @return 节点值
      */
-    Node<E> getPointer();
+    E getPointer();
 
     /**
      * 获取指针所指节点的位置
      *
      * @return 位置
      */
-    int getPointerPosition();
+    int getPosition();
 
     /**
      * 获取链表的大小

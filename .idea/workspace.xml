@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="修复指针链表的add方法">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" afterDir="false" />
+    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="完善了指针链表的remove方法">
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/DefaultPointerLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/DefaultPointerLinkedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/Node.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/PointerLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/PointerLinkedList.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +77,7 @@
       <workItem from="1665969763694" duration="1137000" />
       <workItem from="1665971956854" duration="7336000" />
       <workItem from="1665981837550" duration="2160000" />
+      <workItem from="1665998733629" duration="1027000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -113,7 +114,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665969895363</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="完善了指针链表的remove方法">
+      <created>1665999508712</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1665999508712</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -136,6 +144,7 @@
     <MESSAGE value="双向链表完成" />
     <MESSAGE value="双向链表更正为指针链表，底层数据结构完成" />
     <MESSAGE value="修复指针链表的add方法" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复指针链表的add方法" />
+    <MESSAGE value="完善了指针链表的remove方法" />
+    <option name="LAST_COMMIT_MESSAGE" value="完善了指针链表的remove方法" />
   </component>
 </project>
