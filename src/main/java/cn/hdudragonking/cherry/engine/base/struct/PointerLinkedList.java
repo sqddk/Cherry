@@ -1,7 +1,9 @@
-package cn.hdudragonking.cherry.base;
+package cn.hdudragonking.cherry.engine.base.struct;
 
 /**
  * 指针链表的接口
+ *
+ * @since 2022/10/17
  * @author realDragonKing
  */
 public interface PointerLinkedList<E> {

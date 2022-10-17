@@ -1,11 +1,10 @@
-package cn.hdudragonking.cherry.scheduler;
+package cn.hdudragonking.cherry.engine.base;
 
-import cn.hdudragonking.cherry.base.DefaultPointerLinkedList;
-import cn.hdudragonking.cherry.base.PointerLinkedList;
-import cn.hdudragonking.cherry.base.DefaultPointerLinkedRing;
-import cn.hdudragonking.cherry.base.TimePoint;
-import cn.hdudragonking.cherry.task.Task;
-import cn.hdudragonking.cherry.utils.TimeUtils;
+import cn.hdudragonking.cherry.engine.base.struct.DefaultPointerLinkedList;
+import cn.hdudragonking.cherry.engine.base.struct.DefaultPointerLinkedRing;
+import cn.hdudragonking.cherry.engine.base.struct.PointerLinkedList;
+import cn.hdudragonking.cherry.engine.task.Task;
+import cn.hdudragonking.cherry.engine.utils.TimeUtils;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -14,10 +13,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 调度者的默认实现类，使用时间轮算法进行任务调度
+ * 时间轮的默认实现类，进行任务调度
+ *
+ * @since 2022/10/17
  * @author realDragonKing
  */
-public class DefaultScheduler implements Scheduler {
+public class DefaultTimingWheel implements TimingWheel {
 
     private TimePoint currentTimePoint;
     private final int totalTicks;
@@ -25,11 +26,11 @@ public class DefaultScheduler implements Scheduler {
     private final static int DEFAULT_TOTAL_TICKS = 60;
     private final PointerLinkedList<Map<Integer, PointerLinkedList<Task>>> timingWheel;
 
-    public DefaultScheduler () {
+    public DefaultTimingWheel() {
         this(DEFAULT_TOTAL_TICKS);
     }
 
-    public DefaultScheduler (int totalTicks) {
+    public DefaultTimingWheel(int totalTicks) {
         this.totalTicks = totalTicks;
         int coreSize = Runtime.getRuntime().availableProcessors();
         this.executor = Executors.newFixedThreadPool(coreSize * 2);
@@ -77,7 +78,6 @@ public class DefaultScheduler implements Scheduler {
                     this.executor.submit(task::execute);
                     list.moveNext();
                 }
-                list.resetHead();
             } else {
                 map.put(round, list);
             }

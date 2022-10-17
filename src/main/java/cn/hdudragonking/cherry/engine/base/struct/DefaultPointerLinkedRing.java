@@ -1,12 +1,14 @@
-package cn.hdudragonking.cherry.base;
+package cn.hdudragonking.cherry.engine.base.struct;
 
-import cn.hdudragonking.cherry.task.Task;
+import cn.hdudragonking.cherry.engine.task.Task;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 默认的时间轮的数据结构实现，环形链表（继承于指针链表的默认实现类）
+ *
+ * @since 2022/10/17
  * @author realDragonKing
  */
 public class DefaultPointerLinkedRing extends DefaultPointerLinkedList<Map<Integer, PointerLinkedList<Task>>> {

@@ -1,12 +1,14 @@
-package cn.hdudragonking.cherry.scheduler;
+package cn.hdudragonking.cherry.engine.base;
 
-import cn.hdudragonking.cherry.task.Task;
+import cn.hdudragonking.cherry.engine.task.Task;
 
 /**
- * 定时调度者的接口
+ * 时间轮的接口
+ *
+ * @since 2022/10/17
  * @author realDragonKing
  */
-public interface Scheduler {
+public interface TimingWheel {
 
     /**
      * 提交一个新的定时任务

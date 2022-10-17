@@ -1,9 +1,11 @@
-package cn.hdudragonking.cherry.task;
+package cn.hdudragonking.cherry.engine.task;
 
-import cn.hdudragonking.cherry.base.TimePoint;
+import cn.hdudragonking.cherry.engine.base.TimePoint;
 
 /**
  * 可被执行的定时任务的接口
+ *
+ * @since 2022/10/17
  * @author realDragonKing
  */
 public interface Task {

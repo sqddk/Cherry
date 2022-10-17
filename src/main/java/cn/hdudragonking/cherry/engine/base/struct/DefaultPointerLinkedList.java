@@ -1,7 +1,9 @@
-package cn.hdudragonking.cherry.base;
+package cn.hdudragonking.cherry.engine.base.struct;
 
 /**
  * 指针链表的默认实现类
+ *
+ * @since 2022/10/17
  * @author realDragonKing
  */
 public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
