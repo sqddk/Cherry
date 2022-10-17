@@ -9,8 +9,8 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     private int size;
     private int position;
     private Node<E> pointer;
-    public Node<E> head;
-    public Node<E> tail;
+    private Node<E> head;
+    private Node<E> tail;
 
     public DefaultPointerLinkedList(){
         this.size = 0;
@@ -43,12 +43,12 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * 删除并弹出指针处的节点
+     * 删除并弹出指针处的节点值
      *
-     * @return 弹出的节点
+     * @return 弹出的节点值
      */
     @Override
-    public Node<E> remove() {
+    public E remove() {
         if (this.position == -1) {
             return null;
         }
@@ -78,7 +78,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
             prev.next = next;
         }
         this.size--;
-        return pointer;
+        return pointer.item;
     }
 
     /**
@@ -137,8 +137,8 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      * @return 节点
      */
     @Override
-    public Node<E> getPointer() {
-        return this.pointer;
+    public E getPointer() {
+        return this.pointer.item;
     }
 
     /**
@@ -182,6 +182,22 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         }
         builder.append(']');
         return builder.toString();
+    }
+
+    /**
+     * 环形链表的节点
+     * @author realDragonKing
+     */
+    private static class Node<E> {
+
+        private Node<E> next;
+        private Node<E> prev;
+        private final E item;
+
+        private Node(E item){
+            this.item = item;
+        }
+
     }
 
 }
