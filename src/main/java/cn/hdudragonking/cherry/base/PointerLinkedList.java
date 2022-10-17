@@ -14,13 +14,6 @@ public interface PointerLinkedList<E> {
     void add(E item);
 
     /**
-     * 在指针处插入一个新的节点
-     *
-     * @param item 节点值
-     */
-    void insert(E item);
-
-    /**
      * 删除并弹出指针处的节点
      *
      * @return 弹出的节点

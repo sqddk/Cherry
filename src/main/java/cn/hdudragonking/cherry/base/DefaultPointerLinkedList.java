@@ -9,8 +9,8 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     private int size;
     private int position;
     private Node<E> pointer;
-    private Node<E> head;
-    private Node<E> tail;
+    public Node<E> head;
+    public Node<E> tail;
 
     public DefaultPointerLinkedList(){
         this.size = 0;
@@ -43,54 +43,41 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * 在指针处插入一个新的节点
-     *
-     * @param item 节点值
-     */
-    @Override
-    public void insert(E item) {
-        int position = this.getPointerPosition();
-        if (position == -1) return;
-        this.size++;
-        Node<E> prev = this.pointer.prev,
-                node = new Node<>(item);
-        prev.next = node;
-        node.prev = prev;
-        node.next = this.pointer;
-        this.pointer.prev = node;
-        this.pointer = node;
-    }
-
-    /**
      * 删除并弹出指针处的节点
      *
      * @return 弹出的节点
      */
     @Override
     public Node<E> remove() {
-        if (this.getPointerPosition() == -1) {
+        if (this.position == -1) {
             return null;
         }
-        this.size--;
         Node<E> prev = this.pointer.prev,
              next = this.pointer.next,
              pointer = this.pointer;
-        if (prev != null) {
-            prev.next = null;
-            pointer.prev = null;
-        }
-        if (next == null) {
-            this.pointer = prev;
-            this.position--;
-        } else {
-            pointer.next = null;
-            next.prev = null;
-            if (prev != null) {
-                prev.next = next;
-                next.prev = prev;
+        if (this.position == 0) {
+            if (this.size == 1) this.position = -1;
+            else {
+                if (this.size == 2) this.tail = null;
+                next.prev = null;
+                pointer.next = null;
             }
+            this.head = next;
             this.pointer = next;
+        } else {
+            if (this.position + 1 == this.size) {
+                this.tail = this.size == 2 ? null : prev;
+                this.pointer = prev;
+                this.position--;
+            } else {
+                next.prev = prev;
+                this.pointer = next;
+            }
+            pointer.prev = null;
+            pointer.next = null;
+            prev.next = next;
         }
+        this.size--;
         return pointer;
     }
 
@@ -196,4 +183,5 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         builder.append(']');
         return builder.toString();
     }
+
 }

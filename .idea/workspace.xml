@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="双向链表更正为指针链表，底层数据结构完成">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="修复指针链表的add方法">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/DefaultPointerLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/base/DefaultPointerLinkedList.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +74,9 @@
       <workItem from="1665908123922" duration="4486000" />
       <workItem from="1665914929303" duration="10822000" />
       <workItem from="1665932299035" duration="1947000" />
+      <workItem from="1665969763694" duration="1137000" />
+      <workItem from="1665971956854" duration="7336000" />
+      <workItem from="1665981837550" duration="2160000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -94,7 +99,21 @@
       <option name="project" value="LOCAL" />
       <updated>1665933637916</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="修复指针链表的add方法">
+      <created>1665969828984</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1665969828984</updated>
+    </task>
+    <task id="LOCAL-00005" summary="修复指针链表的add方法">
+      <created>1665969895363</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1665969895363</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -116,6 +135,7 @@
     <MESSAGE value="init commit" />
     <MESSAGE value="双向链表完成" />
     <MESSAGE value="双向链表更正为指针链表，底层数据结构完成" />
-    <option name="LAST_COMMIT_MESSAGE" value="双向链表更正为指针链表，底层数据结构完成" />
+    <MESSAGE value="修复指针链表的add方法" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复指针链表的add方法" />
   </component>
 </project>
