@@ -7,9 +7,9 @@ version '1.0'
 
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-//    manifest {
-//        attributes 'Main-Class': group + '.Main'
-//    }
+    manifest {
+        attributes 'Main-Class': group + '.Main'
+    }
     from {
         (configurations.runtimeClasspath).collect {
             it.isDirectory() ? it : zipTree(it)

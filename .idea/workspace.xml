@@ -4,18 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="项目整体结构搭建完成，分为bootstrap和engine两个包">
+    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="定时任务调度引擎核心功能完成，支持本地进程内提交任务">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryHealthMonitor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryProtocol.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryProtocolFlag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryProtocolHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryServerDecoder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryServerEncoder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherrySocketInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryHttpServer.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherrySocketServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherrySocketServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/DefaultTimingWheel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/DefaultTimingWheel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/TimePoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/TimePoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/executor/ScheduleExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/executor/ScheduleExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/executor/TimingWheelExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/executor/TimingWheelExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/task/ReminderTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/task/ReminderTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/task/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/task/Task.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/TimeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/TimeUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/BaseUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/BaseUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +62,7 @@
     "dart.analysis.tool.window.visible": "false",
     "extract.method.default.visibility": "private",
     "jdk.selected.JAVA_MODULE": "11 (4)",
-    "last_opened_file_path": "C:/Users/realDragonKing/Desktop/JavaProjects/小安考研咨询服务平台",
+    "last_opened_file_path": "C:/Users/realDragonKing/Desktop/JavaProjects/NettyServiceFactory",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -110,7 +115,7 @@
       <workItem from="1666002678080" duration="8582000" />
       <workItem from="1666014753806" duration="5063000" />
       <workItem from="1666069527302" duration="644000" />
-      <workItem from="1666079339073" duration="6142000" />
+      <workItem from="1666079339073" duration="16919000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -189,7 +194,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666019810315</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="定时任务调度引擎核心功能完成，支持本地进程内提交任务">
+      <created>1666087204386</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1666087204386</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -215,6 +227,7 @@
     <MESSAGE value="完善了指针链表的remove方法" />
     <MESSAGE value="Scheduler的默认实现DefaultScheduler类完成，实现了单层时间轮算法。" />
     <MESSAGE value="项目整体结构搭建完成，分为bootstrap和engine两个包" />
-    <option name="LAST_COMMIT_MESSAGE" value="项目整体结构搭建完成，分为bootstrap和engine两个包" />
+    <MESSAGE value="定时任务调度引擎核心功能完成，支持本地进程内提交任务" />
+    <option name="LAST_COMMIT_MESSAGE" value="定时任务调度引擎核心功能完成，支持本地进程内提交任务" />
   </component>
 </project>

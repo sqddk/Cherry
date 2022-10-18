@@ -4,11 +4,11 @@ import cn.hdudragonking.cherry.engine.base.struct.DefaultPointerLinkedList;
 import cn.hdudragonking.cherry.engine.base.struct.DefaultPointerLinkedRing;
 import cn.hdudragonking.cherry.engine.base.struct.PointerLinkedList;
 import cn.hdudragonking.cherry.engine.task.Task;
+import cn.hdudragonking.cherry.engine.utils.BaseUtils;
 import cn.hdudragonking.cherry.engine.utils.TimeUtils;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 时间轮的默认实现类，进行任务调度
@@ -33,7 +33,7 @@ public class DefaultTimingWheel implements TimingWheel {
         this.totalTicks = totalTicks;
         this.interval = interval;
         int coreSize = Runtime.getRuntime().availableProcessors();
-        this.executor = Executors.newFixedThreadPool(coreSize * 2);
+        this.executor = BaseUtils.createWorkerThreadPool(2, coreSize * 2, 1000);
         this.timingWheel = new DefaultPointerLinkedRing(this.totalTicks);
         this.currentTimePoint = TimePoint.getCurrentTimePoint();
     }
