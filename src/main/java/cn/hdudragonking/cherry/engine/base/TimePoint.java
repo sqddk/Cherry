@@ -3,6 +3,11 @@ package cn.hdudragonking.cherry.engine.base;
 import cn.hdudragonking.cherry.engine.utils.BaseUtils;
 import cn.hdudragonking.cherry.engine.utils.TimeUtils;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 /**
  * 时间点
  *
@@ -39,67 +44,44 @@ public class TimePoint {
         return new TimePoint(year, month, day, hour, minute);
     }
 
+    /**
+     * 根据{@link Calendar}接口的实现类生成时间点
+     *
+     * @return 当前时间点
+     */
+    public static TimePoint getCurrentTimePoint() {
+        Calendar calendar = new GregorianCalendar();
+        return new TimePoint(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE));
+    }
+
     private TimePoint(int year, int month, int day, int hour, int minute){
         this.timeUnitStorage = new int[]{year, month, day, hour, minute};
+        try {
+            Date time = TimeUtils.DateFormat.parse(this.toString());
+            this.timeValue = time.getTime();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * 时间信息存储单元
      */
     private final int[] timeUnitStorage;
+    private final long timeValue;
 
     /**
-     * 获取年份
+     * 返回当前时间点的绝对时间
      *
-     * @return 年份
+     * @return 绝对时间值
      */
-    public final int getYear(){
-        return timeUnitStorage[0];
-    }
-
-    /**
-     * 获取月份
-     *
-     * @return 月份
-     */
-    public final int getMonth(){
-        return timeUnitStorage[1];
-    }
-
-    /**
-     * 获取月份内天数
-     *
-     * @return 月份内天数
-     */
-    public final int getDay(){
-        return timeUnitStorage[2];
-    }
-
-    /**
-     * 获取小时数
-     *
-     * @return 获取小时数
-     */
-    public final int getHour(){
-        return timeUnitStorage[3];
-    }
-
-    /**
-     * 获取分钟数
-     *
-     * @return 分钟数
-     */
-    public final int getMinute(){
-        return timeUnitStorage[4];
-    }
-
-    /**
-     * 获取年内天数
-     *
-     * @return 年内天数
-     */
-    public final int getDaysOfYear(){
-        return TimeUtils.calDays(getYear(), getMonth(), getDay());
+    public final long getTimeValue() {
+        return this.timeValue;
     }
 
     /**
@@ -115,15 +97,6 @@ public class TimePoint {
                 this.timeUnitStorage[2],
                 this.timeUnitStorage[3],
                 this.timeUnitStorage[4]);
-    }
-
-    /**
-     * 返回长整型时间数据
-     *
-     * @return 长整型时间数据
-     */
-    public final long toLong(){
-        return Long.parseLong(this.toString());
     }
 
 }

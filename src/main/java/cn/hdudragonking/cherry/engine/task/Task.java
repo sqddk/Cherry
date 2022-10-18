@@ -3,7 +3,7 @@ package cn.hdudragonking.cherry.engine.task;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 
 /**
- * å¯è¢«æ‰§è¡Œçš„å®šæ—¶ä»»åŠ¡çš„æ¥å£
+ * ¿É±»Ö´ĞĞµÄ¶¨Ê±ÈÎÎñµÄ½Ó¿Ú
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -11,14 +11,14 @@ import cn.hdudragonking.cherry.engine.base.TimePoint;
 public interface Task {
 
     /**
-     * è·å–æ‰§è¡Œçš„æ—¶é—´ç‚¹
+     * »ñÈ¡Ö´ĞĞµÄÊ±¼äµã
      *
-     * @return æ—¶é—´ç‚¹
+     * @return Ê±¼äµã
      */
     TimePoint getTimePoint();
 
     /**
-     * æ‰§è¡Œä»»åŠ¡
+     * Ö´ĞĞÈÎÎñ
      */
     void execute();
 

@@ -29,14 +29,14 @@ public class CherryLocalStarter {
     private CherryLocalStarter() {}
 
     private TimingWheel timingWheel;
-    private final static int DEFAULT_INTERVAL = 60;
+    private final static int DEFAULT_INTERVAL = 60000;
 
     /**
      * 为cherry引擎的启动进行初始化
      */
     public void initial() {
         ExecutorService threadPool = Executors.newFixedThreadPool(2);
-        this.timingWheel = new DefaultTimingWheel();
+        this.timingWheel = new DefaultTimingWheel(DEFAULT_INTERVAL);
         BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>(1);
         threadPool.submit(new ScheduleExecutor(DEFAULT_INTERVAL, blockingQueue));
         threadPool.submit(new TimingWheelExecutor(this.timingWheel, blockingQueue));

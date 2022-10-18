@@ -3,15 +3,14 @@ package cn.hdudragonking.cherry.engine.base.executor;
 import cn.hdudragonking.cherry.engine.base.TimingWheel;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 /**
- * è®¡æ—¶å™¨ï¼ˆå®ç°äº†{@link java.lang.Runnable}æ¥å£ï¼‰ï¼Œåœ¨ç‹¬ç«‹çº¿ç¨‹ä¸­è¿è¡Œ
+ * ¼ÆÊ±Æ÷£¨ÊµÏÖÁË{@link java.lang.Runnable}½Ó¿Ú£©£¬ÔÚ¶ÀÁ¢Ïß³ÌÖĞÔËĞĞ
  * <p>
- * è®¡æ—¶å™¨ä¼šé€šè¿‡è‡ªæ—‹çš„æ–¹å¼å®ç° ä¼‘çœ -æ‰§è¡Œ çš„è½®å›ï¼ˆä¼‘çœ æ—¶é—´ç”±ä¼ å…¥çš„å‚æ•°å†³å®šï¼Œå•ä½ä¸ºç§’ï¼‰
+ * ¼ÆÊ±Æ÷»áÍ¨¹ı×ÔĞıµÄ·½Ê½ÊµÏÖ ĞİÃß-Ö´ĞĞ µÄÂÖ»Ø£¨ĞİÃßÊ±¼äÓÉ´«ÈëµÄ²ÎÊı¾ö¶¨£¬µ¥Î»ÎªÃë£©
  * <p>
- * æ¯æ¬¡æ‰§è¡Œéƒ½ä¼šé€šè¿‡é˜»å¡é˜Ÿåˆ—ä¼ å…¥å…ƒç´ çš„æ–¹å¼ï¼Œé€šçŸ¥è¿è¡Œåœ¨å¦å¤–ä¸€ä¸ªçº¿ç¨‹ä¸Šçš„æ—¶é—´è½®æ“ä½œè€…
- * {@link TimingWheelExecutor}æ‰§è¡Œ{@link TimingWheel#turn()}æ–¹æ³•
+ * Ã¿´ÎÖ´ĞĞ¶¼»áÍ¨¹ı×èÈû¶ÓÁĞ´«ÈëÔªËØµÄ·½Ê½£¬Í¨ÖªÔËĞĞÔÚÁíÍâÒ»¸öÏß³ÌÉÏµÄÊ±¼äÂÖ²Ù×÷Õß
+ * {@link TimingWheelExecutor}Ö´ĞĞ{@link TimingWheel#turn()}·½·¨
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -41,7 +40,7 @@ public class ScheduleExecutor implements Runnable {
     public void run() {
         for (;;) {
             try {
-                TimeUnit.SECONDS.sleep(this.interval);
+                Thread.sleep(this.interval);
                 this.messageChannel.add(1);
             } catch (Exception e) {
                 break;

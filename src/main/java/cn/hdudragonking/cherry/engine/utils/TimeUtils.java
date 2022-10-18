@@ -1,20 +1,21 @@
 package cn.hdudragonking.cherry.engine.utils;
 
 import cn.hdudragonking.cherry.engine.base.TimePoint;
-
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class TimeUtils {
 
     private TimeUtils(){}
 
+    public static final SimpleDateFormat DateFormat = new SimpleDateFormat("yyyyMMddHHmm");
     public static final List<Integer> BigMonthList = List.of(1, 3, 5 ,7, 8, 10, 12);
 
     /**
-     * å°†æœˆä»½è½¬åŒ–ä¸ºæ•°å­—ï¼Œå¹¶æ£€æŸ¥æ˜¯å¦æœ‰æ•ˆï¼ˆæ— æ•ˆåˆ™è¿”å›-1ï¼‰
+     * ½«ÔÂ·İ×ª»¯ÎªÊı×Ö£¬²¢¼ì²éÊÇ·ñÓĞĞ§£¨ÎŞĞ§Ôò·µ»Ø-1£©
      *
-     * @param piece æœˆä»½å­—ç¬¦ä¸²
-     * @return æœˆä»½æ•°å­—
+     * @param piece ÔÂ·İ×Ö·û´®
+     * @return ÔÂ·İÊı×Ö
      */
     public static int parseMonth(String piece){
         int month = Integer.parseInt(piece);
@@ -22,15 +23,16 @@ public class TimeUtils {
     }
 
     /**
-     * å°†æœˆä»½å†…æ—¥æœŸè½¬åŒ–ä¸ºæ•°å­—ï¼Œå¹¶æ£€æŸ¥æ—¥æœŸæ˜¯å¦æœ‰æ•ˆï¼ˆæ— æ•ˆåˆ™è¿”å›-1ï¼‰
+     * ½«ÔÂ·İÄÚÈÕÆÚ×ª»¯ÎªÊı×Ö£¬²¢¼ì²éÈÕÆÚÊÇ·ñÓĞĞ§£¨ÎŞĞ§Ôò·µ»Ø-1£©
      *
-     * @param piece æ—¥æœŸå­—ç¬¦ä¸²
-     * @param year å¹´ä»½æ•°å­—
-     * @param month æœˆä»½æ•°å­—
-     * @return æœˆä»½å†…æ—¥æœŸæ•°å­—
+     * @param piece ÈÕÆÚ×Ö·û´®
+     * @param year Äê·İÊı×Ö
+     * @param month ÔÂ·İÊı×Ö
+     * @return ÔÂ·İÄÚÈÕÆÚÊı×Ö
      */
     public static int parseDay(String piece, int year, int month){
-        int day = Integer.parseInt(piece), maxDay;
+        int day = Integer.parseInt(piece);
+        int maxDay;
         if(day == 0) return -1;
         if (month == 2) {
             maxDay = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ? 29 : 28;
@@ -43,10 +45,10 @@ public class TimeUtils {
     }
 
     /**
-     * å°†å°æ—¶è½¬åŒ–ä¸ºæ•°å­—ï¼Œå¹¶æ£€æŸ¥å°æ—¶æ•°æ˜¯å¦æœ‰æ•ˆï¼ˆæ— æ•ˆåˆ™è¿”å›-1ï¼‰
+     * ½«Ğ¡Ê±×ª»¯ÎªÊı×Ö£¬²¢¼ì²éĞ¡Ê±ÊıÊÇ·ñÓĞĞ§£¨ÎŞĞ§Ôò·µ»Ø-1£©
      *
-     * @param piece å°æ—¶æ•°å­—ç¬¦ä¸²
-     * @return å°æ—¶æ•°
+     * @param piece Ğ¡Ê±Êı×Ö·û´®
+     * @return Ğ¡Ê±Êı
      */
     public static int parseHour(String piece){
         int hour = Integer.parseInt(piece);
@@ -54,10 +56,10 @@ public class TimeUtils {
     }
 
     /**
-     * å°†åˆ†é’Ÿæ•°è½¬åŒ–ä¸ºæ•°å­—ï¼Œå¹¶æ£€æŸ¥åˆ†é’Ÿæ•°æ˜¯å¦æœ‰æ•ˆï¼ˆæ— æ•ˆåˆ™è¿”å›-1ï¼‰
+     * ½«·ÖÖÓÊı×ª»¯ÎªÊı×Ö£¬²¢¼ì²é·ÖÖÓÊıÊÇ·ñÓĞĞ§£¨ÎŞĞ§Ôò·µ»Ø-1£©
      *
-     * @param piece åˆ†é’Ÿæ•°å­—ç¬¦ä¸²
-     * @return åˆ†é’Ÿæ•°
+     * @param piece ·ÖÖÓÊı×Ö·û´®
+     * @return ·ÖÖÓÊı
      */
     public static int parseMinute(String piece){
         int minute = Integer.parseInt(piece);
@@ -65,35 +67,14 @@ public class TimeUtils {
     }
 
     /**
-     * è®¡ç®—å¹´å†…å¤©æ•°
+     * ¸ù¾İÁ½¸ö{@link TimePoint}Ê±¼äµã£¬¼ÆËãËûÃÇµÄms²îÖµ²¢ÇÒ¸ù¾İÊ±¼ä¿Ì¶È£¬×ª»»ÎªĞèÒªµÄ²îÖµ
+     * <p>
+     * ²îÖµ¼ÆËãË³ĞòÎª{@link TimePoint}P2 - {@link TimePoint}P1
      *
-     * @param year å¹´ä»½
-     * @param month æœˆä»½
-     * @param day æœˆå†…å¤©æ•°
-     * @return å¹´å†…å¤©æ•°
+     * @return ¶ÔÓ¦¸ñÊ½µÄÊ±¼ä²îÖµ
      */
-    public static int calDays(int year, int month, int day){
-        int februaryDay = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ? 29 : 28,
-            sum = day;
-        for (int i = 1; i < month; i++) {
-            if (i == 2) {
-                sum += februaryDay;
-                continue;
-            }
-            sum += BigMonthList.contains(i) ? 31 : 30;
-        }
-        return sum;
-    }
-
-    /**
-     * å¯¹ä¸¤ä¸ªæ—¶é—´ç‚¹çš„å·®å€¼è¿›è¡Œè®¡ç®—
-     *
-     * @param t1 æ—¶é—´ç‚¹ 1
-     * @param t2 æ—¶é—´ç‚¹ 2
-     * @return å·®å€¼
-     */
-    public static int calDifference(TimePoint t1, TimePoint t2) {
-        return 0;
+    public static int calDifference(TimePoint p1, TimePoint p2, int ticks) {
+        return (int) ((p2.getTimeValue() - p1.getTimeValue()) / ticks);
     }
 
 }

@@ -3,7 +3,7 @@ package cn.hdudragonking.cherry.engine.task;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 
 /**
- * æ‰§è¡Œæé†’ä»»åŠ¡ï¼Œæé†’ç½‘ç»œä¸Šçš„å®šæ—¶ä»»åŠ¡æäº¤è€…å¯ä»¥æ‰§è¡Œ
+ * Ö´ĞĞÌáĞÑÈÎÎñ£¬ÌáĞÑÍøÂçÉÏµÄ¶¨Ê±ÈÎÎñÌá½»Õß¿ÉÒÔÖ´ĞĞ
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -17,9 +17,9 @@ public class ReminderTask implements Task {
     }
 
     /**
-     * è·å–æ‰§è¡Œçš„æ—¶é—´ç‚¹
+     * »ñÈ¡Ö´ĞĞµÄÊ±¼äµã
      *
-     * @return æ—¶é—´ç‚¹
+     * @return Ê±¼äµã
      */
     @Override
     public TimePoint getTimePoint() {
@@ -27,7 +27,7 @@ public class ReminderTask implements Task {
     }
 
     /**
-     * æ‰§è¡Œä»»åŠ¡
+     * Ö´ĞĞÈÎÎñ
      */
     @Override
     public void execute() {
