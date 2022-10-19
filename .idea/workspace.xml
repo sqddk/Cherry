@@ -5,14 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="Cherry已经能够独立运行">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/ClientHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/ClientInitializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/Receiver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/SocketClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/codec/CherryClientDecoder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/codec/CherryClientEncoder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryServerHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherrySocketServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherrySocketServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryHealthMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryHealthMonitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherrySocketInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/ServerInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherrySocketServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/SocketServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/codec/CherryServerDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/codec/CherryServerEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/BaseUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/BaseUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +102,7 @@
     "dart.analysis.tool.window.visible": "false",
     "extract.method.default.visibility": "private",
     "jdk.selected.JAVA_MODULE": "11 (4)",
-    "last_opened_file_path": "C:/Users/realDragonKing/Desktop/JavaProjects/NettyServiceFactory",
+    "last_opened_file_path": "C:/Users/realDragonKing/Desktop/JavaProjects/CherryClient",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -102,7 +111,7 @@
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.Cherry [build]">
+  <component name="RunManager" selected="应用程序.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.hdudragonking.cherry.Main" />
       <module name="Cherry.main" />
@@ -191,7 +200,8 @@
       <workItem from="1666014753806" duration="5063000" />
       <workItem from="1666069527302" duration="644000" />
       <workItem from="1666079339073" duration="17195000" />
-      <workItem from="1666157597940" duration="9298000" />
+      <workItem from="1666157597940" duration="9691000" />
+      <workItem from="1666172668665" duration="5358000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -312,7 +322,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666161364366</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Cherry已经能够独立运行">
+      <created>1666167000852</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1666167000852</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

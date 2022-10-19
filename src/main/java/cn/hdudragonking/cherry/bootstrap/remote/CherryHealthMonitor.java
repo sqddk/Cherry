@@ -19,7 +19,21 @@ public class CherryHealthMonitor {
 
     private CherryHealthMonitor() {}
 
+    /**
+     * 接收ping心跳帧，服务端检测客户端是否断连
+     *
+     * @param channel 与客户端的通信管道
+     */
     public void acceptPing(Channel channel) {
+
+    }
+
+    /**
+     * 接收pong心跳帧，客户端检测服务端是否断连
+     *
+     * @param channel 与服务端的通信管道
+     */
+    public void acceptPong(Channel channel) {
 
     }
 

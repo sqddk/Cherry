@@ -1,12 +1,13 @@
 package cn.hdudragonking.cherry.bootstrap;
 
-import cn.hdudragonking.cherry.bootstrap.remote.CherrySocketServer;
+import cn.hdudragonking.cherry.bootstrap.remote.server.SocketServer;
 import cn.hdudragonking.cherry.engine.base.DefaultTimingWheel;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 import cn.hdudragonking.cherry.engine.base.TimingWheel;
 import cn.hdudragonking.cherry.engine.base.executor.ScheduleExecutor;
 import cn.hdudragonking.cherry.engine.base.executor.TimingWheelExecutor;
 import cn.hdudragonking.cherry.engine.task.Task;
+import cn.hdudragonking.cherry.engine.utils.BaseUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +19,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * cherry定时任务调度引擎的本地启动引导类，可以在这里启动本地服务。
  * <p>
- * socket 网络服务 {@link CherrySocketServer}
+ * socket 网络服务 {@link SocketServer}
  * 的启动本质上也是启动本地服务，并提供网络通信能力
  *
  * @since 2022/10/17
@@ -43,6 +44,9 @@ public class CherryLocalStarter {
      */
     private final static int DEFAULT_INTERVAL = 60000;
 
+    /**
+     * 日志打印类
+     */
     private final Logger logger = LogManager.getLogger("Cherry");
 
     /**
@@ -63,6 +67,7 @@ public class CherryLocalStarter {
         BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>(1);
         threadPool.submit(new ScheduleExecutor(DEFAULT_INTERVAL, blockingQueue));
         threadPool.submit(new TimingWheelExecutor(this.timingWheel, blockingQueue));
+        BaseUtils.printLogo();
         this.logger.info("定时任务调度引擎已经在本地成功启动并可提供服务！");
     }
 
