@@ -26,11 +26,11 @@ public class CherryProtocol {
         return this;
     }
 
-    public String getTimePointString() {
+    public String getStringTimePoint() {
         return this.timePointString;
     }
 
-    public CherryProtocol setTimePoint(String timePointString) {
+    public CherryProtocol setStringTimePoint(String timePointString) {
         this.timePointString = timePointString;
         return this;
     }

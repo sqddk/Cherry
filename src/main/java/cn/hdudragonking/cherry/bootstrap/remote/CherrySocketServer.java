@@ -1,5 +1,6 @@
 package cn.hdudragonking.cherry.bootstrap.remote;
 
+import cn.hdudragonking.cherry.bootstrap.CherryLocalStarter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -38,6 +39,7 @@ public class CherrySocketServer {
      */
     public void bootstrap(String host, int port) {
         try {
+            CherryLocalStarter.getInstance().initial();
             this.serverBootstrap
                     .channel(NioServerSocketChannel.class)
                     .group(this.bossGroup, this.workerGroup)

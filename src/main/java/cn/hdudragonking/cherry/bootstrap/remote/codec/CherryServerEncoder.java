@@ -30,22 +30,22 @@ public class CherryServerEncoder extends MessageToMessageEncoder<CherryProtocol>
      * by this encoder.
      *
      * @param ctx the {@link ChannelHandlerContext} which this {@link MessageToMessageEncoder} belongs to
-     * @param cherryProtocol the message to encode to another one
+     * @param protocol the message to encode to another one
      * @param out the {@link List} into which the encoded msg should be added
      *            needs to do some kind of aggregation
      */
     @Override
-    protected void encode(ChannelHandlerContext ctx, CherryProtocol cherryProtocol, List<Object> out) {
+    protected void encode(ChannelHandlerContext ctx, CherryProtocol protocol, List<Object> out) {
         String finalMessage;
-        switch (cherryProtocol.getFlag()) {
+        switch (protocol.getFlag()) {
             case FLAG_PONG :
                 finalMessage = FLAG_PONG + "|";
                 break;
             case FLAG_NOTIFY:
                 finalMessage = FLAG_NOTIFY + "|"
-                        + cherryProtocol.getTimePointString() + "|"
-                        + cherryProtocol.getMetaData() + "|"
-                        + cherryProtocol.getUniqueID();
+                        + protocol.getStringTimePoint() + "|"
+                        + protocol.getMetaData() + "|"
+                        + protocol.getUniqueID();
                 break;
             case FLAG_ERROR:
                 finalMessage = FLAG_ERROR + "|" + FLAG_ERROR;

@@ -37,41 +37,32 @@ public class CherryServerDecoder extends MessageToMessageDecoder<ByteBuf> {
      */
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
-        CherryProtocol cherryProtocol = new CherryProtocol();
+        CherryProtocol protocol = new CherryProtocol();
         String[] pieces = msg.toString(this.charset).split("\\|");
-        if (pieces.length == 0) {
-            cherryProtocol.setErrorMessage("无效协议！");
-            ctx.writeAndFlush(cherryProtocol);
-            return;
-        }
-        int flag;
-        try {
-            flag = Integer.parseInt(pieces[0]);
-        } catch (Exception e) {
-            cherryProtocol
-                    .setFlag(FLAG_ERROR)
-                    .setErrorMessage("无效协议！");
-            ctx.writeAndFlush(cherryProtocol);
-            return;
-        }
-        switch (flag) {
-            case FLAG_PING :
-                monitor.acceptPing(ctx.channel());
-                return;
-            case FLAG_ADD :
-                if (pieces.length >= 2) cherryProtocol.setTimePoint(pieces[1]);
-                if (pieces.length == 3) cherryProtocol.setMetaData(pieces[2]);
-                out.add(cherryProtocol);
-                return;
-            case FLAG_REMOVE :
-                if (pieces.length >= 2) cherryProtocol.setTimePoint(pieces[1]);
-                if (pieces.length == 3) cherryProtocol.setUniqueID(pieces[2]);
-                return;
-            default:
-                cherryProtocol
-                        .setFlag(FLAG_ERROR)
-                        .setErrorMessage("无效协议！");
-                ctx.writeAndFlush(cherryProtocol);
+        if (pieces.length == 0) ctx.fireExceptionCaught(new Throwable("无效协议！"));
+        else {
+            try {
+                switch (Integer.parseInt(pieces[0])) {
+                    case FLAG_PING :
+                        monitor.acceptPing(ctx.channel());
+                        break;
+                    case FLAG_ADD :
+                        if (pieces.length >= 2) protocol.setStringTimePoint(pieces[1]);
+                        if (pieces.length == 3) protocol.setMetaData(pieces[2]);
+                        out.add(protocol);
+                        break;
+                    case FLAG_REMOVE :
+                        if (pieces.length == 3) {
+                            protocol.setStringTimePoint(pieces[1])
+                                    .setUniqueID(pieces[2]);
+                            out.add(protocol);
+                        } else ctx.fireExceptionCaught(new Throwable("删除操作参数不全！无效删除操作！"));
+                        break;
+                    default: ctx.fireExceptionCaught(new Throwable("无效协议！"));
+                }
+            } catch (Exception e) {
+                ctx.fireExceptionCaught(new Throwable("无效协议！"));
+            }
         }
     }
 }

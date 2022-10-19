@@ -23,7 +23,7 @@ public class TimePoint {
      * @return Ê±¼äµã
      */
     public static TimePoint parse(String time) {
-        if (time.length() != 12 || (! BaseUtils.checkStringOfNumber(time))) {
+        if (time == null || time.length() != 12 || (! BaseUtils.checkStringOfNumber(time))) {
             return null;
         }
         int year, month, day, hour, minute;

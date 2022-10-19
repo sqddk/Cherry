@@ -2,6 +2,7 @@ package cn.hdudragonking.cherry.bootstrap;
 
 import cn.hdudragonking.cherry.bootstrap.remote.CherrySocketServer;
 import cn.hdudragonking.cherry.engine.base.DefaultTimingWheel;
+import cn.hdudragonking.cherry.engine.base.TimePoint;
 import cn.hdudragonking.cherry.engine.base.TimingWheel;
 import cn.hdudragonking.cherry.engine.base.executor.ScheduleExecutor;
 import cn.hdudragonking.cherry.engine.base.executor.TimingWheelExecutor;
@@ -51,6 +52,16 @@ public class CherryLocalStarter {
      */
     public void submit(Task task) {
         this.timingWheel.submit(task);
+    }
+
+    /**
+     * 根据任务执行时间点和任务唯一ID，通过本地进程内API，向时间轮中删除一个任务
+     *
+     * @param timePoint 任务执行时间点
+     * @param uniqueID 任务唯一ID
+     */
+    public void remove(TimePoint timePoint, String uniqueID) {
+
     }
 
 }

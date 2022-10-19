@@ -1,6 +1,8 @@
 package cn.hdudragonking.cherry.engine.task;
 
+import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
+import io.netty.channel.Channel;
 
 /**
  * 执行提醒任务，提醒网络上的定时任务提交者可以执行
@@ -11,9 +13,11 @@ import cn.hdudragonking.cherry.engine.base.TimePoint;
 public class ReminderTask implements Task {
 
     private final TimePoint timePoint;
+    private final Channel channel;
 
-    public ReminderTask (TimePoint timePoint) {
+    public ReminderTask (TimePoint timePoint, Channel channel) {
         this.timePoint = timePoint;
+        this.channel = channel;
     }
 
     /**
@@ -31,6 +35,6 @@ public class ReminderTask implements Task {
      */
     @Override
     public void execute() {
-
+        CherryProtocol protocol = new CherryProtocol();
     }
 }
