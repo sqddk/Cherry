@@ -53,7 +53,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<CherryProtocol> {
                     ctx.fireExceptionCaught(new Throwable("时间信息格式错误！"));
                     return;
                 }
-                this.receiver.receiveNotify(timePoint, protocol.getMetaData(), protocol.getUniqueID());
+                this.receiver.receiveNotify(timePoint, protocol.getMetaData(), protocol.getTaskID());
                 break;
             case FLAG_ERROR :
                 this.receiver.receiveError(protocol.getErrorMessage());

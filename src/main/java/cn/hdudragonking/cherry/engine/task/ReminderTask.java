@@ -14,10 +14,12 @@ public class ReminderTask implements Task {
 
     private final TimePoint timePoint;
     private final Channel channel;
+    private int taskID;
 
     public ReminderTask (TimePoint timePoint, Channel channel) {
         this.timePoint = timePoint;
         this.channel = channel;
+        this.taskID = -1;
     }
 
     /**
@@ -28,6 +30,26 @@ public class ReminderTask implements Task {
     @Override
     public TimePoint getTimePoint() {
         return this.timePoint;
+    }
+
+    /**
+     * 设置任务的ID
+     *
+     * @param id 任务ID
+     */
+    @Override
+    public void setTaskID(int id) {
+        this.taskID = id;
+    }
+
+    /**
+     * 获取任务的ID
+     *
+     * @return 任务ID
+     */
+    @Override
+    public int getTaskID() {
+        return this.taskID;
     }
 
     /**

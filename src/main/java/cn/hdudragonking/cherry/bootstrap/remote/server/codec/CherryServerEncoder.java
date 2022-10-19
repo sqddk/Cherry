@@ -45,7 +45,7 @@ public class CherryServerEncoder extends MessageToMessageEncoder<CherryProtocol>
                 finalMessage = FLAG_NOTIFY + "|"
                         + protocol.getStringTimePoint() + "|"
                         + protocol.getMetaData() + "|"
-                        + protocol.getUniqueID();
+                        + protocol.getTaskID();
                 break;
             case FLAG_ERROR:
                 finalMessage = FLAG_ERROR + "|" + protocol.getErrorMessage();

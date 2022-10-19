@@ -55,7 +55,7 @@ public class CherryServerDecoder extends MessageToMessageDecoder<ByteBuf> {
                         if (pieces.length == 3) {
                             protocol.setFlag(FLAG_REMOVE)
                                     .setStringTimePoint(pieces[1])
-                                    .setUniqueID(pieces[2]);
+                                    .setTaskID(pieces[2]);
                             out.add(protocol);
                         } else ctx.fireExceptionCaught(new Throwable("删除操作参数不全！无效删除操作！"));
                         break;

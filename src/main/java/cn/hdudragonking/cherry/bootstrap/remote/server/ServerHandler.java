@@ -52,11 +52,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
         switch (protocol.getFlag()) {
             case FLAG_ADD :
                 this.logger.info(ctx.channel().localAddress() + " 提交了一个定时任务！");
-                this.cherryLocalStarter.submit(new ReminderTask(timePoint, ctx.channel()));
+                int[] result = this.cherryLocalStarter.submit(new ReminderTask(timePoint, ctx.channel()));
                 break;
             case FLAG_REMOVE :
                 this.logger.info(ctx.channel().localAddress() + " 尝试删除一个定时任务！");
-                this.cherryLocalStarter.remove(timePoint, protocol.getUniqueID());
+                this.cherryLocalStarter.remove(timePoint, protocol.getTaskID());
                 break;
         }
     }

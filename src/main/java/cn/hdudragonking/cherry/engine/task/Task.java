@@ -18,6 +18,20 @@ public interface Task {
     TimePoint getTimePoint();
 
     /**
+     * 设置任务的ID
+     *
+     * @param id 任务ID
+     */
+    void setTaskID(int id);
+
+    /**
+     * 获取任务的ID
+     *
+     * @return 任务ID
+     */
+    int getTaskID();
+
+    /**
      * 执行任务
      */
     void execute();

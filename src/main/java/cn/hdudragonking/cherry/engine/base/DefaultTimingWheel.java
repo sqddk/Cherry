@@ -1,14 +1,15 @@
 package cn.hdudragonking.cherry.engine.base;
 
-import cn.hdudragonking.cherry.engine.base.struct.DefaultPointerLinkedList;
 import cn.hdudragonking.cherry.engine.base.struct.DefaultPointerLinkedRing;
 import cn.hdudragonking.cherry.engine.base.struct.PointerLinkedList;
+import cn.hdudragonking.cherry.engine.base.struct.TaskList;
 import cn.hdudragonking.cherry.engine.task.Task;
 import cn.hdudragonking.cherry.engine.utils.BaseUtils;
 import cn.hdudragonking.cherry.engine.utils.TimeUtils;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 时间轮的默认实现类，进行任务调度
@@ -18,81 +19,214 @@ import java.util.concurrent.ExecutorService;
  */
 public class DefaultTimingWheel implements TimingWheel {
 
+    /**
+     * 当前时间点
+     */
     private TimePoint currentTimePoint;
+
+    /**
+     * 刻度总数
+     */
     private final int totalTicks;
+
+    /**
+     * 每个刻度间的时间间隔，单位为毫秒（ms）
+     */
     private final int interval;
+
+    /**
+     * 具体执行定时任务的线程池
+     */
     private final ExecutorService executor;
+
+    /**
+     * 默认的刻度总数
+     */
     private final static int DEFAULT_TOTAL_TICKS = 10;
-    private final PointerLinkedList<Map<Integer, PointerLinkedList<Task>>> timingWheel;
+
+    /**
+     * 尝试获取对象的最大自旋时间，单位为纳秒（ns）
+     */
+    private final static long DEFAULT_MAX_WAIT_TIME = 5000000;
+
+    /**
+     * 时间轮的数据结构实现，环形链表
+     */
+    private final PointerLinkedList<Map<Integer, TaskList>> linkedRing;
 
     public DefaultTimingWheel(int interval) {
         this(interval, DEFAULT_TOTAL_TICKS);
     }
 
     public DefaultTimingWheel(int interval, int totalTicks) {
+        if (interval <= 0 || totalTicks <= 0) {
+            throw new RuntimeException();
+        }
         this.totalTicks = totalTicks;
         this.interval = interval;
         int coreSize = Runtime.getRuntime().availableProcessors();
         this.executor = BaseUtils.createWorkerThreadPool(2, coreSize * 2, 1000);
-        this.timingWheel = new DefaultPointerLinkedRing(this.totalTicks);
+        this.linkedRing = new DefaultPointerLinkedRing(this.totalTicks);
         this.currentTimePoint = TimePoint.getCurrentTimePoint();
     }
 
     /**
      * 提交一个新的定时任务
+     * <p>
+     * 如果环形链表已经被其他线程占用了，那么自旋等待链表空闲；如果自旋超出一定时间，就不再尝试获取环形链表。
+     * 对于任务链表的获取尝试采取同样的策略
      *
      * @param task 定时任务
+     * @return 提交是否成功 | 任务ID
      */
     @Override
-    public void submit(Task task) {
+    public int[] submit(Task task) {
         int difference = TimeUtils.calDifference(this.currentTimePoint, task.getTimePoint(), this.interval);
         if (difference <= 0) {
-            return;
+            return new int[]{0};
         }
         int round = difference / this.totalTicks;
         int ticks = difference % this.totalTicks;
-        Map<Integer, PointerLinkedList<Task>> map;
-        synchronized (this.timingWheel) {
-            for (int i = 0; i < ticks; i++) {
-                this.timingWheel.moveNext();
-            }
-            map = this.timingWheel.getPointer();
-            for (int i = 0; i < ticks; i++) {
-                this.timingWheel.movePrevious();
-            }
+
+        Map<Integer, TaskList> bucket = this.getSpecBucket(ticks);
+        if (bucket == null) {
+            return new int[]{0};
         }
-        PointerLinkedList<Task> taskList = map.get(round);
+
+        TaskList taskList = bucket.get(round);
         if (taskList == null) {
-            taskList = new DefaultPointerLinkedList<>();
+            taskList = new TaskList();
+            bucket.put(round, taskList);
+        }
+
+        AtomicBoolean monitor = taskList.getMonitor();
+        long startTime = System.nanoTime();
+        while (monitor.compareAndSet(false, true)) {
+            if (System.nanoTime() - startTime >= DEFAULT_MAX_WAIT_TIME) {
+                return new int[]{0};
+            }
         }
         taskList.add(task);
-        map.put(round, taskList);
+        monitor.set(false);
+        return new int[]{1, task.getTaskID()};
     }
 
     /**
-     * 时间轮进行一次转动
+     * 根据任务ID，移除一个定时任务
+     * <p>
+     * 如果环形链表已经被其他线程占用了，那么自旋等待链表空闲；如果自旋超出一定时间，就不再尝试获取环形链表。
+     * 对于任务链表的获取尝试采取同样的策略
+     *
+     * @param timePoint 任务时间点
+     * @param id 任务ID
+     * @return 任务是否删除成功
+     */
+    @Override
+    public boolean remove(TimePoint timePoint, String id) {
+        int difference = TimeUtils.calDifference(this.currentTimePoint, timePoint, this.interval);
+        if (difference <= 0) {
+            return false;
+        }
+        int round = difference / this.totalTicks;
+        int ticks = difference % this.totalTicks;
+
+        Map<Integer, TaskList> bucket = this.getSpecBucket(ticks);
+        if (bucket == null) {
+            return false;
+        }
+        TaskList taskList = bucket.get(round);
+        if (taskList == null) {
+            return false;
+        }
+
+        AtomicBoolean monitor = taskList.getMonitor();
+        long startTime = System.nanoTime();
+        while (monitor.compareAndSet(false, true)) {
+            if (System.nanoTime() - startTime >= DEFAULT_MAX_WAIT_TIME) {
+                return false;
+            }
+        }
+        boolean result = taskList.removeTask(id);
+        monitor.set(false);
+        return result;
+    }
+
+    /**
+     * 时间轮进行一次转动，这里坚持尝试获取锁，如果超时可以采用时间矫正机制减少损失和恢复其它任务的执行
      */
     @Override
     public void turn() {
-        synchronized (this.timingWheel) {
-            this.timingWheel.moveNext();
-            this.currentTimePoint = TimePoint.getCurrentTimePoint();
-            Map<Integer, PointerLinkedList<Task>> map = this.timingWheel.getPointer();
-            for (Map.Entry<Integer, PointerLinkedList<Task>> entry : map.entrySet()) {
-                int round = entry.getKey();
-                PointerLinkedList<Task> list = entry.getValue();
-                map.remove(round);
-                if (round == 0) {
-                    for (int i = 0; i < list.size(); i++) {
-                        Task task = list.getPointer();
-                        this.executor.submit(task::execute);
-                        list.moveNext();
-                    }
-                } else {
-                    map.put(round - 1, list);
+        AtomicBoolean monitor = this.linkedRing.getMonitor();
+        long startTime = System.nanoTime();
+
+        while (monitor.compareAndSet(false, true)) {}
+
+        long intervalNanos = this.interval * 1000000L;
+        long timeWasteNanos = System.nanoTime() - startTime;
+        if (timeWasteNanos > intervalNanos) {
+            this.recoverTimeWheel((int) (timeWasteNanos / intervalNanos));
+        } else {
+            this.linkedRing.moveNext();
+        }
+
+        Map<Integer, TaskList> map = this.linkedRing.getPointer();
+        monitor.set(false);
+
+        this.currentTimePoint = TimePoint.getCurrentTimePoint();
+        for (Map.Entry<Integer, TaskList> entry : map.entrySet()) {
+            int round = entry.getKey();
+            TaskList list = entry.getValue();
+            map.remove(round);
+            if (round == 0) {
+                for (int i = 0; i < list.size(); i++) {
+                    Task task = list.getPointer();
+                    this.executor.submit(task::execute);
+                    list.moveNext();
                 }
+            } else {
+                map.put(round - 1, list);
             }
         }
+    }
+
+    /**
+     * 根据相差的刻度数，获取到对应刻度的任务链表容器
+     * <p>
+     * 如果环形链表已经被其他线程占用了，那么自旋等待链表空闲；如果自旋超出一定时间，就不再尝试获取环形链表
+     *
+     * @param ticks 目标时间点与当前时间点，相差的刻度数
+     * @return 对应刻度的任务链表容器
+     */
+    private Map<Integer, TaskList> getSpecBucket(int ticks) {
+        Map<Integer, TaskList> bucket;
+        AtomicBoolean monitor = this.linkedRing.getMonitor();
+        long startTime = System.nanoTime();
+
+        while (monitor.compareAndSet(false, true)) {
+            if (System.nanoTime() - startTime >= DEFAULT_MAX_WAIT_TIME) {
+                return null;
+            }
+        }
+
+        for (int i = 0; i < ticks; i++) {
+            this.linkedRing.moveNext();
+        }
+        bucket = this.linkedRing.getPointer();
+        for (int i = 0; i < ticks; i++) {
+            this.linkedRing.movePrevious();
+        }
+
+        monitor.set(false);
+        return bucket;
+    }
+
+    /**
+     * 启用时间矫正机制，计算超时时间，对于延期的任务恢复执行，并且按照超时时间削减所有round
+     *
+     * @param wasteTicks 损失的刻度数
+     */
+    private void recoverTimeWheel(int wasteTicks) {
+
     }
 
 }

@@ -12,7 +12,7 @@ public class CherryProtocol {
     private Integer flag;
     private String timePointString;
     private String metaData;
-    private String uniqueID;
+    private String taskID;
     private String errorMessage;
 
     public CherryProtocol() {}
@@ -44,12 +44,12 @@ public class CherryProtocol {
         return this;
     }
 
-    public String getUniqueID() {
-        return this.uniqueID;
+    public String getTaskID() {
+        return this.taskID;
     }
 
-    public CherryProtocol setUniqueID(String uniqueID) {
-        this.uniqueID = uniqueID;
+    public CherryProtocol setTaskID(String taskID) {
+        this.taskID = taskID;
         return this;
     }
 

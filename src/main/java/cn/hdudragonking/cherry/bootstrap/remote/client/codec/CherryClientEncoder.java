@@ -49,7 +49,7 @@ public class CherryClientEncoder extends MessageToMessageEncoder<CherryProtocol>
             case FLAG_REMOVE:
                 finalMessage = FLAG_REMOVE + "|" +
                         protocol.getStringTimePoint() + "|" +
-                        protocol.getUniqueID();
+                        protocol.getTaskID();
                 break;
             default :
                 return;

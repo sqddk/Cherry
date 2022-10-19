@@ -11,7 +11,7 @@ import java.util.Map;
  * @since 2022/10/17
  * @author realDragonKing
  */
-public class DefaultPointerLinkedRing extends DefaultPointerLinkedList<Map<Integer, PointerLinkedList<Task>>> {
+public class DefaultPointerLinkedRing extends DefaultPointerLinkedList<Map<Integer, TaskList>> {
 
     public DefaultPointerLinkedRing(int totalTicks) {
         super();

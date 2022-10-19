@@ -1,5 +1,8 @@
 package cn.hdudragonking.cherry.engine.base.struct;
 
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * 指针链表的接口
  *
@@ -62,5 +65,12 @@ public interface PointerLinkedList<E> {
      * @return 链表的大小
      */
     int size();
+
+    /**
+     * 获取链表的监视器（对象锁）
+     *
+     * @return 监视器
+     */
+    AtomicBoolean getMonitor();
 
 }

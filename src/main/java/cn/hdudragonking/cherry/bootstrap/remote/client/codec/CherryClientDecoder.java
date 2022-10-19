@@ -50,11 +50,11 @@ public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
                         protocol.setFlag(FLAG_NOTIFY);
                         if (pieces.length == 3) {
                             protocol.setStringTimePoint(pieces[1])
-                                    .setUniqueID(pieces[2]);
+                                    .setTaskID(pieces[2]);
                         } else if (pieces.length == 4) {
                             protocol.setStringTimePoint(pieces[1])
                                     .setMetaData(pieces[2])
-                                    .setUniqueID(pieces[3]);
+                                    .setTaskID(pieces[3]);
                         } else {
                             ctx.fireExceptionCaught(new Throwable("无效协议！"));
                             break;
