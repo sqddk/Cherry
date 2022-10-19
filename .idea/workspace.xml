@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="定时任务调度引擎web容器初步完成">
+    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="定时任务调度引擎web容器推进度中">
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" afterDir="false" />
@@ -113,7 +113,7 @@
       <workItem from="1666014753806" duration="5063000" />
       <workItem from="1666069527302" duration="644000" />
       <workItem from="1666079339073" duration="17195000" />
-      <workItem from="1666157597940" duration="2396000" />
+      <workItem from="1666157597940" duration="2858000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -206,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666098513250</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="定时任务调度引擎web容器推进度中">
+      <created>1666160425072</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1666160425072</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -234,6 +241,7 @@
     <MESSAGE value="项目整体结构搭建完成，分为bootstrap和engine两个包" />
     <MESSAGE value="定时任务调度引擎核心功能完成，支持本地进程内提交任务" />
     <MESSAGE value="定时任务调度引擎web容器初步完成" />
-    <option name="LAST_COMMIT_MESSAGE" value="定时任务调度引擎web容器初步完成" />
+    <MESSAGE value="定时任务调度引擎web容器推进度中" />
+    <option name="LAST_COMMIT_MESSAGE" value="定时任务调度引擎web容器推进度中" />
   </component>
 </project>
