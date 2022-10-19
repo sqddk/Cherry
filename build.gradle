@@ -8,7 +8,7 @@ version '1.0'
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes 'Main-Class': group + '.Main'
+        attributes 'Main-Class': 'cn.hdudragonking.cherry.Main'
     }
     from {
         (configurations.runtimeClasspath).collect {
@@ -28,7 +28,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     implementation (
-            'io.netty:netty-all:4.1.82.Final'
+            'io.netty:netty-all:4.1.82.Final',
+            'org.apache.logging.log4j:log4j-api:2.19.0',
+            'org.apache.logging.log4j:log4j-core:2.19.0'
     )
 }
 

@@ -4,11 +4,9 @@ import cn.hdudragonking.cherry.bootstrap.CherryLocalStarter;
 import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 import cn.hdudragonking.cherry.engine.task.ReminderTask;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.SimpleChannelInboundHandler;
-import java.util.logging.Logger;
+import io.netty.channel.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
@@ -21,8 +19,21 @@ import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFl
  */
 public class CherryServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
 
-    private final Logger log = Logger.getLogger("Cherry");
+    private final Logger logger = LogManager.getLogger("Cherry");
     private final CherryLocalStarter cherryLocalStarter = CherryLocalStarter.getInstance();
+
+    /**
+     * Calls {@link ChannelHandlerContext#fireChannelActive()} to forward
+     * to the next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
+     * <p>
+     * Subclasses may override this method to change behavior.
+     *
+     * @param ctx 通信管道
+     */
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        this.logger.info("一个客户端已经在 " + ctx.channel().remoteAddress() + " 上成功接入本服务端！");
+    }
 
     /**
      * Is called for each message of type {@link CherryProtocol}.
@@ -39,6 +50,7 @@ public class CherryServerHandler extends SimpleChannelInboundHandler<CherryProto
             return;
         }
         if (protocol.getFlag() == FLAG_ADD) {
+            this.logger.info(ctx.channel().localAddress() + " 提交了一个定时任务！");
             this.cherryLocalStarter.submit(new ReminderTask(timePoint, ctx.channel()));
         } else if (protocol.getFlag() == FLAG_REMOVE) {
             this.cherryLocalStarter.remove(timePoint, protocol.getUniqueID());
@@ -56,10 +68,11 @@ public class CherryServerHandler extends SimpleChannelInboundHandler<CherryProto
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        this.log.warning(cause.getMessage());
+        this.logger.error(cause.getMessage());
         CherryProtocol protocol = new CherryProtocol()
                 .setFlag(FLAG_ERROR)
                 .setErrorMessage(cause.getMessage());
         ctx.writeAndFlush(protocol);
     }
+
 }

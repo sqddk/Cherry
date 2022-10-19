@@ -7,6 +7,8 @@ import cn.hdudragonking.cherry.engine.base.TimingWheel;
 import cn.hdudragonking.cherry.engine.base.executor.ScheduleExecutor;
 import cn.hdudragonking.cherry.engine.base.executor.TimingWheelExecutor;
 import cn.hdudragonking.cherry.engine.task.Task;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -14,10 +16,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * cherryå®šæ—¶ä»»åŠ¡è°ƒåº¦å¼•æ“çš„æœ¬åœ°å¯åŠ¨å¼•å¯¼ç±»ï¼Œå¯ä»¥åœ¨è¿™é‡Œå¯åŠ¨æœ¬åœ°æœåŠ¡ã€‚
+ * cherry¶¨Ê±ÈÎÎñµ÷¶ÈÒıÇæµÄ±¾µØÆô¶¯Òıµ¼Àà£¬¿ÉÒÔÔÚÕâÀïÆô¶¯±¾µØ·şÎñ¡£
  * <p>
- * socket ç½‘ç»œæœåŠ¡ {@link CherrySocketServer}
- * çš„å¯åŠ¨æœ¬è´¨ä¸Šä¹Ÿæ˜¯å¯åŠ¨æœ¬åœ°æœåŠ¡ï¼Œå¹¶æä¾›ç½‘ç»œé€šä¿¡èƒ½åŠ›
+ * socket ÍøÂç·şÎñ {@link CherrySocketServer}
+ * µÄÆô¶¯±¾ÖÊÉÏÒ²ÊÇÆô¶¯±¾µØ·şÎñ£¬²¢Ìá¹©ÍøÂçÍ¨ĞÅÄÜÁ¦
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -32,26 +34,28 @@ public class CherryLocalStarter {
     private CherryLocalStarter() {}
 
     /**
-     * æ—¶é—´è½®ï¼
+     * Ê±¼äÂÖ£¡
      */
     private TimingWheel timingWheel;
 
     /**
-     * é»˜è®¤çš„æ¯ä¸ªåˆ»åº¦ä¹‹é—´çš„æ—¶é—´é—´éš”
+     * Ä¬ÈÏµÄÃ¿¸ö¿Ì¶ÈÖ®¼äµÄÊ±¼ä¼ä¸ô
      */
     private final static int DEFAULT_INTERVAL = 60000;
 
+    private final Logger logger = LogManager.getLogger("Cherry");
+
     /**
-     * ä¸ºcherryå¼•æ“çš„å¯åŠ¨è¿›è¡Œåˆå§‹åŒ–ï¼Œä½¿ç”¨é»˜è®¤çš„æ—¶é—´é—´éš”
+     * ÎªcherryÒıÇæµÄÆô¶¯½øĞĞ³õÊ¼»¯£¬Ê¹ÓÃÄ¬ÈÏµÄÊ±¼ä¼ä¸ô
      */
     public void initial() {
         this.initial(DEFAULT_INTERVAL);
     }
 
     /**
-     * ä¸ºcherryå¼•æ“çš„å¯åŠ¨è¿›è¡Œåˆå§‹åŒ–
+     * ÎªcherryÒıÇæµÄÆô¶¯½øĞĞ³õÊ¼»¯
      *
-     * @param interval æ—¶é—´é—´éš”
+     * @param interval Ê±¼ä¼ä¸ô
      */
     public void initial(int interval) {
         ExecutorService threadPool = Executors.newFixedThreadPool(2);
@@ -59,22 +63,23 @@ public class CherryLocalStarter {
         BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>(1);
         threadPool.submit(new ScheduleExecutor(DEFAULT_INTERVAL, blockingQueue));
         threadPool.submit(new TimingWheelExecutor(this.timingWheel, blockingQueue));
+        this.logger.info("¶¨Ê±ÈÎÎñµ÷¶ÈÒıÇæÒÑ¾­ÔÚ±¾µØ³É¹¦Æô¶¯²¢¿ÉÌá¹©·şÎñ£¡");
     }
 
     /**
-     * é€šè¿‡æœ¬åœ°è¿›ç¨‹å†…APIï¼Œå‘æ—¶é—´è½®ä¸­æäº¤ä»»åŠ¡
+     * Í¨¹ı±¾µØ½ø³ÌÄÚAPI£¬ÏòÊ±¼äÂÖÖĞÌá½»ÈÎÎñ
      *
-     * @param task å¾…æ‰§è¡Œçš„ä»»åŠ¡
+     * @param task ´ıÖ´ĞĞµÄÈÎÎñ
      */
     public void submit(Task task) {
         this.timingWheel.submit(task);
     }
 
     /**
-     * æ ¹æ®ä»»åŠ¡æ‰§è¡Œæ—¶é—´ç‚¹å’Œä»»åŠ¡å”¯ä¸€IDï¼Œé€šè¿‡æœ¬åœ°è¿›ç¨‹å†…APIï¼Œå‘æ—¶é—´è½®ä¸­åˆ é™¤ä¸€ä¸ªä»»åŠ¡
+     * ¸ù¾İÈÎÎñÖ´ĞĞÊ±¼äµãºÍÈÎÎñÎ¨Ò»ID£¬Í¨¹ı±¾µØ½ø³ÌÄÚAPI£¬ÏòÊ±¼äÂÖÖĞÉ¾³ıÒ»¸öÈÎÎñ
      *
-     * @param timePoint ä»»åŠ¡æ‰§è¡Œæ—¶é—´ç‚¹
-     * @param uniqueID ä»»åŠ¡å”¯ä¸€ID
+     * @param timePoint ÈÎÎñÖ´ĞĞÊ±¼äµã
+     * @param uniqueID ÈÎÎñÎ¨Ò»ID
      */
     public void remove(TimePoint timePoint, String uniqueID) {
 

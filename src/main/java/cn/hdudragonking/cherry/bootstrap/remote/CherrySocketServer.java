@@ -6,6 +6,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * cherry定时任务调度引擎的 socket 网络服务启动引导类
@@ -24,6 +26,7 @@ public class CherrySocketServer {
     private final ServerBootstrap serverBootstrap;
     private final NioEventLoopGroup bossGroup;
     private final NioEventLoopGroup workerGroup;
+    private final Logger logger = LogManager.getLogger("Cherry");
 
     private CherrySocketServer() {
         this.serverBootstrap = new ServerBootstrap();
@@ -32,12 +35,12 @@ public class CherrySocketServer {
     }
 
     /**
-     * 通过提供的host地址和端口启动 Netty socket 服务端
+     * 通过提供的host地址和端口，初始化和启动 Netty socket 服务端
      *
-     * @param host
-     * @param port
+     * @param host host地址
+     * @param port port端口
      */
-    public void bootstrap(String host, int port) {
+    public void initial(String host, int port) {
         try {
             CherryLocalStarter.getInstance().initial();
             this.serverBootstrap
@@ -46,6 +49,8 @@ public class CherrySocketServer {
                     .childOption(ChannelOption.TCP_NODELAY, true)
                     .childHandler(new CherrySocketInitializer());
             ChannelFuture future = this.serverBootstrap.bind(host, port).sync();
+            this.logger.info("服务端已经在 " + String.format("%s:%s", host, port) + " 上成功启动并可提供服务！");
+            this.logger.info("等待客户端连接接入本服务端！");
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
