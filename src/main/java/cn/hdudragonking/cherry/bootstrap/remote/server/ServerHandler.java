@@ -1,4 +1,4 @@
-package cn.hdudragonking.cherry.bootstrap.remote;
+package cn.hdudragonking.cherry.bootstrap.remote.server;
 
 import cn.hdudragonking.cherry.bootstrap.CherryLocalStarter;
 import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
@@ -11,13 +11,13 @@ import org.apache.logging.log4j.Logger;
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
- * cherry网络通信层面的终端处理器，
+ * cherry网络通信层面的服务端处理器，
  * 用来处理网络定时任务提交和回执提醒通信
  *
  * @since 2022/10/18
  * @author realDragonKing
  */
-public class CherryServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
+public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
 
     private final Logger logger = LogManager.getLogger("Cherry");
     private final CherryLocalStarter cherryLocalStarter = CherryLocalStarter.getInstance();
@@ -32,7 +32,7 @@ public class CherryServerHandler extends SimpleChannelInboundHandler<CherryProto
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        this.logger.info("一个客户端已经在 " + ctx.channel().remoteAddress() + " 上成功接入本服务端！");
+        this.logger.info("一个cherry客户端已经在 " + ctx.channel().remoteAddress() + " 上成功接入本服务端！通信信道打开！");
     }
 
     /**
@@ -49,11 +49,15 @@ public class CherryServerHandler extends SimpleChannelInboundHandler<CherryProto
             ctx.fireExceptionCaught(new Throwable("时间信息格式错误！"));
             return;
         }
-        if (protocol.getFlag() == FLAG_ADD) {
-            this.logger.info(ctx.channel().localAddress() + " 提交了一个定时任务！");
-            this.cherryLocalStarter.submit(new ReminderTask(timePoint, ctx.channel()));
-        } else if (protocol.getFlag() == FLAG_REMOVE) {
-            this.cherryLocalStarter.remove(timePoint, protocol.getUniqueID());
+        switch (protocol.getFlag()) {
+            case FLAG_ADD :
+                this.logger.info(ctx.channel().localAddress() + " 提交了一个定时任务！");
+                this.cherryLocalStarter.submit(new ReminderTask(timePoint, ctx.channel()));
+                break;
+            case FLAG_REMOVE :
+                this.logger.info(ctx.channel().localAddress() + " 尝试删除一个定时任务！");
+                this.cherryLocalStarter.remove(timePoint, protocol.getUniqueID());
+                break;
         }
     }
 

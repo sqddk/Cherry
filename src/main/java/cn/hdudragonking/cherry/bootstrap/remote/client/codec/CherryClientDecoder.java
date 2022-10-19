@@ -1,4 +1,4 @@
-package cn.hdudragonking.cherry.bootstrap.remote.codec;
+package cn.hdudragonking.cherry.bootstrap.remote.client.codec;
 
 import cn.hdudragonking.cherry.bootstrap.remote.CherryHealthMonitor;
 import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
@@ -12,17 +12,17 @@ import java.util.List;
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
- * cherry协议的解码器
+ * 基于cherry通信协议的客户端解码器
  *
- * @since 2022/10/18
+ * @since 2022/10/19
  * @author realDragonKing
  */
-public class CherryServerDecoder extends MessageToMessageDecoder<ByteBuf> {
+public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
 
     private final Charset charset;
     private final CherryHealthMonitor monitor;
 
-    public CherryServerDecoder() {
+    public CherryClientDecoder() {
         this.charset = Charset.defaultCharset();
         this.monitor = CherryHealthMonitor.getInstance();
     }
@@ -43,20 +43,30 @@ public class CherryServerDecoder extends MessageToMessageDecoder<ByteBuf> {
         else {
             try {
                 switch (Integer.parseInt(pieces[0])) {
-                    case FLAG_PING :
-                        monitor.acceptPing(ctx.channel());
+                    case FLAG_PONG :
+                        monitor.acceptPong(ctx.channel());
                         break;
-                    case FLAG_ADD :
-                        if (pieces.length >= 2) protocol.setStringTimePoint(pieces[1]);
-                        if (pieces.length == 3) protocol.setMetaData(pieces[2]);
-                        out.add(protocol);
-                        break;
-                    case FLAG_REMOVE :
+                    case FLAG_NOTIFY :
+                        protocol.setFlag(FLAG_NOTIFY);
                         if (pieces.length == 3) {
                             protocol.setStringTimePoint(pieces[1])
                                     .setUniqueID(pieces[2]);
+                        } else if (pieces.length == 4) {
+                            protocol.setStringTimePoint(pieces[1])
+                                    .setMetaData(pieces[2])
+                                    .setUniqueID(pieces[3]);
+                        } else {
+                            ctx.fireExceptionCaught(new Throwable("无效协议！"));
+                            break;
+                        }
+                        out.add(protocol);
+                        break;
+                    case FLAG_ERROR :
+                        if (pieces.length == 2) {
+                            protocol.setFlag(FLAG_ERROR)
+                                    .setErrorMessage(pieces[1]);
                             out.add(protocol);
-                        } else ctx.fireExceptionCaught(new Throwable("删除操作参数不全！无效删除操作！"));
+                        } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
                         break;
                     default: ctx.fireExceptionCaught(new Throwable("无效协议！"));
                 }
@@ -65,4 +75,5 @@ public class CherryServerDecoder extends MessageToMessageDecoder<ByteBuf> {
             }
         }
     }
+
 }

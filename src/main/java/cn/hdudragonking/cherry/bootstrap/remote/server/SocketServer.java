@@ -1,4 +1,4 @@
-package cn.hdudragonking.cherry.bootstrap.remote;
+package cn.hdudragonking.cherry.bootstrap.remote.server;
 
 import cn.hdudragonking.cherry.bootstrap.CherryLocalStarter;
 import io.netty.bootstrap.ServerBootstrap;
@@ -15,11 +15,12 @@ import org.apache.logging.log4j.Logger;
  * @since 2022/10/18
  * @author realDragonKing
  */
-public class CherrySocketServer {
+public class SocketServer {
+
     private final static class CherrySocketServerHolder {
-        private final static CherrySocketServer INSTANCE = new CherrySocketServer();
+        private final static SocketServer INSTANCE = new SocketServer();
     }
-    public static CherrySocketServer getInstance() {
+    public static SocketServer getInstance() {
         return CherrySocketServerHolder.INSTANCE;
     }
 
@@ -28,7 +29,7 @@ public class CherrySocketServer {
     private final NioEventLoopGroup workerGroup;
     private final Logger logger = LogManager.getLogger("Cherry");
 
-    private CherrySocketServer() {
+    private SocketServer() {
         this.serverBootstrap = new ServerBootstrap();
         this.bossGroup = new NioEventLoopGroup(1);
         this.workerGroup = new NioEventLoopGroup();
@@ -47,10 +48,10 @@ public class CherrySocketServer {
                     .channel(NioServerSocketChannel.class)
                     .group(this.bossGroup, this.workerGroup)
                     .childOption(ChannelOption.TCP_NODELAY, true)
-                    .childHandler(new CherrySocketInitializer());
+                    .childHandler(new ServerInitializer());
             ChannelFuture future = this.serverBootstrap.bind(host, port).sync();
             this.logger.info("服务端已经在 " + String.format("%s:%s", host, port) + " 上成功启动并可提供服务！");
-            this.logger.info("等待客户端连接接入本服务端！");
+            this.logger.info("等待cherry客户端连接接入本服务端！");
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();

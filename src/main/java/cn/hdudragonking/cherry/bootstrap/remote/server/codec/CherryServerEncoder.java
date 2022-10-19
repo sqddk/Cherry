@@ -1,4 +1,4 @@
-package cn.hdudragonking.cherry.bootstrap.remote.codec;
+package cn.hdudragonking.cherry.bootstrap.remote.server.codec;
 
 import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
 import io.netty.buffer.ByteBufUtil;
@@ -12,7 +12,7 @@ import java.util.List;
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
- * cherry协议的编码器
+ * 基于cherry通信协议的服务端编码器
  *
  * @since 2022/10/18
  * @author realDragonKing
@@ -48,7 +48,7 @@ public class CherryServerEncoder extends MessageToMessageEncoder<CherryProtocol>
                         + protocol.getUniqueID();
                 break;
             case FLAG_ERROR:
-                finalMessage = FLAG_ERROR + "|" + FLAG_ERROR;
+                finalMessage = FLAG_ERROR + "|" + protocol.getErrorMessage();
                 break;
             default :
                 return;
