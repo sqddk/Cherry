@@ -4,27 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="Cherry客户端部分已经完成">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/TaskList.java" afterDir="false" />
+    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="引擎内核的时间轮，修改为全局轻量级锁">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/codec/CherryClientDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/codec/CherryClientDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/codec/CherryClientEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/codec/CherryClientEncoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/protocol/CherryProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/protocol/CherryProtocol.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/ServerHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerEncoder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/DefaultTimingWheel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/DefaultTimingWheel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/TimingWheel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/TimingWheel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/DefaultPointerLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/DefaultPointerLinkedList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/DefaultPointerLinkedRing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/DefaultPointerLinkedRing.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/PointerLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/PointerLinkedList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/task/ReminderTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/task/ReminderTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/task/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/task/Task.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/BaseUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/BaseUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,7 +192,8 @@
       <workItem from="1666079339073" duration="17195000" />
       <workItem from="1666157597940" duration="9691000" />
       <workItem from="1666172668665" duration="8361000" />
-      <workItem from="1666185354083" duration="9363000" />
+      <workItem from="1666185354083" duration="10746000" />
+      <workItem from="1666257153198" duration="1730000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -347,7 +335,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666179918418</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="引擎内核的时间轮，自旋锁及相关策略已经完成绝大部分">
+      <created>1666196533012</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1666196533012</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -379,6 +374,8 @@
     <MESSAGE value="CherryLocalStarter稍作修改" />
     <MESSAGE value="Cherry已经能够独立运行" />
     <MESSAGE value="Cherry客户端部分已经完成" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cherry客户端部分已经完成" />
+    <MESSAGE value="引擎内核的时间轮，自旋锁及相关策略已经完成绝大部分" />
+    <MESSAGE value="引擎内核的时间轮，修改为全局轻量级锁" />
+    <option name="LAST_COMMIT_MESSAGE" value="引擎内核的时间轮，修改为全局轻量级锁" />
   </component>
 </project>

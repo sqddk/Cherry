@@ -32,4 +32,24 @@ public interface TimingWheel {
      */
     void turn();
 
+    /**
+     * 尝试获取到时间轮的操作锁，若没获得则进行自旋，自旋超过一定时间则返回锁获取失败的信息
+     *
+     * @param stopNeed 是否超时停止
+     * @return 最终是否成功获取
+     */
+    boolean tryLock(boolean stopNeed);
+
+    /**
+     * 释放时间轮的操作锁
+     */
+    void unLock();
+
+    /**
+     * 启用时间矫正机制，计算超时时间，对于延期的任务恢复执行，并且按照超时时间削减所有round
+     *
+     * @param wasteTicks 损失的刻度数
+     */
+    void recover(int wasteTicks);
+
 }

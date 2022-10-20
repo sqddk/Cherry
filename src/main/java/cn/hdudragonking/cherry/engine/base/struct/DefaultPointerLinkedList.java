@@ -1,6 +1,5 @@
 package cn.hdudragonking.cherry.engine.base.struct;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 指针链表的默认实现类
@@ -15,12 +14,10 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     private Node<E> pointer;
     private Node<E> head;
     private Node<E> tail;
-    private final AtomicBoolean monitor;
 
     public DefaultPointerLinkedList(){
         this.size = 0;
         this.position = -1;
-        this.monitor = new AtomicBoolean(false);
     }
 
     /**
@@ -165,16 +162,6 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     @Override
     public int size() {
         return this.size;
-    }
-
-    /**
-     * 获取链表的监视器（对象锁）
-     *
-     * @return 监视器
-     */
-    @Override
-    public AtomicBoolean getMonitor() {
-        return this.monitor;
     }
 
     /**

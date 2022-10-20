@@ -53,6 +53,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
             case FLAG_ADD :
                 this.logger.info(ctx.channel().localAddress() + " 提交了一个定时任务！");
                 int[] result = this.cherryLocalStarter.submit(new ReminderTask(timePoint, ctx.channel()));
+                if (result.length == 0) {
+
+                }
                 break;
             case FLAG_REMOVE :
                 this.logger.info(ctx.channel().localAddress() + " 尝试删除一个定时任务！");

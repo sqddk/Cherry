@@ -50,6 +50,11 @@ public class DefaultTimingWheel implements TimingWheel {
     private final static long DEFAULT_MAX_WAIT_TIME = 5000000;
 
     /**
+     * 时间轮的轻量级操作锁
+     */
+    private final AtomicBoolean monitor;
+
+    /**
      * 时间轮的数据结构实现，环形链表
      */
     private final PointerLinkedList<Map<Integer, TaskList>> linkedRing;
@@ -67,14 +72,14 @@ public class DefaultTimingWheel implements TimingWheel {
         int coreSize = Runtime.getRuntime().availableProcessors();
         this.executor = BaseUtils.createWorkerThreadPool(2, coreSize * 2, 1000);
         this.linkedRing = new DefaultPointerLinkedRing(this.totalTicks);
+        this.monitor = new AtomicBoolean(false);
         this.currentTimePoint = TimePoint.getCurrentTimePoint();
     }
 
     /**
      * 提交一个新的定时任务
      * <p>
-     * 如果环形链表已经被其他线程占用了，那么自旋等待链表空闲；如果自旋超出一定时间，就不再尝试获取环形链表。
-     * 对于任务链表的获取尝试采取同样的策略
+     * 如果时间轮锁已经被其他线程占用了，那么自旋等待锁空闲；如果自旋超出一定时间，就不再尝试获取锁，返回提交失败结果。
      *
      * @param task 定时任务
      * @return 提交是否成功 | 任务ID
@@ -88,34 +93,27 @@ public class DefaultTimingWheel implements TimingWheel {
         int round = difference / this.totalTicks;
         int ticks = difference % this.totalTicks;
 
+        if (!this.tryLock(true)) {
+            return new int[]{0};
+        }
         Map<Integer, TaskList> bucket = this.getSpecBucket(ticks);
         if (bucket == null) {
             return new int[]{0};
         }
-
         TaskList taskList = bucket.get(round);
         if (taskList == null) {
             taskList = new TaskList();
             bucket.put(round, taskList);
         }
-
-        AtomicBoolean monitor = taskList.getMonitor();
-        long startTime = System.nanoTime();
-        while (monitor.compareAndSet(false, true)) {
-            if (System.nanoTime() - startTime >= DEFAULT_MAX_WAIT_TIME) {
-                return new int[]{0};
-            }
-        }
         taskList.add(task);
-        monitor.set(false);
+        this.unLock();
         return new int[]{1, task.getTaskID()};
     }
 
     /**
      * 根据任务ID，移除一个定时任务
      * <p>
-     * 如果环形链表已经被其他线程占用了，那么自旋等待链表空闲；如果自旋超出一定时间，就不再尝试获取环形链表。
-     * 对于任务链表的获取尝试采取同样的策略
+     * 如果时间轮锁已经被其他线程占用了，那么自旋等待锁空闲；如果自旋超出一定时间，就不再尝试获取锁，返回删除失败结果。
      *
      * @param timePoint 任务时间点
      * @param id 任务ID
@@ -130,6 +128,9 @@ public class DefaultTimingWheel implements TimingWheel {
         int round = difference / this.totalTicks;
         int ticks = difference % this.totalTicks;
 
+        if (!this.tryLock(true)) {
+            return false;
+        }
         Map<Integer, TaskList> bucket = this.getSpecBucket(ticks);
         if (bucket == null) {
             return false;
@@ -138,16 +139,8 @@ public class DefaultTimingWheel implements TimingWheel {
         if (taskList == null) {
             return false;
         }
-
-        AtomicBoolean monitor = taskList.getMonitor();
-        long startTime = System.nanoTime();
-        while (monitor.compareAndSet(false, true)) {
-            if (System.nanoTime() - startTime >= DEFAULT_MAX_WAIT_TIME) {
-                return false;
-            }
-        }
         boolean result = taskList.removeTask(id);
-        monitor.set(false);
+        this.unLock();
         return result;
     }
 
@@ -156,22 +149,10 @@ public class DefaultTimingWheel implements TimingWheel {
      */
     @Override
     public void turn() {
-        AtomicBoolean monitor = this.linkedRing.getMonitor();
-        long startTime = System.nanoTime();
-
-        while (monitor.compareAndSet(false, true)) {}
-
-        long intervalNanos = this.interval * 1000000L;
-        long timeWasteNanos = System.nanoTime() - startTime;
-        if (timeWasteNanos > intervalNanos) {
-            this.recoverTimeWheel((int) (timeWasteNanos / intervalNanos));
-        } else {
-            this.linkedRing.moveNext();
-        }
-
+        this.tryLock(false);
+        // TODO 超时矫正机制等待完善
+        this.linkedRing.moveNext();
         Map<Integer, TaskList> map = this.linkedRing.getPointer();
-        monitor.set(false);
-
         this.currentTimePoint = TimePoint.getCurrentTimePoint();
         for (Map.Entry<Integer, TaskList> entry : map.entrySet()) {
             int round = entry.getKey();
@@ -187,6 +168,34 @@ public class DefaultTimingWheel implements TimingWheel {
                 map.put(round - 1, list);
             }
         }
+        this.unLock();
+    }
+
+    /**
+     * 尝试获取到时间轮的操作锁，若没获得则进行自旋，自旋超过一定时间则返回锁获取失败的信息
+     *
+     * @param stopNeed 是否超时停止
+     * @return 最终是否成功获取
+     */
+    @Override
+    public boolean tryLock(boolean stopNeed) {
+        if (stopNeed) {
+            long startWaitingTime = System.nanoTime();
+            while (!this.monitor.compareAndSet(false, true)) {
+                if (System.nanoTime() - startWaitingTime > DEFAULT_MAX_WAIT_TIME) return false;
+            }
+        } else {
+            while (!this.monitor.compareAndSet(false, true)) {}
+        }
+        return true;
+    }
+
+    /**
+     * 释放时间轮的操作锁
+     */
+    @Override
+    public void unLock() {
+        this.monitor.set(false);
     }
 
     /**
@@ -199,15 +208,6 @@ public class DefaultTimingWheel implements TimingWheel {
      */
     private Map<Integer, TaskList> getSpecBucket(int ticks) {
         Map<Integer, TaskList> bucket;
-        AtomicBoolean monitor = this.linkedRing.getMonitor();
-        long startTime = System.nanoTime();
-
-        while (monitor.compareAndSet(false, true)) {
-            if (System.nanoTime() - startTime >= DEFAULT_MAX_WAIT_TIME) {
-                return null;
-            }
-        }
-
         for (int i = 0; i < ticks; i++) {
             this.linkedRing.moveNext();
         }
@@ -215,8 +215,6 @@ public class DefaultTimingWheel implements TimingWheel {
         for (int i = 0; i < ticks; i++) {
             this.linkedRing.movePrevious();
         }
-
-        monitor.set(false);
         return bucket;
     }
 
@@ -225,7 +223,8 @@ public class DefaultTimingWheel implements TimingWheel {
      *
      * @param wasteTicks 损失的刻度数
      */
-    private void recoverTimeWheel(int wasteTicks) {
+    @Override
+    public void recover(int wasteTicks) {
 
     }
 
