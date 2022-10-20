@@ -15,9 +15,9 @@ public interface Receiver {
      *
      * @param timePoint 时间点
      * @param metaData 元数据
-     * @param uniqueID 任务唯一ID
+     * @param taskID 任务ID
      */
-    void receiveNotify(TimePoint timePoint, String metaData, String uniqueID);
+    void receiveNotify(TimePoint timePoint, String metaData, String taskID);
 
     /**
      * 接收错误信息
@@ -25,5 +25,21 @@ public interface Receiver {
      * @param errorMessage 错误信息
      */
     void receiveError(String errorMessage);
+
+    /**
+     * 接收定时任务提交结果
+     *
+     * @param metaData 元数据
+     * @param result 结果
+     */
+    void receiveAddResult(String metaData, boolean result);
+
+    /**
+     * 接收定时任务删除结果
+     *
+     * @param taskID 任务ID
+     * @param result 结果
+     */
+    void receiveRemoveResult(String taskID, boolean result);
 
 }

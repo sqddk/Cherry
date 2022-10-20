@@ -1,12 +1,17 @@
 package cn.hdudragonking.cherry.bootstrap.remote.client;
 
+import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
+import cn.hdudragonking.cherry.engine.base.TimePoint;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
  * cherry定时任务调度引擎的 socket 网络服务客户端启动引导类
@@ -24,6 +29,7 @@ public class SocketClient {
     }
 
     private final Bootstrap bootstrap;
+    private Channel channel;
     private final NioEventLoopGroup workerGroup;
     private final Logger logger = LogManager.getLogger("Cherry");
 
@@ -47,13 +53,58 @@ public class SocketClient {
                     .option(ChannelOption.TCP_NODELAY, true)
                     .handler(new ClientInitializer(receiver));
             ChannelFuture future = this.bootstrap.connect(host, port).sync();
-            this.logger.info("与cherry服务端 " + future.channel().remoteAddress() + " 的连接已经建立！");
+            this.logger.info("与远程cherry服务端 " + future.channel().remoteAddress() + " 的连接已经建立！");
+            this.channel = future.channel();
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             this.workerGroup.shutdownGracefully();
         }
+    }
+
+    /**
+     * 向远程cherry服务端提交一个定时任务
+     *
+     * @param timePoint 时间点
+     * @param metaData 元数据
+     */
+    public void submit(TimePoint timePoint, String metaData) {
+        if (this.channel == null) {
+            this.logger.error("与远程cherry服务端的连接尚未建立！");
+            return;
+        }
+        if (!this.channel.isActive()) {
+            this.logger.error("与远程cherry服务端 " + this.channel.remoteAddress() + " 的连接不可用！");
+            return;
+        }
+        CherryProtocol protocol = new CherryProtocol()
+                .setFlag(FLAG_ADD)
+                .setStringTimePoint(timePoint.toString())
+                .setMetaData(metaData);
+        this.channel.writeAndFlush(protocol);
+    }
+
+    /**
+     * 从远程cherry服务端中删除一个定时任务
+     *
+     * @param timePoint 时间点
+     * @param taskID 任务ID
+     */
+    public void remove(TimePoint timePoint, String taskID) {
+        if (this.channel == null) {
+            this.logger.error("与远程cherry服务端的连接尚未建立！");
+            return;
+        }
+        if (!this.channel.isActive()) {
+            this.logger.error("与远程cherry服务端 " + this.channel.remoteAddress() + " 的连接不可用！");
+            return;
+        }
+        CherryProtocol protocol = new CherryProtocol()
+                .setFlag(FLAG_REMOVE)
+                .setStringTimePoint(timePoint.toString())
+                .setTaskID(taskID);
+        this.channel.writeAndFlush(protocol);
     }
 
 }

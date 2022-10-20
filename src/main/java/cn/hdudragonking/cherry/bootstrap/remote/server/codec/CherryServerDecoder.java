@@ -47,8 +47,11 @@ public class CherryServerDecoder extends MessageToMessageDecoder<ByteBuf> {
                         monitor.acceptPing(ctx.channel());
                         break;
                     case FLAG_ADD :
-                        if (pieces.length >= 2) protocol.setFlag(FLAG_ADD).setStringTimePoint(pieces[1]);
-                        if (pieces.length == 3) protocol.setMetaData(pieces[2]);
+                        if (pieces.length >= 2) {
+                            protocol.setFlag(FLAG_ADD)
+                                    .setStringTimePoint(pieces[1])
+                                    .setMetaData(pieces.length == 3 ? pieces[2] : null);
+                        }
                         out.add(protocol);
                         break;
                     case FLAG_REMOVE :

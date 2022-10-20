@@ -41,7 +41,7 @@ public class ScheduleExecutor implements Runnable {
         for (;;) {
             try {
                 Thread.sleep(this.interval);
-                this.messageChannel.add(1);
+                this.messageChannel.offer(1);
             } catch (Exception e) {
                 break;
             }

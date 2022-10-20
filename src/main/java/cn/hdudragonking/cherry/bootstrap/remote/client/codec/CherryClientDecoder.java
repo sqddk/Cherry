@@ -48,23 +48,33 @@ public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
                         break;
                     case FLAG_NOTIFY :
                         protocol.setFlag(FLAG_NOTIFY);
-                        if (pieces.length == 3) {
+                        if (pieces.length == 4) {
                             protocol.setStringTimePoint(pieces[1])
-                                    .setTaskID(pieces[2]);
-                        } else if (pieces.length == 4) {
-                            protocol.setStringTimePoint(pieces[1])
-                                    .setMetaData(pieces[2])
+                                    .setMetaData(pieces[2].length() != 0 ? pieces[2] : null)
                                     .setTaskID(pieces[3]);
-                        } else {
-                            ctx.fireExceptionCaught(new Throwable("无效协议！"));
-                            break;
-                        }
-                        out.add(protocol);
+                            out.add(protocol);
+                        } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
                         break;
                     case FLAG_ERROR :
                         if (pieces.length == 2) {
                             protocol.setFlag(FLAG_ERROR)
                                     .setErrorMessage(pieces[1]);
+                            out.add(protocol);
+                        } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
+                        break;
+                    case FLAG_RESULT_ADD :
+                        if (pieces.length == 4) {
+                            protocol.setStringTimePoint(pieces[1])
+                                    .setMetaData(pieces[2].length() != 0 ? pieces[2] : null)
+                                    .setResult(pieces[3]);
+                            out.add(protocol);
+                        } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
+                        break;
+                    case FLAG_RESULT_REMOVE :
+                        if (pieces.length == 4) {
+                            protocol.setStringTimePoint(pieces[1])
+                                    .setTaskID(pieces[2])
+                                    .setResult(pieces[3]);
                             out.add(protocol);
                         } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
                         break;

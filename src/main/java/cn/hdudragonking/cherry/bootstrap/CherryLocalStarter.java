@@ -75,6 +75,7 @@ public class CherryLocalStarter {
      * 通过本地进程内API，向时间轮中提交任务
      *
      * @param task 待执行的任务
+     * @return 是否成功提交 | 任务ID
      */
     public int[] submit(Task task) {
         return this.timingWheel.submit(task);
@@ -85,9 +86,10 @@ public class CherryLocalStarter {
      *
      * @param timePoint 任务执行时间点
      * @param taskID 任务ID
+     * @return 是否成功删除
      */
-    public void remove(TimePoint timePoint, String taskID) {
-
+    public boolean remove(TimePoint timePoint, String taskID) {
+        return this.timingWheel.remove(timePoint, taskID);
     }
 
 }

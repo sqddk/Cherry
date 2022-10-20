@@ -14,10 +14,12 @@ public class ReminderTask implements Task {
 
     private final TimePoint timePoint;
     private final Channel channel;
+    private final String metaData;
     private int taskID;
 
-    public ReminderTask (TimePoint timePoint, Channel channel) {
+    public ReminderTask (TimePoint timePoint, String metaData, Channel channel) {
         this.timePoint = timePoint;
+        this.metaData = metaData;
         this.channel = channel;
         this.taskID = -1;
     }

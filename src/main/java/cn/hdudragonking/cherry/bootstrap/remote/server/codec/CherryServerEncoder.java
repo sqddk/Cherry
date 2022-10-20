@@ -41,7 +41,7 @@ public class CherryServerEncoder extends MessageToMessageEncoder<CherryProtocol>
             case FLAG_PONG :
                 finalMessage = FLAG_PONG + "|";
                 break;
-            case FLAG_NOTIFY:
+            case FLAG_NOTIFY :
                 finalMessage = FLAG_NOTIFY + "|"
                         + protocol.getStringTimePoint() + "|"
                         + protocol.getMetaData() + "|"
@@ -49,6 +49,18 @@ public class CherryServerEncoder extends MessageToMessageEncoder<CherryProtocol>
                 break;
             case FLAG_ERROR:
                 finalMessage = FLAG_ERROR + "|" + protocol.getErrorMessage();
+                break;
+            case FLAG_RESULT_ADD :
+                finalMessage = FLAG_RESULT_ADD + "|" +
+                        protocol.getStringTimePoint() + "|" +
+                        protocol.getMetaData() + "|" +
+                        protocol.getResult();
+                break;
+            case FLAG_RESULT_REMOVE :
+                finalMessage = FLAG_RESULT_REMOVE + "|" +
+                        protocol.getStringTimePoint() + "|" +
+                        protocol.getTaskID() + "|" +
+                        protocol.getResult();
                 break;
             default :
                 return;

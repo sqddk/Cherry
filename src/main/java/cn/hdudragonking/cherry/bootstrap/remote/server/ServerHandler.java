@@ -50,16 +50,33 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
             return;
         }
         switch (protocol.getFlag()) {
+
             case FLAG_ADD :
                 this.logger.info(ctx.channel().localAddress() + " 提交了一个定时任务！");
-                int[] result = this.cherryLocalStarter.submit(new ReminderTask(timePoint, ctx.channel()));
-                if (result.length == 0) {
-
+                int[] result = this.cherryLocalStarter
+                        .submit(new ReminderTask(timePoint, protocol.getMetaData(), ctx.channel()));
+                protocol.setFlag(FLAG_RESULT_ADD);
+                if (result.length == 2) {
+                    protocol.setTaskID(String.valueOf(result[1])).setResult("1");
+                    this.logger.info(ctx.channel().localAddress() + " 定时任务提交成功！");
+                } else {
+                    protocol.setResult("0");
+                    this.logger.info(ctx.channel().localAddress() + " 定时任务提交失败！");
                 }
+                ctx.writeAndFlush(protocol);
                 break;
+
             case FLAG_REMOVE :
                 this.logger.info(ctx.channel().localAddress() + " 尝试删除一个定时任务！");
-                this.cherryLocalStarter.remove(timePoint, protocol.getTaskID());
+                protocol.setFlag(FLAG_RESULT_REMOVE);
+                if (this.cherryLocalStarter.remove(timePoint, protocol.getTaskID())) {
+                    protocol.setResult("1");
+                    this.logger.info(ctx.channel().localAddress() + " 定时任务删除成功！");
+                } else {
+                    protocol.setResult("0");
+                    this.logger.info(ctx.channel().localAddress() + " 定时任务删除失败！");
+                }
+                ctx.writeAndFlush(protocol);
                 break;
         }
     }
