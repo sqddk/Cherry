@@ -1,6 +1,6 @@
 package cn.hdudragonking.cherry.bootstrap;
 
-import cn.hdudragonking.cherry.bootstrap.remote.server.SocketServer;
+import cn.hdudragonking.cherry.bootstrap.remote.server.CherryServer;
 import cn.hdudragonking.cherry.engine.base.DefaultTimingWheel;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 import cn.hdudragonking.cherry.engine.base.TimingWheel;
@@ -19,7 +19,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * cherry定时任务调度引擎的本地启动引导类，可以在这里启动本地服务。
  * <p>
- * socket 网络服务 {@link SocketServer}
+ * socket 网络服务 {@link CherryServer}
  * 的启动本质上也是启动本地服务，并提供网络通信能力
  *
  * @since 2022/10/17

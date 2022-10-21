@@ -3,6 +3,10 @@ package cn.hdudragonking.cherry.engine.task;
 import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 import io.netty.channel.Channel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
  * 执行提醒任务，提醒网络上的定时任务提交者可以执行
@@ -16,6 +20,7 @@ public class ReminderTask implements Task {
     private final Channel channel;
     private final String metaData;
     private int taskID;
+    private final Logger logger = LogManager.getLogger("Cherry");
 
     public ReminderTask (TimePoint timePoint, String metaData, Channel channel) {
         this.timePoint = timePoint;
@@ -60,5 +65,15 @@ public class ReminderTask implements Task {
     @Override
     public void execute() {
         CherryProtocol protocol = new CherryProtocol();
+        protocol.setFlag(FLAG_NOTIFY)
+                .setStringTimePoint(this.timePoint.toString())
+                .setMetaData(this.metaData)
+                .setTaskID(String.valueOf(this.taskID));
+        if (this.channel.isActive()) {
+            this.channel.writeAndFlush(protocol);
+            this.logger.info(this.channel.remoteAddress() + " 的定时任务 " + this.taskID + " 执行成功！");
+            return;
+        }
+        this.logger.info(this.channel.remoteAddress() + " 的定时任务 " + this.taskID + " 执行失败！");
     }
 }

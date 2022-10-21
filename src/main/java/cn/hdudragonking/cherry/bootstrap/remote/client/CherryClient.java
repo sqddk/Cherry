@@ -11,6 +11,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.Executors;
+
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
@@ -19,12 +21,12 @@ import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFl
  * @since 2022/10/19
  * @author realDragonKing
  */
-public class SocketClient {
+public class CherryClient {
 
     private final static class SocketClientHolder {
-        private final static SocketClient INSTANCE = new SocketClient();
+        private final static CherryClient INSTANCE = new CherryClient();
     }
-    public static SocketClient getInstance() {
+    public static CherryClient getInstance() {
         return SocketClientHolder.INSTANCE;
     }
 
@@ -33,7 +35,7 @@ public class SocketClient {
     private final NioEventLoopGroup workerGroup;
     private final Logger logger = LogManager.getLogger("Cherry");
 
-    private SocketClient() {
+    private CherryClient() {
         this.bootstrap = new Bootstrap();
         this.workerGroup = new NioEventLoopGroup(2);
     }
@@ -46,21 +48,23 @@ public class SocketClient {
      * @param receiver 响应接收/执行者
      */
     public void initial(String host, int port, Receiver receiver) {
-        try {
-            this.bootstrap
-                    .channel(NioSocketChannel.class)
-                    .group(this.workerGroup)
-                    .option(ChannelOption.TCP_NODELAY, true)
-                    .handler(new ClientInitializer(receiver));
-            ChannelFuture future = this.bootstrap.connect(host, port).sync();
-            this.logger.info("与远程cherry服务端 " + future.channel().remoteAddress() + " 的连接已经建立！");
-            this.channel = future.channel();
-            future.channel().closeFuture().sync();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            this.workerGroup.shutdownGracefully();
-        }
+        Executors.newSingleThreadExecutor().submit(() -> {
+            try {
+                this.bootstrap
+                        .channel(NioSocketChannel.class)
+                        .group(this.workerGroup)
+                        .option(ChannelOption.TCP_NODELAY, true)
+                        .handler(new ClientInitializer(receiver));
+                ChannelFuture future = this.bootstrap.connect(host, port).sync();
+                this.logger.info("与远程cherry服务端 " + future.channel().remoteAddress() + " 的连接已经建立！");
+                this.channel = future.channel();
+                future.channel().closeFuture().sync();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                this.workerGroup.shutdownGracefully();
+            }
+        });
     }
 
     /**
@@ -83,6 +87,7 @@ public class SocketClient {
                 .setStringTimePoint(timePoint.toString())
                 .setMetaData(metaData);
         this.channel.writeAndFlush(protocol);
+        this.logger.info("已经成功向远程cherry服务端 " + this.channel.remoteAddress() + " 提交了一个定时任务！正在等待操作结果！");
     }
 
     /**
@@ -105,6 +110,7 @@ public class SocketClient {
                 .setStringTimePoint(timePoint.toString())
                 .setTaskID(taskID);
         this.channel.writeAndFlush(protocol);
+        this.logger.info("已经成功向远程cherry服务端 " + this.channel.remoteAddress() + " 发送了一个定时任务删除请求！正在等待操作结果！");
     }
 
 }

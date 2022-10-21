@@ -47,9 +47,9 @@ public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
                         monitor.acceptPong(ctx.channel());
                         break;
                     case FLAG_NOTIFY :
-                        protocol.setFlag(FLAG_NOTIFY);
                         if (pieces.length == 4) {
-                            protocol.setStringTimePoint(pieces[1])
+                            protocol.setFlag(FLAG_NOTIFY)
+                                    .setStringTimePoint(pieces[1])
                                     .setMetaData(pieces[2].length() != 0 ? pieces[2] : null)
                                     .setTaskID(pieces[3]);
                             out.add(protocol);
@@ -63,16 +63,19 @@ public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
                         } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
                         break;
                     case FLAG_RESULT_ADD :
-                        if (pieces.length == 4) {
-                            protocol.setStringTimePoint(pieces[1])
+                        if (pieces.length == 5) {
+                            protocol.setFlag(FLAG_RESULT_ADD)
+                                    .setStringTimePoint(pieces[1])
                                     .setMetaData(pieces[2].length() != 0 ? pieces[2] : null)
-                                    .setResult(pieces[3]);
+                                    .setTaskID(pieces[3].length() != 0 ? pieces[3] : null)
+                                    .setResult(pieces[4]);
                             out.add(protocol);
                         } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
                         break;
                     case FLAG_RESULT_REMOVE :
                         if (pieces.length == 4) {
-                            protocol.setStringTimePoint(pieces[1])
+                            protocol.setFlag(FLAG_RESULT_REMOVE)
+                                    .setStringTimePoint(pieces[1])
                                     .setTaskID(pieces[2])
                                     .setResult(pieces[3]);
                             out.add(protocol);

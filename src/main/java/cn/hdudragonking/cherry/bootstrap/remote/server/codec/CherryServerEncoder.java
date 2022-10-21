@@ -54,6 +54,7 @@ public class CherryServerEncoder extends MessageToMessageEncoder<CherryProtocol>
                 finalMessage = FLAG_RESULT_ADD + "|" +
                         protocol.getStringTimePoint() + "|" +
                         protocol.getMetaData() + "|" +
+                        protocol.getTaskID() + "|" +
                         protocol.getResult();
                 break;
             case FLAG_RESULT_REMOVE :
@@ -65,7 +66,7 @@ public class CherryServerEncoder extends MessageToMessageEncoder<CherryProtocol>
             default :
                 return;
         }
-        out.add(ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(finalMessage + "\r"), charset));
+        out.add(ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(finalMessage + "\n"), charset));
     }
 
 }

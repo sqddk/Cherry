@@ -9,18 +9,20 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.Executors;
+
 /**
  * cherry定时任务调度引擎的 socket 网络服务启动引导类
  *
  * @since 2022/10/18
  * @author realDragonKing
  */
-public class SocketServer {
+public class CherryServer {
 
     private final static class CherrySocketServerHolder {
-        private final static SocketServer INSTANCE = new SocketServer();
+        private final static CherryServer INSTANCE = new CherryServer();
     }
-    public static SocketServer getInstance() {
+    public static CherryServer getInstance() {
         return CherrySocketServerHolder.INSTANCE;
     }
 
@@ -29,7 +31,7 @@ public class SocketServer {
     private final NioEventLoopGroup workerGroup;
     private final Logger logger = LogManager.getLogger("Cherry");
 
-    private SocketServer() {
+    private CherryServer() {
         this.serverBootstrap = new ServerBootstrap();
         this.bossGroup = new NioEventLoopGroup(1);
         this.workerGroup = new NioEventLoopGroup();
@@ -42,23 +44,25 @@ public class SocketServer {
      * @param port port端口
      */
     public void initial(String host, int port) {
-        try {
-            CherryLocalStarter.getInstance().initial();
-            this.serverBootstrap
-                    .channel(NioServerSocketChannel.class)
-                    .group(this.bossGroup, this.workerGroup)
-                    .childOption(ChannelOption.TCP_NODELAY, true)
-                    .childHandler(new ServerInitializer());
-            ChannelFuture future = this.serverBootstrap.bind(host, port).sync();
-            this.logger.info("服务端已经在 " + String.format("%s:%s", host, port) + " 上成功启动并可提供服务！");
-            this.logger.info("等待cherry客户端连接接入本服务端！");
-            future.channel().closeFuture().sync();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            this.bossGroup.shutdownGracefully();
-            this.workerGroup.shutdownGracefully();
-        }
+        Executors.newSingleThreadExecutor().submit(() -> {
+            try {
+                CherryLocalStarter.getInstance().initial();
+                this.serverBootstrap
+                        .channel(NioServerSocketChannel.class)
+                        .group(this.bossGroup, this.workerGroup)
+                        .childOption(ChannelOption.TCP_NODELAY, true)
+                        .childHandler(new ServerInitializer());
+                ChannelFuture future = this.serverBootstrap.bind(host, port).sync();
+                this.logger.info("服务端已经在 " + future.channel().remoteAddress() + " 上成功启动并可提供服务！");
+                this.logger.info("等待cherry客户端连接接入本服务端！");
+                future.channel().closeFuture().sync();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                this.bossGroup.shutdownGracefully();
+                this.workerGroup.shutdownGracefully();
+            }
+        });
     }
 
 }

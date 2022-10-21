@@ -30,9 +30,10 @@ public interface Receiver {
      * 接收定时任务提交结果
      *
      * @param metaData 元数据
+     * @param taskID 任务ID
      * @param result 结果
      */
-    void receiveAddResult(String metaData, boolean result);
+    void receiveAddResult(String metaData, String taskID, boolean result);
 
     /**
      * 接收定时任务删除结果

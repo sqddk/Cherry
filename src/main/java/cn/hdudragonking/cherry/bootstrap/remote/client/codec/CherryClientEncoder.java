@@ -54,6 +54,6 @@ public class CherryClientEncoder extends MessageToMessageEncoder<CherryProtocol>
             default :
                 return;
         }
-        out.add(ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(finalMessage + "\r"), charset));
+        out.add(ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(finalMessage + "\n"), charset));
     }
 }
