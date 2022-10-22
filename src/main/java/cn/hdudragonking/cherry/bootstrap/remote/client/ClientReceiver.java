@@ -39,6 +39,7 @@ public interface ClientReceiver {
     /**
      * 接收定时任务删除结果
      *
+     * @param metaData 元数据
      * @param taskID 任务ID
      * @param result 结果
      */

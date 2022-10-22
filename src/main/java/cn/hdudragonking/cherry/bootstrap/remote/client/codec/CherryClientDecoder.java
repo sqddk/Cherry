@@ -65,7 +65,6 @@ public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
 
                 case FLAG_RESULT_ADD :
                     protocol = new CherryProtocol(FLAG_RESULT_ADD)
-                            .setStringTimePoint(timePoint)
                             .setTaskID(taskID)
                             .setMetaData(metaData)
                             .setResult(json.getBooleanValue("result"));
@@ -74,7 +73,6 @@ public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
 
                 case FLAG_RESULT_REMOVE :
                     protocol = new CherryProtocol(FLAG_RESULT_REMOVE)
-                            .setStringTimePoint(timePoint)
                             .setTaskID(taskID)
                             .setMetaData(metaData)
                             .setResult(json.getBooleanValue("result"));

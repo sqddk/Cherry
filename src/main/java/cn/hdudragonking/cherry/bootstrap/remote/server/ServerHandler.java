@@ -55,6 +55,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
         }
         CherryProtocol responseProtocol;
         String channelName = requestProtocol.getChannelName();
+        JSONObject metaData = requestProtocol.getMetaData();
         if (channelName == null) {
             ctx.fireExceptionCaught(new Throwable("未提交客户端名称！"));
             return;
@@ -68,7 +69,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
 
             case FLAG_ADD :
                 this.logger.info(channelName + " 提交了一个定时任务！");
-                JSONObject metaData = requestProtocol.getMetaData();
                 int[] result = this.cherryLocalStarter
                         .submit(new ReminderTask(
                                 channelName,
@@ -76,7 +76,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
                                 metaData.toJSONString()
                         ));
                 responseProtocol = new CherryProtocol(FLAG_RESULT_ADD)
-                        .setChannelName(channelName)
                         .setMetaData(metaData);
                 if (result.length == 2) {
                     responseProtocol.setTaskID(result[1]).setResult(true);
@@ -90,12 +89,15 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
 
             case FLAG_REMOVE :
                 this.logger.info(channelName + " 尝试删除一个定时任务！");
-                responseProtocol = new CherryProtocol(FLAG_RESULT_REMOVE);
-                if (this.cherryLocalStarter.remove(timePoint, requestProtocol.getTaskID())) {
-                    requestProtocol.setResult(true);
+                int taskID = requestProtocol.getTaskID();
+                responseProtocol = new CherryProtocol(FLAG_RESULT_REMOVE)
+                        .setMetaData(metaData)
+                        .setTaskID(taskID);
+                if (this.cherryLocalStarter.remove(timePoint, taskID)) {
+                    responseProtocol.setResult(true);
                     this.logger.info(channelName + " 定时任务删除成功！");
                 } else {
-                    requestProtocol.setResult(false);
+                    responseProtocol.setResult(false);
                     this.logger.info(channelName + " 定时任务删除失败！");
                 }
                 ctx.writeAndFlush(responseProtocol);
