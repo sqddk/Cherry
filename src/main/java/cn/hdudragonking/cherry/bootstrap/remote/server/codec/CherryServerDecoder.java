@@ -2,11 +2,12 @@ package cn.hdudragonking.cherry.bootstrap.remote.server.codec;
 
 import cn.hdudragonking.cherry.bootstrap.remote.CherryHealthMonitor;
 import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
-import java.nio.charset.Charset;
 import java.util.List;
 
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
@@ -19,11 +20,9 @@ import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFl
  */
 public class CherryServerDecoder extends MessageToMessageDecoder<ByteBuf> {
 
-    private final Charset charset;
     private final CherryHealthMonitor monitor;
 
     public CherryServerDecoder() {
-        this.charset = Charset.defaultCharset();
         this.monitor = CherryHealthMonitor.getInstance();
     }
 
@@ -37,36 +36,39 @@ public class CherryServerDecoder extends MessageToMessageDecoder<ByteBuf> {
      */
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
-        CherryProtocol protocol = new CherryProtocol();
-        String[] pieces = msg.toString(this.charset).split("\\|");
-        if (pieces.length == 0) ctx.fireExceptionCaught(new Throwable("无效协议！"));
-        else {
-            try {
-                switch (Integer.parseInt(pieces[0])) {
-                    case FLAG_PING :
-                        monitor.acceptPing(ctx.channel());
-                        break;
-                    case FLAG_ADD :
-                        if (pieces.length >= 2) {
-                            protocol.setFlag(FLAG_ADD)
-                                    .setStringTimePoint(pieces[1])
-                                    .setMetaData(pieces.length == 3 ? pieces[2] : null);
-                        }
-                        out.add(protocol);
-                        break;
-                    case FLAG_REMOVE :
-                        if (pieces.length == 3) {
-                            protocol.setFlag(FLAG_REMOVE)
-                                    .setStringTimePoint(pieces[1])
-                                    .setTaskID(pieces[2]);
-                            out.add(protocol);
-                        } else ctx.fireExceptionCaught(new Throwable("删除操作参数不全！无效删除操作！"));
-                        break;
-                    default: ctx.fireExceptionCaught(new Throwable("无效协议！"));
-                }
-            } catch (Exception e) {
-                ctx.fireExceptionCaught(new Throwable("无效协议！"));
+        try {
+            CherryProtocol protocol;
+            JSONObject json = JSON.parseObject(msg.array());
+            String channelName = json.getString("channelName");
+            String timePoint = json.getString("timePoint");
+
+            switch (json.getIntValue("flag")) {
+
+                case FLAG_PING :
+                    monitor.acceptPing(channelName);
+                    break;
+
+                case FLAG_ADD :
+                    protocol = new CherryProtocol(FLAG_ADD)
+                            .setChannelName(channelName)
+                            .setStringTimePoint(timePoint)
+                            .setMetaData(json.getJSONObject("metaData"));
+                    out.add(protocol);
+                    break;
+
+                case FLAG_REMOVE :
+                    protocol = new CherryProtocol(FLAG_ADD)
+                            .setChannelName(channelName)
+                            .setStringTimePoint(timePoint)
+                            .setTaskID(json.getIntValue("taskID"));
+                    out.add(protocol);
+                    break;
+
+                default: ctx.fireExceptionCaught(new Throwable("无效协议！"));
+
             }
+        } catch (Exception e) {
+            ctx.fireExceptionCaught(new Throwable("无效协议！"));
         }
     }
 

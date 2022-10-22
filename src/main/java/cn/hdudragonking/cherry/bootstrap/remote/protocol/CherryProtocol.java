@@ -1,6 +1,10 @@
 package cn.hdudragonking.cherry.bootstrap.remote.protocol;
 
 
+import com.alibaba.fastjson2.JSONObject;
+
+import java.util.Map;
+
 /**
  * 实现了cherry通信协议的消息体
  *
@@ -9,37 +13,11 @@ package cn.hdudragonking.cherry.bootstrap.remote.protocol;
  */
 public class CherryProtocol {
 
-    /**
-     * 数据包的类型
-     */
-    private Integer flag;
+    private final JSONObject dataBucket;
 
-    /**
-     * 字符串格式的时间点
-     */
-    private String timePointString;
-
-    /**
-     * 元数据
-     */
-    private String metaData;
-
-    /**
-     * 任务ID
-     */
-    private String taskID;
-
-    /**
-     * 错误信息
-     */
-    private String errorMessage;
-
-    /**
-     * 结果信息
-     */
-    private String resultMessage;
-
-    public CherryProtocol() {}
+    public CherryProtocol(int flag) {
+        this.dataBucket = new JSONObject(Map.of("flag", flag, "metaData", new JSONObject()));
+    }
 
     /**
      * 获取数据包的类型
@@ -47,17 +25,26 @@ public class CherryProtocol {
      * @return 数据包的类型
      */
     public Integer getFlag() {
-        return this.flag;
+        return this.dataBucket.getInteger("flag");
     }
 
     /**
-     * 设置数据包的类型
+     * 获取客户端的名称
      *
-     * @param flag 类型
+     * @return 客户端的名称
+     */
+    public String getChannelName() {
+        return this.dataBucket.getString("channelName");
+    }
+
+    /**
+     * 设置客户端的名称
+     *
+     * @param channelName 客户端的名称
      * @return this
      */
-    public CherryProtocol setFlag(Integer flag) {
-        this.flag = flag;
+    public CherryProtocol setChannelName(String channelName) {
+        this.dataBucket.put("channelName", channelName);
         return this;
     }
 
@@ -67,7 +54,7 @@ public class CherryProtocol {
      * @return 字符串格式的时间点
      */
     public String getStringTimePoint() {
-        return this.timePointString;
+        return this.dataBucket.getString("timePoint");
     }
 
     /**
@@ -77,7 +64,7 @@ public class CherryProtocol {
      * @return this
      */
     public CherryProtocol setStringTimePoint(String timePointString) {
-        this.timePointString = timePointString;
+        this.dataBucket.put("timePoint", timePointString);
         return this;
     }
 
@@ -86,18 +73,30 @@ public class CherryProtocol {
      *
      * @return 元数据
      */
-    public String getMetaData() {
-        return this.metaData;
+    public JSONObject getMetaData() {
+        return this.dataBucket.getJSONObject("metaData");
     }
 
     /**
      * 设置元数据
      *
-     * @param metaData 元数据
+     * @param key 键
+     * @param value 值
      * @return this
      */
-    public CherryProtocol setMetaData(String metaData) {
-        this.metaData = metaData;
+    public CherryProtocol setMetaData(String key, Object value) {
+        this.dataBucket.getJSONObject("metaData").put(key, value);
+        return this;
+    }
+
+    /**
+     * 设置元数据
+     *
+     * @param metaData 一组元数据
+     * @return this
+     */
+    public CherryProtocol setMetaData(JSONObject metaData) {
+        this.dataBucket.put("metaData", metaData);
         return this;
     }
 
@@ -106,8 +105,8 @@ public class CherryProtocol {
      *
      * @return 任务ID
      */
-    public String getTaskID() {
-        return this.taskID;
+    public int getTaskID() {
+        return this.dataBucket.getInteger("taskID");
     }
 
     /**
@@ -116,8 +115,8 @@ public class CherryProtocol {
      * @param taskID 任务ID
      * @return this
      */
-    public CherryProtocol setTaskID(String taskID) {
-        this.taskID = taskID;
+    public CherryProtocol setTaskID(int taskID) {
+        this.dataBucket.put("taskID", taskID);
         return this;
     }
 
@@ -127,7 +126,7 @@ public class CherryProtocol {
      * @return 错误信息
      */
     public String getErrorMessage() {
-        return this.errorMessage;
+        return this.dataBucket.getString("errorMessage");
     }
 
     /**
@@ -137,7 +136,7 @@ public class CherryProtocol {
      * @return this
      */
     public CherryProtocol setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+        this.dataBucket.put("errorMessage", errorMessage);
         return this;
     }
 
@@ -146,8 +145,8 @@ public class CherryProtocol {
      *
      * @return 操作结果信息
      */
-    public String getResult() {
-        return this.resultMessage;
+    public boolean getResult() {
+        return this.dataBucket.getBooleanValue("result");
     }
 
     /**
@@ -156,9 +155,13 @@ public class CherryProtocol {
      * @param result 操作结果
      * @return this
      */
-    public CherryProtocol setResult(String result) {
-        this.resultMessage = result;
+    public CherryProtocol setResult(boolean result) {
+        this.dataBucket.put("result", result);
         return this;
+    }
+
+    public String toString() {
+        return this.dataBucket.toJSONString();
     }
 
 }

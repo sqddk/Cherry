@@ -88,7 +88,7 @@ public class CherryLocalStarter {
      * @param taskID 任务ID
      * @return 是否成功删除
      */
-    public boolean remove(TimePoint timePoint, String taskID) {
+    public boolean remove(TimePoint timePoint, int taskID) {
         return this.timingWheel.remove(timePoint, taskID);
     }
 

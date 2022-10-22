@@ -2,11 +2,12 @@ package cn.hdudragonking.cherry.bootstrap.remote.client.codec;
 
 import cn.hdudragonking.cherry.bootstrap.remote.CherryHealthMonitor;
 import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
-import java.nio.charset.Charset;
 import java.util.List;
 
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
@@ -19,11 +20,9 @@ import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFl
  */
 public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
 
-    private final Charset charset;
     private final CherryHealthMonitor monitor;
 
     public CherryClientDecoder() {
-        this.charset = Charset.defaultCharset();
         this.monitor = CherryHealthMonitor.getInstance();
     }
 
@@ -37,55 +36,55 @@ public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
      */
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
-        CherryProtocol protocol = new CherryProtocol();
-        String[] pieces = msg.toString(this.charset).split("\\|");
-        if (pieces.length == 0) ctx.fireExceptionCaught(new Throwable("无效协议！"));
-        else {
-            try {
-                switch (Integer.parseInt(pieces[0])) {
-                    case FLAG_PONG :
-                        monitor.acceptPong(ctx.channel());
-                        break;
-                    case FLAG_NOTIFY :
-                        if (pieces.length == 4) {
-                            protocol.setFlag(FLAG_NOTIFY)
-                                    .setStringTimePoint(pieces[1])
-                                    .setMetaData(pieces[2].length() != 0 ? pieces[2] : null)
-                                    .setTaskID(pieces[3]);
-                            out.add(protocol);
-                        } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
-                        break;
-                    case FLAG_ERROR :
-                        if (pieces.length == 2) {
-                            protocol.setFlag(FLAG_ERROR)
-                                    .setErrorMessage(pieces[1]);
-                            out.add(protocol);
-                        } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
-                        break;
-                    case FLAG_RESULT_ADD :
-                        if (pieces.length == 5) {
-                            protocol.setFlag(FLAG_RESULT_ADD)
-                                    .setStringTimePoint(pieces[1])
-                                    .setMetaData(pieces[2].length() != 0 ? pieces[2] : null)
-                                    .setTaskID(pieces[3].length() != 0 ? pieces[3] : null)
-                                    .setResult(pieces[4]);
-                            out.add(protocol);
-                        } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
-                        break;
-                    case FLAG_RESULT_REMOVE :
-                        if (pieces.length == 4) {
-                            protocol.setFlag(FLAG_RESULT_REMOVE)
-                                    .setStringTimePoint(pieces[1])
-                                    .setTaskID(pieces[2])
-                                    .setResult(pieces[3]);
-                            out.add(protocol);
-                        } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
-                        break;
-                    default: ctx.fireExceptionCaught(new Throwable("无效协议！"));
-                }
-            } catch (Exception e) {
-                ctx.fireExceptionCaught(new Throwable("无效协议！"));
+        try {
+            CherryProtocol protocol;
+            JSONObject json = JSON.parseObject(msg.array());
+            JSONObject metaData = json.getJSONObject("metaData");
+            int taskID = json.getIntValue("taskID");
+            String timePoint = json.getString("timePoint");
+
+            switch (json.getIntValue("flag")) {
+
+                case FLAG_PONG :
+                    monitor.acceptPong(ctx.channel());
+                    break;
+
+                case FLAG_NOTIFY :
+                    protocol = new CherryProtocol(FLAG_NOTIFY)
+                            .setMetaData(metaData)
+                            .setStringTimePoint(timePoint)
+                            .setTaskID(taskID);
+                    out.add(protocol);
+                    break;
+
+                case FLAG_ERROR :
+                    protocol = new CherryProtocol(FLAG_ERROR)
+                            .setErrorMessage(json.getString("errorMessage"));
+                    out.add(protocol);
+                    break;
+
+                case FLAG_RESULT_ADD :
+                    protocol = new CherryProtocol(FLAG_RESULT_ADD)
+                            .setStringTimePoint(timePoint)
+                            .setTaskID(taskID)
+                            .setMetaData(metaData)
+                            .setResult(json.getBooleanValue("result"));
+                    out.add(protocol);
+                    break;
+
+                case FLAG_RESULT_REMOVE :
+                    protocol = new CherryProtocol(FLAG_RESULT_REMOVE)
+                            .setStringTimePoint(timePoint)
+                            .setTaskID(taskID)
+                            .setMetaData(metaData)
+                            .setResult(json.getBooleanValue("result"));
+                    out.add(protocol);
+                    break;
+
+                default: ctx.fireExceptionCaught(new Throwable("无效协议！"));
             }
+        } catch (Exception e) {
+            ctx.fireExceptionCaught(new Throwable("无效协议！"));
         }
     }
 

@@ -1,6 +1,7 @@
 package cn.hdudragonking.cherry.bootstrap.remote.client;
 
 import cn.hdudragonking.cherry.engine.base.TimePoint;
+import com.alibaba.fastjson2.JSONObject;
 
 /**
  * 响应远程的cherry定时任务调度引擎的任务执行通知，执行具体的任务
@@ -17,7 +18,7 @@ public interface ClientReceiver {
      * @param metaData 元数据
      * @param taskID 任务ID
      */
-    void receiveNotify(TimePoint timePoint, String metaData, String taskID);
+    void receiveNotify(TimePoint timePoint, JSONObject metaData, int taskID);
 
     /**
      * 接收错误信息
@@ -33,7 +34,7 @@ public interface ClientReceiver {
      * @param taskID 任务ID
      * @param result 结果
      */
-    void receiveAddResult(String metaData, String taskID, boolean result);
+    void receiveAddResult(JSONObject metaData, int taskID, boolean result);
 
     /**
      * 接收定时任务删除结果
@@ -41,6 +42,6 @@ public interface ClientReceiver {
      * @param taskID 任务ID
      * @param result 结果
      */
-    void receiveRemoveResult(String taskID, boolean result);
+    void receiveRemoveResult(JSONObject metaData, int taskID, boolean result);
 
 }

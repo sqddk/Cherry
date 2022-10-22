@@ -9,8 +9,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
-
 /**
  * 基于cherry通信协议的客户端编码器
  *
@@ -36,24 +34,6 @@ public class CherryClientEncoder extends MessageToMessageEncoder<CherryProtocol>
      */
     @Override
     protected void encode(ChannelHandlerContext ctx, CherryProtocol protocol, List<Object> out) {
-        String finalMessage;
-        switch (protocol.getFlag()) {
-            case FLAG_PING :
-                finalMessage = FLAG_PING + "|";
-                break;
-            case FLAG_ADD :
-                finalMessage = FLAG_ADD + "|" +
-                        protocol.getStringTimePoint() + "|" +
-                        protocol.getMetaData();
-                break;
-            case FLAG_REMOVE:
-                finalMessage = FLAG_REMOVE + "|" +
-                        protocol.getStringTimePoint() + "|" +
-                        protocol.getTaskID();
-                break;
-            default :
-                return;
-        }
-        out.add(ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(finalMessage + "\n"), charset));
+        out.add(ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(protocol + "\n"), charset));
     }
 }

@@ -59,12 +59,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<CherryProtocol> {
                 this.clientReceiver.receiveError(protocol.getErrorMessage());
                 break;
             case FLAG_RESULT_ADD :
-                this.clientReceiver.receiveAddResult(protocol.getMetaData(), protocol.getTaskID(),
-                        protocol.getResult().equals("1"));
+                this.clientReceiver.receiveAddResult(protocol.getMetaData(), protocol.getTaskID(), protocol.getResult());
                 break;
             case FLAG_RESULT_REMOVE :
-                this.clientReceiver.receiveRemoveResult(protocol.getTaskID(),
-                        protocol.getResult().equals("1"));
+                this.clientReceiver.receiveRemoveResult(protocol.getMetaData(), protocol.getTaskID(), protocol.getResult());
                 break;
         }
     }

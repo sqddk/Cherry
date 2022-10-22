@@ -22,9 +22,9 @@ public class CherryHealthMonitor {
     /**
      * 接收ping心跳帧，服务端检测客户端是否断连
      *
-     * @param channel 与客户端的通信管道
+     * @param channelName 客户端的名称
      */
-    public void acceptPing(Channel channel) {
+    public void acceptPing(String channelName) {
 
     }
 

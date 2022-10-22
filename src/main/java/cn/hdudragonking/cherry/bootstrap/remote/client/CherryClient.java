@@ -2,6 +2,7 @@ package cn.hdudragonking.cherry.bootstrap.remote.client;
 
 import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
+import com.alibaba.fastjson2.JSONObject;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -32,6 +33,7 @@ public class CherryClient {
 
     private final Bootstrap bootstrap;
     private Channel channel;
+    private String channelName;
     private final NioEventLoopGroup workerGroup;
     private final Logger logger = LogManager.getLogger("Cherry");
 
@@ -43,11 +45,13 @@ public class CherryClient {
     /**
      * 通过提供的host地址和端口，初始化客户端，尝试连接目标服务端
      *
+     * @param channelName 客户端名称，用于消费任务通知
      * @param host host地址
      * @param port port端口
      * @param clientReceiver 响应接收/执行者
      */
-    public void initial(String host, int port, ClientReceiver clientReceiver) {
+    public void initial(String channelName, String host, int port, ClientReceiver clientReceiver) {
+        this.channelName = channelName;
         Executors.newSingleThreadExecutor().submit(() -> {
             try {
                 this.bootstrap
@@ -73,7 +77,7 @@ public class CherryClient {
      * @param timePoint 时间点
      * @param metaData 元数据
      */
-    public void submit(TimePoint timePoint, String metaData) {
+    public void submit(TimePoint timePoint, JSONObject metaData) {
         if (this.channel == null) {
             this.logger.error("与远程cherry服务端的连接尚未建立！");
             return;
@@ -82,8 +86,8 @@ public class CherryClient {
             this.logger.error("与远程cherry服务端 " + this.channel.remoteAddress() + " 的连接不可用！");
             return;
         }
-        CherryProtocol protocol = new CherryProtocol()
-                .setFlag(FLAG_ADD)
+        CherryProtocol protocol = new CherryProtocol(FLAG_ADD)
+                .setChannelName(this.channelName)
                 .setStringTimePoint(timePoint.toString())
                 .setMetaData(metaData);
         this.channel.writeAndFlush(protocol);
@@ -96,7 +100,7 @@ public class CherryClient {
      * @param timePoint 时间点
      * @param taskID 任务ID
      */
-    public void remove(TimePoint timePoint, String taskID) {
+    public void remove(TimePoint timePoint, int taskID) {
         if (this.channel == null) {
             this.logger.error("与远程cherry服务端的连接尚未建立！");
             return;
@@ -105,8 +109,8 @@ public class CherryClient {
             this.logger.error("与远程cherry服务端 " + this.channel.remoteAddress() + " 的连接不可用！");
             return;
         }
-        CherryProtocol protocol = new CherryProtocol()
-                .setFlag(FLAG_REMOVE)
+        CherryProtocol protocol = new CherryProtocol(FLAG_REMOVE)
+                .setChannelName(this.channelName)
                 .setStringTimePoint(timePoint.toString())
                 .setTaskID(taskID);
         this.channel.writeAndFlush(protocol);

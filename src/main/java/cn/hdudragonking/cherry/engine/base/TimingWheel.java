@@ -25,7 +25,7 @@ public interface TimingWheel {
      * @param id 任务ID
      * @return 任务是否删除成功
      */
-    boolean remove(TimePoint timePoint, String id);
+    boolean remove(TimePoint timePoint, int id);
 
     /**
      * 时间轮进行一次转动

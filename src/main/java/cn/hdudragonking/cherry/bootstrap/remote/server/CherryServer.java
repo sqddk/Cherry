@@ -2,6 +2,7 @@ package cn.hdudragonking.cherry.bootstrap.remote.server;
 
 import cn.hdudragonking.cherry.bootstrap.CherryLocalStarter;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -9,6 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 
 /**
@@ -29,12 +31,14 @@ public class CherryServer {
     private final ServerBootstrap serverBootstrap;
     private final NioEventLoopGroup bossGroup;
     private final NioEventLoopGroup workerGroup;
+    private final ConcurrentHashMap<String, Channel> channelMap;
     private final Logger logger = LogManager.getLogger("Cherry");
 
     private CherryServer() {
         this.serverBootstrap = new ServerBootstrap();
         this.bossGroup = new NioEventLoopGroup(1);
         this.workerGroup = new NioEventLoopGroup();
+        this.channelMap = new ConcurrentHashMap<>();
     }
 
     /**
@@ -63,6 +67,15 @@ public class CherryServer {
                 this.workerGroup.shutdownGracefully();
             }
         });
+    }
+
+    /**
+     * 获取到服务端对通信管道的存储容器
+     *
+     * @return 通信管道的存储容器
+     */
+    public ConcurrentHashMap<String, Channel> getChannelMap() {
+        return this.channelMap;
     }
 
 }

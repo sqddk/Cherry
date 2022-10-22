@@ -34,16 +34,15 @@ public class TaskList extends DefaultPointerLinkedList<Task> {
      * @param taskID 任务ID（将尝试进行数字转换）
      * @return 是否成功删除
      */
-    public boolean removeTask(String taskID) {
+    public boolean removeTask(int taskID) {
         try {
-            int id = Integer.parseInt(taskID);
             int maxPosition = this.size() - 1;
             if (maxPosition == -1) {
                 return false;
             }
             this.resetHead();
             while (this.getPosition() < maxPosition) {
-                if (this.getPointer().getTaskID() == id) {
+                if (this.getPointer().getTaskID() == taskID) {
                     this.remove();
                     return true;
                 }

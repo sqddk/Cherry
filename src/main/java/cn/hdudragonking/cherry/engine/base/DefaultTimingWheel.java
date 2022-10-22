@@ -120,7 +120,7 @@ public class DefaultTimingWheel implements TimingWheel {
      * @return 任务是否删除成功
      */
     @Override
-    public boolean remove(TimePoint timePoint, String id) {
+    public boolean remove(TimePoint timePoint, int id) {
         int difference = TimeUtils.calDifference(this.currentTimePoint, timePoint, this.interval);
         if (difference <= 0) {
             return false;
