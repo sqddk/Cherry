@@ -45,6 +45,23 @@ public class TimePoint {
     }
 
     /**
+     * 根据时间值，创建一个时间点对象
+     *
+     * @param timeValue 时间值，单位为毫秒（ms）
+     * @return 时间点对象
+     */
+    public static TimePoint parse(long timeValue) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeValue);
+        return new TimePoint(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE));
+    }
+
+    /**
      * 根据{@link Calendar}接口的实现类生成时间点
      *
      * @return 当前时间点

@@ -17,11 +17,11 @@ import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFl
  */
 public class ClientHandler extends SimpleChannelInboundHandler<CherryProtocol> {
 
-    private final Receiver receiver;
+    private final ClientReceiver clientReceiver;
     private final Logger logger = LogManager.getLogger("Cherry");
 
-    public ClientHandler(Receiver receiver) {
-        this.receiver = receiver;
+    public ClientHandler(ClientReceiver clientReceiver) {
+        this.clientReceiver = clientReceiver;
     }
 
     /**
@@ -53,17 +53,17 @@ public class ClientHandler extends SimpleChannelInboundHandler<CherryProtocol> {
                     ctx.fireExceptionCaught(new Throwable("时间信息格式错误！"));
                     return;
                 }
-                this.receiver.receiveNotify(timePoint, protocol.getMetaData(), protocol.getTaskID());
+                this.clientReceiver.receiveNotify(timePoint, protocol.getMetaData(), protocol.getTaskID());
                 break;
             case FLAG_ERROR :
-                this.receiver.receiveError(protocol.getErrorMessage());
+                this.clientReceiver.receiveError(protocol.getErrorMessage());
                 break;
             case FLAG_RESULT_ADD :
-                this.receiver.receiveAddResult(protocol.getMetaData(), protocol.getTaskID(),
+                this.clientReceiver.receiveAddResult(protocol.getMetaData(), protocol.getTaskID(),
                         protocol.getResult().equals("1"));
                 break;
             case FLAG_RESULT_REMOVE :
-                this.receiver.receiveRemoveResult(protocol.getTaskID(),
+                this.clientReceiver.receiveRemoveResult(protocol.getTaskID(),
                         protocol.getResult().equals("1"));
                 break;
         }

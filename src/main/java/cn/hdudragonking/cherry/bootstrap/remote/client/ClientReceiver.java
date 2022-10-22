@@ -8,7 +8,7 @@ import cn.hdudragonking.cherry.engine.base.TimePoint;
  * @since 2022/10/19
  * @author realDragonKing
  */
-public interface Receiver {
+public interface ClientReceiver {
 
     /**
      * 接收定时任务执行通知

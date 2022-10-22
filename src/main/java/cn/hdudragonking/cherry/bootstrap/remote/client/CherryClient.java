@@ -45,16 +45,16 @@ public class CherryClient {
      *
      * @param host host地址
      * @param port port端口
-     * @param receiver 响应接收/执行者
+     * @param clientReceiver 响应接收/执行者
      */
-    public void initial(String host, int port, Receiver receiver) {
+    public void initial(String host, int port, ClientReceiver clientReceiver) {
         Executors.newSingleThreadExecutor().submit(() -> {
             try {
                 this.bootstrap
                         .channel(NioSocketChannel.class)
                         .group(this.workerGroup)
                         .option(ChannelOption.TCP_NODELAY, true)
-                        .handler(new ClientInitializer(receiver));
+                        .handler(new ClientInitializer(clientReceiver));
                 ChannelFuture future = this.bootstrap.connect(host, port).sync();
                 this.logger.info("与远程cherry服务端 " + future.channel().remoteAddress() + " 的连接已经建立！");
                 this.channel = future.channel();

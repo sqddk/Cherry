@@ -16,10 +16,10 @@ import io.netty.handler.codec.LineBasedFrameDecoder;
  */
 public class ClientInitializer extends ChannelInitializer<SocketChannel> {
 
-    private final Receiver receiver;
+    private final ClientReceiver clientReceiver;
 
-    public ClientInitializer(Receiver receiver) {
-        this.receiver = receiver;
+    public ClientInitializer(ClientReceiver clientReceiver) {
+        this.clientReceiver = clientReceiver;
     }
 
     /**
@@ -33,7 +33,7 @@ public class ClientInitializer extends ChannelInitializer<SocketChannel> {
         ch.pipeline().addLast(new LineBasedFrameDecoder(4096));
         ch.pipeline().addLast(new CherryClientEncoder());
         ch.pipeline().addLast(new CherryClientDecoder());
-        ch.pipeline().addLast(new ClientHandler(this.receiver));
+        ch.pipeline().addLast(new ClientHandler(this.clientReceiver));
     }
 
 }
