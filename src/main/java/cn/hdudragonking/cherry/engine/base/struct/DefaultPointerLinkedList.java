@@ -12,12 +12,14 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     private int size;
     private int position;
     private Node<E> pointer;
-    private Node<E> head;
-    private Node<E> tail;
+    private final Node<E> head;
+    private final Node<E> tail;
 
     public DefaultPointerLinkedList(){
         this.size = 0;
         this.position = -1;
+        this.head = new Node<>(null);
+        this.tail = new Node<>(null);
     }
 
     /**
@@ -27,22 +29,21 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void add(E item) {
+        if (item == null) return;
         Node<E> node = new Node<>(item);
-        if (this.size == 0) {
-            this.size++;
-            this.head = node;
-            this.resetHead();
-            return;
-        }
-        if (size == 1) {
+        this.size++;
+        if (this.size == 1) {
             this.head.next = node;
             node.prev = this.head;
+            this.pointer = node;
+            this.position++;
         } else {
-            this.tail.next = node;
-            node.prev = this.tail;
+            Node<E> prev = this.tail.prev;
+            prev.next = node;
+            node.prev = prev;
         }
-        this.size++;
-        this.tail = node;
+        this.tail.prev = node;
+        node.next = this.tail;
     }
 
     /**
@@ -57,31 +58,19 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         }
         Node<E> prev = this.pointer.prev,
              next = this.pointer.next,
-             pointer = this.pointer;
-        if (this.position == 0) {
-            if (this.size == 1) this.position = -1;
-            else {
-                if (this.size == 2) this.tail = null;
-                next.prev = null;
-                pointer.next = null;
-            }
-            this.head = next;
-            this.pointer = next;
-        } else {
-            if (this.position + 1 == this.size) {
-                this.tail = this.size == 2 ? null : prev;
-                this.pointer = prev;
-                this.position--;
-            } else {
-                next.prev = prev;
-                this.pointer = next;
-            }
-            pointer.prev = null;
-            pointer.next = null;
-            prev.next = next;
-        }
+             node = this.pointer;
+        prev.next = next;
+        next.prev = prev;
         this.size--;
-        return pointer.item;
+        if (this.size == 0) {
+            this.pointer = null;
+            this.position--;
+        } else {
+            this.pointer = next;
+        }
+        node.next = null;
+        node.prev = null;
+        return node.item;
     }
 
     /**
@@ -89,12 +78,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void moveNext() {
-        if (this.pointer != null) {
-            Node<E> next = this.pointer.next;
-            if (next != null) {
-                this.pointer = next;
-                this.position++;
-            }
+        if (this.position + 1 < this.size && this.position > -1) {
+            this.pointer = this.pointer.next;
+            this.position++;
         }
     }
 
@@ -103,12 +89,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void movePrevious() {
-        if (this.pointer != null) {
-            Node<E> prev = this.pointer.prev;
-            if (prev != null) {
-                this.pointer = prev;
-                this.position--;
-            }
+        if (this.position > 0) {
+            this.pointer = this.pointer.prev;
+            this.position--;
         }
     }
 
@@ -117,8 +100,10 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void resetHead() {
-        this.pointer = this.head;
-        this.position = 0;
+        if (this.size > 0) {
+            this.pointer = this.head.next;
+            this.position = 0;
+        }
     }
 
     /**
@@ -126,10 +111,8 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void resetTail() {
-        if (size() <= 1) {
-            this.resetHead();
-        } else {
-            this.pointer = this.tail;
+        if (this.size > 0) {
+            this.pointer = this.tail.prev;
             this.position = this.size - 1;
         }
     }
@@ -175,13 +158,15 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         if (this.size() == 0) {
             return builder.append(']').toString();
         }
-        Node<E> pointer = this.head;
-        while (pointer != null) {
+        Node<E> pointer = this.head.next;
+        int position = 0;
+        while (position < this.size) {
             builder.append(pointer.item.toString());
-            if (pointer.next != null) {
+            pointer = pointer.next;
+            position++;
+            if (position < this.size) {
                 builder.append(',').append(' ');
             }
-            pointer = pointer.next;
         }
         builder.append(']');
         return builder.toString();
