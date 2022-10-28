@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Ê±¼äÂÖµÄÄ¬ÈÏÊµÏÖÀà£¬½øĞĞÈÎÎñµ÷¶È
+ * æ—¶é—´è½®çš„é»˜è®¤å®ç°ç±»ï¼Œè¿›è¡Œä»»åŠ¡è°ƒåº¦
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -20,42 +20,42 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class DefaultTimingWheel implements TimingWheel {
 
     /**
-     * µ±Ç°Ê±¼äµã
+     * å½“å‰æ—¶é—´ç‚¹
      */
     private TimePoint currentTimePoint;
 
     /**
-     * ¿Ì¶È×ÜÊı
+     * åˆ»åº¦æ€»æ•°
      */
     private final int totalTicks;
 
     /**
-     * Ã¿¸ö¿Ì¶È¼äµÄÊ±¼ä¼ä¸ô£¬µ¥Î»ÎªºÁÃë£¨ms£©
+     * æ¯ä¸ªåˆ»åº¦é—´çš„æ—¶é—´é—´éš”ï¼Œå•ä½ä¸ºæ¯«ç§’ï¼ˆmsï¼‰
      */
     private final int interval;
 
     /**
-     * ¾ßÌåÖ´ĞĞ¶¨Ê±ÈÎÎñµÄÏß³Ì³Ø
+     * å…·ä½“æ‰§è¡Œå®šæ—¶ä»»åŠ¡çš„çº¿ç¨‹æ± 
      */
     private final ExecutorService executor;
 
     /**
-     * Ä¬ÈÏµÄ¿Ì¶È×ÜÊı
+     * é»˜è®¤çš„åˆ»åº¦æ€»æ•°
      */
     private final static int DEFAULT_TOTAL_TICKS = 10;
 
     /**
-     * ³¢ÊÔ»ñÈ¡¶ÔÏóµÄ×î´ó×ÔĞıÊ±¼ä£¬µ¥Î»ÎªÄÉÃë£¨ns£©
+     * å°è¯•è·å–å¯¹è±¡çš„æœ€å¤§è‡ªæ—‹æ—¶é—´ï¼Œå•ä½ä¸ºçº³ç§’ï¼ˆnsï¼‰
      */
     private final static long DEFAULT_MAX_WAIT_TIME = 5000000;
 
     /**
-     * Ê±¼äÂÖµÄÇáÁ¿¼¶²Ù×÷Ëø
+     * æ—¶é—´è½®çš„è½»é‡çº§æ“ä½œé”
      */
     private final AtomicBoolean monitor;
 
     /**
-     * Ê±¼äÂÖµÄÊı¾İ½á¹¹ÊµÏÖ£¬»·ĞÎÁ´±í
+     * æ—¶é—´è½®çš„æ•°æ®ç»“æ„å®ç°ï¼Œç¯å½¢é“¾è¡¨
      */
     private final PointerLinkedList<Map<Integer, TaskList>> linkedRing;
 
@@ -77,12 +77,12 @@ public class DefaultTimingWheel implements TimingWheel {
     }
 
     /**
-     * Ìá½»Ò»¸öĞÂµÄ¶¨Ê±ÈÎÎñ
+     * æäº¤ä¸€ä¸ªæ–°çš„å®šæ—¶ä»»åŠ¡
      * <p>
-     * Èç¹ûÊ±¼äÂÖËøÒÑ¾­±»ÆäËûÏß³ÌÕ¼ÓÃÁË£¬ÄÇÃ´×ÔĞıµÈ´ıËø¿ÕÏĞ£»Èç¹û×ÔĞı³¬³öÒ»¶¨Ê±¼ä£¬¾Í²»ÔÙ³¢ÊÔ»ñÈ¡Ëø£¬·µ»ØÌá½»Ê§°Ü½á¹û¡£
+     * å¦‚æœæ—¶é—´è½®é”å·²ç»è¢«å…¶ä»–çº¿ç¨‹å ç”¨äº†ï¼Œé‚£ä¹ˆè‡ªæ—‹ç­‰å¾…é”ç©ºé—²ï¼›å¦‚æœè‡ªæ—‹è¶…å‡ºä¸€å®šæ—¶é—´ï¼Œå°±ä¸å†å°è¯•è·å–é”ï¼Œè¿”å›æäº¤å¤±è´¥ç»“æœã€‚
      *
-     * @param task ¶¨Ê±ÈÎÎñ
-     * @return Ìá½»ÊÇ·ñ³É¹¦ | ÈÎÎñID
+     * @param task å®šæ—¶ä»»åŠ¡
+     * @return æäº¤æ˜¯å¦æˆåŠŸ | ä»»åŠ¡ID
      */
     @Override
     public int[] submit(Task task) {
@@ -111,13 +111,13 @@ public class DefaultTimingWheel implements TimingWheel {
     }
 
     /**
-     * ¸ù¾İÈÎÎñID£¬ÒÆ³ıÒ»¸ö¶¨Ê±ÈÎÎñ
+     * æ ¹æ®ä»»åŠ¡IDï¼Œç§»é™¤ä¸€ä¸ªå®šæ—¶ä»»åŠ¡
      * <p>
-     * Èç¹ûÊ±¼äÂÖËøÒÑ¾­±»ÆäËûÏß³ÌÕ¼ÓÃÁË£¬ÄÇÃ´×ÔĞıµÈ´ıËø¿ÕÏĞ£»Èç¹û×ÔĞı³¬³öÒ»¶¨Ê±¼ä£¬¾Í²»ÔÙ³¢ÊÔ»ñÈ¡Ëø£¬·µ»ØÉ¾³ıÊ§°Ü½á¹û¡£
+     * å¦‚æœæ—¶é—´è½®é”å·²ç»è¢«å…¶ä»–çº¿ç¨‹å ç”¨äº†ï¼Œé‚£ä¹ˆè‡ªæ—‹ç­‰å¾…é”ç©ºé—²ï¼›å¦‚æœè‡ªæ—‹è¶…å‡ºä¸€å®šæ—¶é—´ï¼Œå°±ä¸å†å°è¯•è·å–é”ï¼Œè¿”å›åˆ é™¤å¤±è´¥ç»“æœã€‚
      *
-     * @param timePoint ÈÎÎñÊ±¼äµã
-     * @param id ÈÎÎñID
-     * @return ÈÎÎñÊÇ·ñÉ¾³ı³É¹¦
+     * @param timePoint ä»»åŠ¡æ—¶é—´ç‚¹
+     * @param id ä»»åŠ¡ID
+     * @return ä»»åŠ¡æ˜¯å¦åˆ é™¤æˆåŠŸ
      */
     @Override
     public boolean remove(TimePoint timePoint, int id) {
@@ -145,12 +145,12 @@ public class DefaultTimingWheel implements TimingWheel {
     }
 
     /**
-     * Ê±¼äÂÖ½øĞĞÒ»´Î×ª¶¯£¬ÕâÀï¼á³Ö³¢ÊÔ»ñÈ¡Ëø£¬Èç¹û³¬Ê±¿ÉÒÔ²ÉÓÃÊ±¼ä½ÃÕı»úÖÆ¼õÉÙËğÊ§ºÍ»Ö¸´ÆäËüÈÎÎñµÄÖ´ĞĞ
+     * æ—¶é—´è½®è¿›è¡Œä¸€æ¬¡è½¬åŠ¨ï¼Œè¿™é‡ŒåšæŒå°è¯•è·å–é”ï¼Œå¦‚æœè¶…æ—¶å¯ä»¥é‡‡ç”¨æ—¶é—´çŸ«æ­£æœºåˆ¶å‡å°‘æŸå¤±å’Œæ¢å¤å…¶å®ƒä»»åŠ¡çš„æ‰§è¡Œ
      */
     @Override
     public void turn() {
         this.tryLock(false);
-        // TODO ³¬Ê±½ÃÕı»úÖÆµÈ´ıÍêÉÆ
+        // TODO è¶…æ—¶çŸ«æ­£æœºåˆ¶ç­‰å¾…å®Œå–„
         this.linkedRing.moveNext();
         Map<Integer, TaskList> map = this.linkedRing.getPointer();
         this.currentTimePoint = TimePoint.getCurrentTimePoint();
@@ -172,13 +172,12 @@ public class DefaultTimingWheel implements TimingWheel {
     }
 
     /**
-     * ³¢ÊÔ»ñÈ¡µ½Ê±¼äÂÖµÄ²Ù×÷Ëø£¬ÈôÃ»»ñµÃÔò½øĞĞ×ÔĞı£¬×ÔĞı³¬¹ıÒ»¶¨Ê±¼äÔò·µ»ØËø»ñÈ¡Ê§°ÜµÄĞÅÏ¢
+     * å°è¯•è·å–åˆ°æ—¶é—´è½®çš„æ“ä½œé”ï¼Œè‹¥æ²¡è·å¾—åˆ™è¿›è¡Œè‡ªæ—‹ï¼Œè‡ªæ—‹è¶…è¿‡ä¸€å®šæ—¶é—´åˆ™è¿”å›é”è·å–å¤±è´¥çš„ä¿¡æ¯
      *
-     * @param stopNeed ÊÇ·ñ³¬Ê±Í£Ö¹
-     * @return ×îÖÕÊÇ·ñ³É¹¦»ñÈ¡
+     * @param stopNeed æ˜¯å¦è¶…æ—¶åœæ­¢
+     * @return æœ€ç»ˆæ˜¯å¦æˆåŠŸè·å–
      */
-    @Override
-    public boolean tryLock(boolean stopNeed) {
+    private boolean tryLock(boolean stopNeed) {
         if (stopNeed) {
             long startWaitingTime = System.nanoTime();
             while (!this.monitor.compareAndSet(false, true)) {
@@ -191,20 +190,17 @@ public class DefaultTimingWheel implements TimingWheel {
     }
 
     /**
-     * ÊÍ·ÅÊ±¼äÂÖµÄ²Ù×÷Ëø
+     * é‡Šæ”¾æ—¶é—´è½®çš„æ“ä½œé”
      */
-    @Override
-    public void unLock() {
+    private void unLock() {
         this.monitor.set(false);
     }
 
     /**
-     * ¸ù¾İÏà²îµÄ¿Ì¶ÈÊı£¬»ñÈ¡µ½¶ÔÓ¦¿Ì¶ÈµÄÈÎÎñÁ´±íÈİÆ÷
-     * <p>
-     * Èç¹û»·ĞÎÁ´±íÒÑ¾­±»ÆäËûÏß³ÌÕ¼ÓÃÁË£¬ÄÇÃ´×ÔĞıµÈ´ıÁ´±í¿ÕÏĞ£»Èç¹û×ÔĞı³¬³öÒ»¶¨Ê±¼ä£¬¾Í²»ÔÙ³¢ÊÔ»ñÈ¡»·ĞÎÁ´±í
+     * æ ¹æ®ç›¸å·®çš„åˆ»åº¦æ•°ï¼Œè·å–åˆ°å¯¹åº”åˆ»åº¦çš„ä»»åŠ¡é“¾è¡¨å®¹å™¨
      *
-     * @param ticks Ä¿±êÊ±¼äµãÓëµ±Ç°Ê±¼äµã£¬Ïà²îµÄ¿Ì¶ÈÊı
-     * @return ¶ÔÓ¦¿Ì¶ÈµÄÈÎÎñÁ´±íÈİÆ÷
+     * @param ticks ç›®æ ‡æ—¶é—´ç‚¹ä¸å½“å‰æ—¶é—´ç‚¹ï¼Œç›¸å·®çš„åˆ»åº¦æ•°
+     * @return å¯¹åº”åˆ»åº¦çš„ä»»åŠ¡é“¾è¡¨å®¹å™¨
      */
     private Map<Integer, TaskList> getSpecBucket(int ticks) {
         Map<Integer, TaskList> bucket;
@@ -219,12 +215,11 @@ public class DefaultTimingWheel implements TimingWheel {
     }
 
     /**
-     * ÆôÓÃÊ±¼ä½ÃÕı»úÖÆ£¬¼ÆËã³¬Ê±Ê±¼ä£¬¶ÔÓÚÑÓÆÚµÄÈÎÎñ»Ö¸´Ö´ĞĞ£¬²¢ÇÒ°´ÕÕ³¬Ê±Ê±¼äÏ÷¼õËùÓĞround
+     * å¯ç”¨æ—¶é—´çŸ«æ­£æœºåˆ¶ï¼Œè®¡ç®—è¶…æ—¶æ—¶é—´ï¼Œå¯¹äºå»¶æœŸçš„ä»»åŠ¡æ¢å¤æ‰§è¡Œï¼Œå¹¶ä¸”æŒ‰ç…§è¶…æ—¶æ—¶é—´å‰Šå‡æ‰€æœ‰round
      *
-     * @param wasteTicks ËğÊ§µÄ¿Ì¶ÈÊı
+     * @param wasteTicks æŸå¤±çš„åˆ»åº¦æ•°
      */
-    @Override
-    public void recover(int wasteTicks) {
+    private void recover(int wasteTicks) {
 
     }
 

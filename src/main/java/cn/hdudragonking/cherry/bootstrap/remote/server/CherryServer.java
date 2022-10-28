@@ -10,11 +10,13 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 
 /**
- * cherry¶¨Ê±ÈÎÎñµ÷¶ÈÒıÇæµÄ socket ÍøÂç·şÎñÆô¶¯Òıµ¼Àà
+ * cherryå®šæ—¶ä»»åŠ¡è°ƒåº¦å¼•æ“çš„ socket ç½‘ç»œæœåŠ¡å¯åŠ¨å¼•å¯¼ç±»
  *
  * @since 2022/10/18
  * @author realDragonKing
@@ -42,10 +44,10 @@ public class CherryServer {
     }
 
     /**
-     * Í¨¹ıÌá¹©µÄhostµØÖ·ºÍ¶Ë¿Ú£¬³õÊ¼»¯ºÍÆô¶¯ Netty socket ·şÎñ¶Ë
+     * é€šè¿‡æä¾›çš„hoståœ°å€å’Œç«¯å£ï¼Œåˆå§‹åŒ–å’Œå¯åŠ¨ Netty socket æœåŠ¡ç«¯
      *
-     * @param host hostµØÖ·
-     * @param port port¶Ë¿Ú
+     * @param host hostï¿½ï¿½Ö·
+     * @param port portï¿½Ë¿ï¿½
      */
     public void initial(String host, int port) {
         Executors.newSingleThreadExecutor().submit(() -> {
@@ -56,9 +58,10 @@ public class CherryServer {
                         .group(this.bossGroup, this.workerGroup)
                         .childOption(ChannelOption.TCP_NODELAY, true)
                         .childHandler(new ServerInitializer());
-                ChannelFuture future = this.serverBootstrap.bind(host, port).sync();
-                this.logger.info("·şÎñ¶ËÒÑ¾­ÔÚ " + future.channel().remoteAddress() + " ÉÏ³É¹¦Æô¶¯²¢¿ÉÌá¹©·şÎñ£¡");
-                this.logger.info("µÈ´ıcherry¿Í»§¶ËÁ¬½Ó½ÓÈë±¾·şÎñ¶Ë£¡");
+                SocketAddress localAddress = new InetSocketAddress(host, port);
+                ChannelFuture future = this.serverBootstrap.bind(localAddress).sync();
+                this.logger.info("æœåŠ¡ç«¯å·²ç»åœ¨ " + localAddress + " ä¸ŠæˆåŠŸå¯åŠ¨å¹¶å¯æä¾›æœåŠ¡ï¼");
+                this.logger.info("ç­‰å¾…cherryå®¢æˆ·ç«¯è¿æ¥æ¥å…¥æœ¬æœåŠ¡ç«¯ï¼");
                 future.channel().closeFuture().sync();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -70,9 +73,9 @@ public class CherryServer {
     }
 
     /**
-     * »ñÈ¡µ½·şÎñ¶Ë¶ÔÍ¨ĞÅ¹ÜµÀµÄ´æ´¢ÈİÆ÷
+     * è·å–åˆ°æœåŠ¡ç«¯å¯¹é€šä¿¡ç®¡é“çš„å­˜å‚¨å®¹å™¨
      *
-     * @return Í¨ĞÅ¹ÜµÀµÄ´æ´¢ÈİÆ÷
+     * @return é€šä¿¡ç®¡é“çš„å­˜å‚¨å®¹å™¨
      */
     public ConcurrentHashMap<String, Channel> getChannelMap() {
         return this.channelMap;

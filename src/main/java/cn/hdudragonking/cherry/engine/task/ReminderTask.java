@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
- * Ö´ĞĞÌáĞÑÈÎÎñ£¬ÌáĞÑÍøÂçÉÏµÄ¶¨Ê±ÈÎÎñÌá½»Õß¿ÉÒÔÖ´ĞĞ
+ * æ‰§è¡Œæé†’ä»»åŠ¡ï¼Œæé†’ç½‘ç»œä¸Šçš„å®šæ—¶ä»»åŠ¡æäº¤è€…å¯ä»¥æ‰§è¡Œ
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -32,9 +32,9 @@ public class ReminderTask implements Task {
     }
 
     /**
-     * »ñÈ¡Ö´ĞĞµÄÊ±¼äµã
+     * è·å–æ‰§è¡Œçš„æ—¶é—´ç‚¹
      *
-     * @return Ê±¼äµã
+     * @return æ—¶é—´ç‚¹
      */
     @Override
     public TimePoint getTimePoint() {
@@ -42,9 +42,9 @@ public class ReminderTask implements Task {
     }
 
     /**
-     * ÉèÖÃÈÎÎñµÄID
+     * è®¾ç½®ä»»åŠ¡çš„ID
      *
-     * @param id ÈÎÎñID
+     * @param id ä»»åŠ¡ID
      */
     @Override
     public void setTaskID(int id) {
@@ -52,9 +52,9 @@ public class ReminderTask implements Task {
     }
 
     /**
-     * »ñÈ¡ÈÎÎñµÄID
+     * è·å–ä»»åŠ¡çš„ID
      *
-     * @return ÈÎÎñID
+     * @return ä»»åŠ¡ID
      */
     @Override
     public int getTaskID() {
@@ -62,7 +62,7 @@ public class ReminderTask implements Task {
     }
 
     /**
-     * Ö´ĞĞÈÎÎñ
+     * æ‰§è¡Œä»»åŠ¡
      */
     @Override
     public void execute() {
@@ -73,9 +73,9 @@ public class ReminderTask implements Task {
         Channel channel = CherryServer.getInstance().getChannelMap().get(channelName);
         if (channel != null && channel.isActive()) {
             channel.writeAndFlush(protocol);
-            this.logger.info(this.channelName + " µÄ¶¨Ê±ÈÎÎñ " + this.taskID + " Ö´ĞĞÍ¨Öª³É¹¦£¡");
+            this.logger.info(this.channelName + " çš„å®šæ—¶ä»»åŠ¡ " + this.taskID + " æ‰§è¡Œé€šçŸ¥æˆåŠŸï¼");
             return;
         }
-        this.logger.info(this.channelName + " µÄ¶¨Ê±ÈÎÎñ " + this.taskID + " Ö´ĞĞÍ¨ÖªÊ§°Ü£¡");
+        this.logger.info(this.channelName + " çš„å®šæ—¶ä»»åŠ¡ " + this.taskID + " æ‰§è¡Œé€šçŸ¥å¤±è´¥ï¼");
     }
 }

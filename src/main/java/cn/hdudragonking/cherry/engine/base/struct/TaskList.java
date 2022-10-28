@@ -2,8 +2,9 @@ package cn.hdudragonking.cherry.engine.base.struct;
 
 import cn.hdudragonking.cherry.engine.task.Task;
 
+
 /**
- * ×¨ÃÅ×°ÈÎÎñµÄÁ´±í
+ * ä¸“é—¨è£…ä»»åŠ¡çš„é“¾è¡¨
  *
  * @since 2022/10/19
  * @author realDragonKing
@@ -17,9 +18,9 @@ public class TaskList extends DefaultPointerLinkedList<Task> {
     }
 
     /**
-     * ÔÚÄ©¶Ë²åÈëÒ»¸öĞÂµÄ½Úµã
+     * åœ¨æœ«ç«¯æ’å…¥ä¸€ä¸ªæ–°çš„èŠ‚ç‚¹
      *
-     * @param task ½ÚµãÖµ
+     * @param task èŠ‚ç‚¹å€¼
      */
     @Override
     public void add(Task task) {
@@ -29,10 +30,10 @@ public class TaskList extends DefaultPointerLinkedList<Task> {
     }
 
     /**
-     * ¸ù¾İÈÎÎñID£¬²éÕÒ²¢É¾³ıÏàÓ¦µÄÈÎÎñÉ¾³ı
+     * æ ¹æ®ä»»åŠ¡IDï¼ŒæŸ¥æ‰¾å¹¶åˆ é™¤ç›¸åº”çš„ä»»åŠ¡åˆ é™¤
      *
-     * @param taskID ÈÎÎñID£¨½«³¢ÊÔ½øĞĞÊı×Ö×ª»»£©
-     * @return ÊÇ·ñ³É¹¦É¾³ı
+     * @param taskID ä»»åŠ¡IDï¼ˆå°†å°è¯•è¿›è¡Œæ•°å­—è½¬æ¢ï¼‰
+     * @return æ˜¯å¦æˆåŠŸåˆ é™¤
      */
     public boolean removeTask(int taskID) {
         try {

@@ -14,8 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
- * cherryÍøÂçÍ¨ĞÅ²ãÃæµÄ·şÎñ¶Ë´¦ÀíÆ÷£¬
- * ÓÃÀ´´¦ÀíÍøÂç¶¨Ê±ÈÎÎñÌá½»ºÍ»ØÖ´ÌáĞÑÍ¨ĞÅ
+ * cherryç½‘ç»œé€šä¿¡å±‚é¢çš„æœåŠ¡ç«¯å¤„ç†å™¨ï¼Œ
+ * ç”¨æ¥å¤„ç†ç½‘ç»œå®šæ—¶ä»»åŠ¡æäº¤å’Œå›æ‰§æé†’é€šä¿¡
  *
  * @since 2022/10/18
  * @author realDragonKing
@@ -32,11 +32,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
      * <p>
      * Subclasses may override this method to change behavior.
      *
-     * @param ctx Í¨ĞÅ¹ÜµÀ
+     * @param ctx é€šä¿¡ç®¡é“
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        this.logger.info("Ò»¸öcherry¿Í»§¶ËÒÑ¾­ÔÚ " + ctx.channel().remoteAddress() + " ÉÏ³É¹¦½ÓÈë±¾·şÎñ¶Ë£¡Í¨ĞÅĞÅµÀ´ò¿ª£¡");
+        this.logger.info("ä¸€ä¸ªcherryå®¢æˆ·ç«¯å·²ç»åœ¨ " + ctx.channel().remoteAddress() + " ä¸ŠæˆåŠŸæ¥å…¥æœ¬æœåŠ¡ç«¯ï¼é€šä¿¡ä¿¡é“æ‰“å¼€ï¼");
     }
 
     /**
@@ -50,17 +50,17 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
     protected void channelRead0(ChannelHandlerContext ctx, CherryProtocol requestProtocol) {
         TimePoint timePoint = TimePoint.parse(requestProtocol.getStringTimePoint());
         if (timePoint == null) {
-            ctx.fireExceptionCaught(new Throwable("Ê±¼äĞÅÏ¢¸ñÊ½´íÎó£¡"));
+            ctx.fireExceptionCaught(new Throwable("æ—¶é—´ä¿¡æ¯æ ¼å¼é”™è¯¯ï¼"));
             return;
         }
         CherryProtocol responseProtocol;
         String channelName = requestProtocol.getChannelName();
         JSONObject metaData = requestProtocol.getMetaData();
         if (channelName == null) {
-            ctx.fireExceptionCaught(new Throwable("Î´Ìá½»¿Í»§¶ËÃû³Æ£¡"));
+            ctx.fireExceptionCaught(new Throwable("æœªæäº¤å®¢æˆ·ç«¯åç§°ï¼"));
             return;
         }
-        // TODO ÕâÀïÒÔºóÓ¦µ±¿¼ÂÇ²¼Â¡¹ıÂËÆ÷
+        // TODO è¿™é‡Œä»¥ååº”å½“è€ƒè™‘å¸ƒéš†è¿‡æ»¤å™¨
         if (this.channelMap.get(channelName) == null) {
             this.channelMap.put(channelName, ctx.channel());
         }
@@ -68,7 +68,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
         switch (requestProtocol.getFlag()) {
 
             case FLAG_ADD :
-                this.logger.info(channelName + " Ìá½»ÁËÒ»¸ö¶¨Ê±ÈÎÎñ£¡");
+                this.logger.info(channelName + " æäº¤äº†ä¸€ä¸ªå®šæ—¶ä»»åŠ¡ï¼");
                 int[] result = this.cherryLocalStarter
                         .submit(new ReminderTask(
                                 channelName,
@@ -79,26 +79,26 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
                         .setMetaData(metaData);
                 if (result.length == 2) {
                     responseProtocol.setTaskID(result[1]).setResult(true);
-                    this.logger.info(channelName + " ¶¨Ê±ÈÎÎñÌá½»³É¹¦£¡");
+                    this.logger.info(channelName + " å®šæ—¶ä»»åŠ¡æäº¤æˆåŠŸï¼");
                 } else {
                     responseProtocol.setResult(false);
-                    this.logger.info(channelName + " ¶¨Ê±ÈÎÎñÌá½»Ê§°Ü£¡");
+                    this.logger.info(channelName + " å®šæ—¶ä»»åŠ¡æäº¤å¤±è´¥ï¼");
                 }
                 ctx.writeAndFlush(responseProtocol);
                 break;
 
             case FLAG_REMOVE :
-                this.logger.info(channelName + " ³¢ÊÔÉ¾³ıÒ»¸ö¶¨Ê±ÈÎÎñ£¡");
+                this.logger.info(channelName + " å°è¯•åˆ é™¤ä¸€ä¸ªå®šæ—¶ä»»åŠ¡ï¼");
                 int taskID = requestProtocol.getTaskID();
                 responseProtocol = new CherryProtocol(FLAG_RESULT_REMOVE)
                         .setMetaData(metaData)
                         .setTaskID(taskID);
                 if (this.cherryLocalStarter.remove(timePoint, taskID)) {
                     responseProtocol.setResult(true);
-                    this.logger.info(channelName + " ¶¨Ê±ÈÎÎñÉ¾³ı³É¹¦£¡");
+                    this.logger.info(channelName + " å®šæ—¶ä»»åŠ¡åˆ é™¤æˆåŠŸï¼");
                 } else {
                     responseProtocol.setResult(false);
-                    this.logger.info(channelName + " ¶¨Ê±ÈÎÎñÉ¾³ıÊ§°Ü£¡");
+                    this.logger.info(channelName + " å®šæ—¶ä»»åŠ¡åˆ é™¤å¤±è´¥ï¼");
                 }
                 ctx.writeAndFlush(responseProtocol);
                 break;
@@ -111,8 +111,8 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
      * <p>
      * Subclasses may override this method to change behavior.
      *
-     * @param ctx Í¨ĞÅ¹ÜµÀ
-     * @param cause Òì³£Ô­Òò
+     * @param ctx é€šä¿¡ç®¡é“
+     * @param cause å¼‚å¸¸åŸå› 
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

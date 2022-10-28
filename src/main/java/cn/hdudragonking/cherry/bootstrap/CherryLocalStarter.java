@@ -17,10 +17,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * cherry¶¨Ê±ÈÎÎñµ÷¶ÈÒıÇæµÄ±¾µØÆô¶¯Òıµ¼Àà£¬¿ÉÒÔÔÚÕâÀïÆô¶¯±¾µØ·şÎñ¡£
+ * cherryå®šæ—¶ä»»åŠ¡è°ƒåº¦å¼•æ“çš„æœ¬åœ°å¯åŠ¨å¼•å¯¼ç±»ï¼Œå¯ä»¥åœ¨è¿™é‡Œå¯åŠ¨æœ¬åœ°æœåŠ¡ã€‚
  * <p>
- * socket ÍøÂç·şÎñ {@link CherryServer}
- * µÄÆô¶¯±¾ÖÊÉÏÒ²ÊÇÆô¶¯±¾µØ·şÎñ£¬²¢Ìá¹©ÍøÂçÍ¨ĞÅÄÜÁ¦
+ * socket ç½‘ç»œæœåŠ¡ {@link CherryServer}
+ * çš„å¯åŠ¨æœ¬è´¨ä¸Šä¹Ÿæ˜¯å¯åŠ¨æœ¬åœ°æœåŠ¡ï¼Œå¹¶æä¾›ç½‘ç»œé€šä¿¡èƒ½åŠ›
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -35,31 +35,31 @@ public class CherryLocalStarter {
     private CherryLocalStarter() {}
 
     /**
-     * Ê±¼äÂÖ£¡
+     * æ—¶é—´è½®ï¼
      */
     private TimingWheel timingWheel;
 
     /**
-     * Ä¬ÈÏµÄÃ¿¸ö¿Ì¶ÈÖ®¼äµÄÊ±¼ä¼ä¸ô
+     * é»˜è®¤çš„æ¯ä¸ªåˆ»åº¦ä¹‹é—´çš„æ—¶é—´é—´éš”
      */
     private final static int DEFAULT_INTERVAL = 60000;
 
     /**
-     * ÈÕÖ¾´òÓ¡Àà
+     * æ—¥å¿—æ‰“å°ç±»
      */
     private final Logger logger = LogManager.getLogger("Cherry");
 
     /**
-     * ÎªcherryÒıÇæµÄÆô¶¯½øĞĞ³õÊ¼»¯£¬Ê¹ÓÃÄ¬ÈÏµÄÊ±¼ä¼ä¸ô
+     * ä¸ºcherryå¼•æ“çš„å¯åŠ¨è¿›è¡Œåˆå§‹åŒ–ï¼Œä½¿ç”¨é»˜è®¤çš„æ—¶é—´é—´éš”
      */
     public void initial() {
         this.initial(DEFAULT_INTERVAL);
     }
 
     /**
-     * ÎªcherryÒıÇæµÄÆô¶¯½øĞĞ³õÊ¼»¯
+     * ä¸ºcherryå¼•æ“çš„å¯åŠ¨è¿›è¡Œåˆå§‹åŒ–
      *
-     * @param interval Ê±¼ä¼ä¸ô
+     * @param interval æ—¶é—´é—´éš”
      */
     public void initial(int interval) {
         ExecutorService threadPool = Executors.newFixedThreadPool(2);
@@ -68,25 +68,25 @@ public class CherryLocalStarter {
         threadPool.submit(new ScheduleExecutor(DEFAULT_INTERVAL, blockingQueue));
         threadPool.submit(new TimingWheelExecutor(this.timingWheel, blockingQueue));
         BaseUtils.printLogo();
-        this.logger.info("¶¨Ê±ÈÎÎñµ÷¶ÈÒıÇæÒÑ¾­ÔÚ±¾µØ³É¹¦Æô¶¯²¢¿ÉÌá¹©·şÎñ£¡");
+        this.logger.info("å®šæ—¶ä»»åŠ¡è°ƒåº¦å¼•æ“å·²ç»åœ¨æœ¬åœ°æˆåŠŸå¯åŠ¨å¹¶å¯æä¾›æœåŠ¡ï¼");
     }
 
     /**
-     * Í¨¹ı±¾µØ½ø³ÌÄÚAPI£¬ÏòÊ±¼äÂÖÖĞÌá½»ÈÎÎñ
+     * é€šè¿‡æœ¬åœ°è¿›ç¨‹å†…APIï¼Œå‘æ—¶é—´è½®ä¸­æäº¤ä»»åŠ¡
      *
-     * @param task ´ıÖ´ĞĞµÄÈÎÎñ
-     * @return ÊÇ·ñ³É¹¦Ìá½» | ÈÎÎñID
+     * @param task å¾…æ‰§è¡Œçš„ä»»åŠ¡
+     * @return æ˜¯å¦æˆåŠŸæäº¤ | ä»»åŠ¡ID
      */
     public int[] submit(Task task) {
         return this.timingWheel.submit(task);
     }
 
     /**
-     * ¸ù¾İÈÎÎñÖ´ĞĞÊ±¼äµãºÍÈÎÎñID£¬Í¨¹ı±¾µØ½ø³ÌÄÚAPI£¬ÏòÊ±¼äÂÖÖĞÉ¾³ıÒ»¸öÈÎÎñ
+     * æ ¹æ®ä»»åŠ¡æ‰§è¡Œæ—¶é—´ç‚¹å’Œä»»åŠ¡IDï¼Œé€šè¿‡æœ¬åœ°è¿›ç¨‹å†…APIï¼Œå‘æ—¶é—´è½®ä¸­åˆ é™¤ä¸€ä¸ªä»»åŠ¡
      *
-     * @param timePoint ÈÎÎñÖ´ĞĞÊ±¼äµã
-     * @param taskID ÈÎÎñID
-     * @return ÊÇ·ñ³É¹¦É¾³ı
+     * @param timePoint ä»»åŠ¡æ‰§è¡Œæ—¶é—´ç‚¹
+     * @param taskID ä»»åŠ¡ID
+     * @return æ˜¯å¦æˆåŠŸåˆ é™¤
      */
     public boolean remove(TimePoint timePoint, int taskID) {
         return this.timingWheel.remove(timePoint, taskID);

@@ -3,7 +3,7 @@ package cn.hdudragonking.cherry.engine.task;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 
 /**
- * ¿É±»Ö´ĞĞµÄ¶¨Ê±ÈÎÎñµÄ½Ó¿Ú
+ * å¯è¢«æ‰§è¡Œçš„å®šæ—¶ä»»åŠ¡çš„æ¥å£
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -11,28 +11,28 @@ import cn.hdudragonking.cherry.engine.base.TimePoint;
 public interface Task {
 
     /**
-     * »ñÈ¡Ö´ĞĞµÄÊ±¼äµã
+     * è·å–æ‰§è¡Œçš„æ—¶é—´ç‚¹
      *
-     * @return Ê±¼äµã
+     * @return æ—¶é—´ç‚¹
      */
     TimePoint getTimePoint();
 
     /**
-     * ÉèÖÃÈÎÎñµÄID
+     * è®¾ç½®ä»»åŠ¡çš„ID
      *
-     * @param id ÈÎÎñID
+     * @param id ä»»åŠ¡ID
      */
     void setTaskID(int id);
 
     /**
-     * »ñÈ¡ÈÎÎñµÄID
+     * è·å–ä»»åŠ¡çš„ID
      *
-     * @return ÈÎÎñID
+     * @return ä»»åŠ¡ID
      */
     int getTaskID();
 
     /**
-     * Ö´ĞĞÈÎÎñ
+     * æ‰§è¡Œä»»åŠ¡
      */
     void execute();
 

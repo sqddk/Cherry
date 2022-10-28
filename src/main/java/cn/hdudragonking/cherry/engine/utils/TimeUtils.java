@@ -12,10 +12,10 @@ public class TimeUtils {
     public static final List<Integer> BigMonthList = List.of(1, 3, 5 ,7, 8, 10, 12);
 
     /**
-     * ½«ÔÂ·İ×ª»¯ÎªÊı×Ö£¬²¢¼ì²éÊÇ·ñÓĞĞ§£¨ÎŞĞ§Ôò·µ»Ø-1£©
+     * å°†æœˆä»½è½¬åŒ–ä¸ºæ•°å­—ï¼Œå¹¶æ£€æŸ¥æ˜¯å¦æœ‰æ•ˆï¼ˆæ— æ•ˆåˆ™è¿”å›-1ï¼‰
      *
-     * @param piece ÔÂ·İ×Ö·û´®
-     * @return ÔÂ·İÊı×Ö
+     * @param piece æœˆä»½å­—ç¬¦ä¸²
+     * @return æœˆä»½æ•°å­—
      */
     public static int parseMonth(String piece){
         int month = Integer.parseInt(piece);
@@ -23,12 +23,12 @@ public class TimeUtils {
     }
 
     /**
-     * ½«ÔÂ·İÄÚÈÕÆÚ×ª»¯ÎªÊı×Ö£¬²¢¼ì²éÈÕÆÚÊÇ·ñÓĞĞ§£¨ÎŞĞ§Ôò·µ»Ø-1£©
+     * å°†æœˆä»½å†…æ—¥æœŸè½¬åŒ–ä¸ºæ•°å­—ï¼Œå¹¶æ£€æŸ¥æ—¥æœŸæ˜¯å¦æœ‰æ•ˆï¼ˆæ— æ•ˆåˆ™è¿”å›-1ï¼‰
      *
-     * @param piece ÈÕÆÚ×Ö·û´®
-     * @param year Äê·İÊı×Ö
-     * @param month ÔÂ·İÊı×Ö
-     * @return ÔÂ·İÄÚÈÕÆÚÊı×Ö
+     * @param piece æ—¥æœŸå­—ç¬¦ä¸²
+     * @param year å¹´ä»½æ•°å­—
+     * @param month æœˆä»½æ•°å­—
+     * @return æœˆä»½å†…æ—¥æœŸæ•°å­—
      */
     public static int parseDay(String piece, int year, int month){
         int day = Integer.parseInt(piece);
@@ -45,10 +45,10 @@ public class TimeUtils {
     }
 
     /**
-     * ½«Ğ¡Ê±×ª»¯ÎªÊı×Ö£¬²¢¼ì²éĞ¡Ê±ÊıÊÇ·ñÓĞĞ§£¨ÎŞĞ§Ôò·µ»Ø-1£©
+     * å°†å°æ—¶è½¬åŒ–ä¸ºæ•°å­—ï¼Œå¹¶æ£€æŸ¥å°æ—¶æ•°æ˜¯å¦æœ‰æ•ˆï¼ˆæ— æ•ˆåˆ™è¿”å›-1ï¼‰
      *
-     * @param piece Ğ¡Ê±Êı×Ö·û´®
-     * @return Ğ¡Ê±Êı
+     * @param piece å°æ—¶æ•°å­—ç¬¦ä¸²
+     * @return å°æ—¶æ•°
      */
     public static int parseHour(String piece){
         int hour = Integer.parseInt(piece);
@@ -56,10 +56,10 @@ public class TimeUtils {
     }
 
     /**
-     * ½«·ÖÖÓÊı×ª»¯ÎªÊı×Ö£¬²¢¼ì²é·ÖÖÓÊıÊÇ·ñÓĞĞ§£¨ÎŞĞ§Ôò·µ»Ø-1£©
+     * å°†åˆ†é’Ÿæ•°è½¬åŒ–ä¸ºæ•°å­—ï¼Œå¹¶æ£€æŸ¥åˆ†é’Ÿæ•°æ˜¯å¦æœ‰æ•ˆï¼ˆæ— æ•ˆåˆ™è¿”å›-1ï¼‰
      *
-     * @param piece ·ÖÖÓÊı×Ö·û´®
-     * @return ·ÖÖÓÊı
+     * @param piece åˆ†é’Ÿæ•°å­—ç¬¦ä¸²
+     * @return åˆ†é’Ÿæ•°
      */
     public static int parseMinute(String piece){
         int minute = Integer.parseInt(piece);
@@ -67,11 +67,11 @@ public class TimeUtils {
     }
 
     /**
-     * ¸ù¾İÁ½¸ö{@link TimePoint}Ê±¼äµã£¬¼ÆËãËûÃÇµÄms²îÖµ²¢ÇÒ¸ù¾İÊ±¼ä¿Ì¶È£¬×ª»»ÎªĞèÒªµÄ²îÖµ
+     * æ ¹æ®ä¸¤ä¸ª{@link TimePoint}æ—¶é—´ç‚¹ï¼Œè®¡ç®—ä»–ä»¬çš„mså·®å€¼å¹¶ä¸”æ ¹æ®æ—¶é—´åˆ»åº¦ï¼Œè½¬æ¢ä¸ºéœ€è¦çš„å·®å€¼
      * <p>
-     * ²îÖµ¼ÆËãË³ĞòÎª{@link TimePoint}P2 - {@link TimePoint}P1
+     * å·®å€¼è®¡ç®—é¡ºåºä¸º{@link TimePoint}P2 - {@link TimePoint}P1
      *
-     * @return ¶ÔÓ¦¸ñÊ½µÄÊ±¼ä²îÖµ
+     * @return å¯¹åº”æ ¼å¼çš„æ—¶é—´å·®å€¼
      */
     public static int calDifference(TimePoint p1, TimePoint p2, int ticks) {
         return (int) ((p2.getTimeValue() - p1.getTimeValue()) / ticks);

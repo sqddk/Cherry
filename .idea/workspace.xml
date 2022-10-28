@@ -4,10 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="cherry version0.0.1，稍作修改">
+    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="cherry version0.0.1，优化了指针链表的实现方式">
       <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryHealthMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/CherryHealthMonitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/CherryClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/CherryClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/ClientInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/ClientInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/ClientReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/ClientReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/codec/CherryClientDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/codec/CherryClientDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/codec/CherryClientEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/client/codec/CherryClientEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/protocol/CherryProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/protocol/CherryProtocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/protocol/CherryProtocolFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/protocol/CherryProtocolFlag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/CherryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/CherryServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/ServerInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/ServerInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/DefaultTimingWheel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/DefaultTimingWheel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/executor/ScheduleExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/executor/ScheduleExecutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/executor/TimingWheelExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/executor/TimingWheelExecutor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/DefaultPointerLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/DefaultPointerLinkedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/DefaultPointerLinkedRing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/DefaultPointerLinkedRing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/PointerLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/PointerLinkedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/TaskList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/TaskList.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +123,7 @@
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
-  <component name="RunManager" selected="应用程序.Main">
+  <component name="RunManager" selected="Gradle.Cherry [build]">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.hdudragonking.cherry.Main" />
       <module name="Cherry.main" />
@@ -199,7 +224,9 @@
       <workItem from="1666431934780" duration="7651000" />
       <workItem from="1666497678567" duration="645000" />
       <workItem from="1666507451553" duration="6000" />
-      <workItem from="1666579208031" duration="3289000" />
+      <workItem from="1666579208031" duration="4075000" />
+      <workItem from="1666602706858" duration="22000" />
+      <workItem from="1666963556062" duration="2758000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -390,7 +417,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666443582900</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="cherry version0.0.1，优化了指针链表的实现方式">
+      <created>1666582655788</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1666582655788</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -427,6 +461,7 @@
     <MESSAGE value="cherry定时任务调度引擎基本完毕" />
     <MESSAGE value="cherry定时任务调度引擎version0.0.1，彻底完毕！" />
     <MESSAGE value="cherry version0.0.1，稍作修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="cherry version0.0.1，稍作修改" />
+    <MESSAGE value="cherry version0.0.1，优化了指针链表的实现方式" />
+    <option name="LAST_COMMIT_MESSAGE" value="cherry version0.0.1，优化了指针链表的实现方式" />
   </component>
 </project>

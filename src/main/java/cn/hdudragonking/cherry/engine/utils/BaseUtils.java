@@ -7,10 +7,10 @@ public final class BaseUtils {
     private BaseUtils(){}
 
     /**
-     * ¼ì²é×Ö·û´®ÊÇ·ñÈ«ÎªÊı×Ö
+     * æ£€æŸ¥å­—ç¬¦ä¸²æ˜¯å¦å…¨ä¸ºæ•°å­—
      *
-     * @param s ´ı¼ì²éµÄ×Ö·û´®
-     * @return ÊÇ·ñÈ«ÎªÊı×Ö
+     * @param s å¾…æ£€æŸ¥çš„å­—ç¬¦ä¸²
+     * @return æ˜¯å¦å…¨ä¸ºæ•°å­—
      */
     public static boolean checkStringOfNumber(String s){
         for(char c : s.toCharArray()){
@@ -20,14 +20,14 @@ public final class BaseUtils {
     }
 
     /**
-     * ´´½¨Ò»¸ö¾ßÌåÖ´ĞĞÈÎÎñµÄÏß³Ì³Ø
+     * åˆ›å»ºä¸€ä¸ªå…·ä½“æ‰§è¡Œä»»åŠ¡çš„çº¿ç¨‹æ± 
      * <p>
-     * ÕâÀï¾Ü¾ø²ßÂÔÓ¦µ±±»ÖØĞ´³É£¬¿ÉÒÔÍ¨Öªµ÷ÓÃ·½ÈÎÎñÎŞ·¨±»Ö´ĞĞ
+     * è¿™é‡Œæ‹’ç»ç­–ç•¥åº”å½“è¢«é‡å†™æˆï¼Œå¯ä»¥é€šçŸ¥è°ƒç”¨æ–¹ä»»åŠ¡æ— æ³•è¢«æ‰§è¡Œ
      *
-     * @param corePoolSize ºËĞÄÏß³ÌÊı
-     * @param maximumPoolSize ×î´óÏß³ÌÊı
-     * @param queueSize ÈÎÎñ»º³å¶ÓÁĞ³¤¶È
-     * @return Ïß³Ì³Ø
+     * @param corePoolSize æ ¸å¿ƒçº¿ç¨‹æ•°
+     * @param maximumPoolSize æœ€å¤§çº¿ç¨‹æ•°
+     * @param queueSize ä»»åŠ¡ç¼“å†²é˜Ÿåˆ—é•¿åº¦
+     * @return çº¿ç¨‹æ± 
      */
     public static ExecutorService createWorkerThreadPool(int corePoolSize, int maximumPoolSize, int queueSize) {
         return new ThreadPoolExecutor(
@@ -40,7 +40,7 @@ public final class BaseUtils {
     }
 
     /**
-     * ´òÓ¡³öcherryµÄlogo£¡
+     * æ‰“å°å‡ºcherryçš„logoï¼
      */
     public static void printLogo() {
         System.out.println("\n" +

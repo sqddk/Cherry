@@ -13,7 +13,7 @@ import java.util.List;
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
- * »ùÓÚcherryĞ­ÒéµÄ·şÎñ¶Ë½âÂëÆ÷
+ * åŸºäºcherryåè®®çš„æœåŠ¡ç«¯è§£ç å™¨
  *
  * @since 2022/10/18
  * @author realDragonKing
@@ -64,11 +64,11 @@ public class CherryServerDecoder extends MessageToMessageDecoder<ByteBuf> {
                     out.add(protocol);
                     break;
 
-                default: ctx.fireExceptionCaught(new Throwable("ÎŞĞ§Ğ­Òé£¡"));
+                default: ctx.fireExceptionCaught(new Throwable("æ— æ•ˆåè®®ï¼"));
 
             }
         } catch (Exception e) {
-            ctx.fireExceptionCaught(new Throwable("ÎŞĞ§Ğ­Òé£¡"));
+            ctx.fireExceptionCaught(new Throwable("æ— æ•ˆåè®®ï¼"));
         }
     }
 

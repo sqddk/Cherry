@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
- * cherry¶¨Ê±ÈÎÎñµ÷¶ÈÒıÇæµÄ socket ÍøÂç·şÎñ¿Í»§¶ËÆô¶¯Òıµ¼Àà
+ * cherryå®šæ—¶ä»»åŠ¡è°ƒåº¦å¼•æ“çš„ socket ç½‘ç»œæœåŠ¡å®¢æˆ·ç«¯å¯åŠ¨å¼•å¯¼ç±»
  *
  * @since 2022/10/19
  * @author realDragonKing
@@ -43,12 +43,12 @@ public class CherryClient {
     }
 
     /**
-     * Í¨¹ıÌá¹©µÄhostµØÖ·ºÍ¶Ë¿Ú£¬³õÊ¼»¯¿Í»§¶Ë£¬³¢ÊÔÁ¬½ÓÄ¿±ê·şÎñ¶Ë
+     * é€šè¿‡æä¾›çš„hoståœ°å€å’Œç«¯å£ï¼Œåˆå§‹åŒ–å®¢æˆ·ç«¯ï¼Œå°è¯•è¿æ¥ç›®æ ‡æœåŠ¡ç«¯
      *
-     * @param channelName ¿Í»§¶ËÃû³Æ£¬ÓÃÓÚÏû·ÑÈÎÎñÍ¨Öª
-     * @param host hostµØÖ·
-     * @param port port¶Ë¿Ú
-     * @param clientReceiver ÏìÓ¦½ÓÊÕ/Ö´ĞĞÕß
+     * @param channelName å®¢æˆ·ç«¯åç§°ï¼Œç”¨äºæ¶ˆè´¹ä»»åŠ¡é€šçŸ¥
+     * @param host hoståœ°å€
+     * @param port portç«¯å£
+     * @param clientReceiver å“åº”æ¥æ”¶/æ‰§è¡Œè€…
      */
     public void initial(String channelName, String host, int port, ClientReceiver clientReceiver) {
         this.channelName = channelName;
@@ -60,9 +60,9 @@ public class CherryClient {
                         .option(ChannelOption.TCP_NODELAY, true)
                         .handler(new ClientInitializer(clientReceiver));
                 ChannelFuture future = this.bootstrap.connect(host, port).sync();
-                this.logger.info("ÓëÔ¶³Ìcherry·şÎñ¶Ë " + future.channel().remoteAddress() + " µÄÁ¬½ÓÒÑ¾­½¨Á¢£¡");
                 this.channel = future.channel();
-                future.channel().closeFuture().sync();
+                this.logger.info("ä¸è¿œç¨‹cherryæœåŠ¡ç«¯ " + this.channel.remoteAddress() + " çš„è¿æ¥å·²ç»å»ºç«‹ï¼");
+                this.channel.closeFuture().sync();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -72,18 +72,18 @@ public class CherryClient {
     }
 
     /**
-     * ÏòÔ¶³Ìcherry·şÎñ¶ËÌá½»Ò»¸ö¶¨Ê±ÈÎÎñ
+     * å‘è¿œç¨‹cherryæœåŠ¡ç«¯æäº¤ä¸€ä¸ªå®šæ—¶ä»»åŠ¡
      *
-     * @param timePoint Ê±¼äµã
-     * @param metaData ÔªÊı¾İ
+     * @param timePoint æ—¶é—´ç‚¹
+     * @param metaData å…ƒæ•°æ®
      */
     public void submit(TimePoint timePoint, JSONObject metaData) {
         if (this.channel == null) {
-            this.logger.error("ÓëÔ¶³Ìcherry·şÎñ¶ËµÄÁ¬½ÓÉĞÎ´½¨Á¢£¡");
+            this.logger.error("ä¸è¿œç¨‹cherryæœåŠ¡ç«¯çš„è¿æ¥å°šæœªå»ºç«‹ï¼");
             return;
         }
         if (!this.channel.isActive()) {
-            this.logger.error("ÓëÔ¶³Ìcherry·şÎñ¶Ë " + this.channel.remoteAddress() + " µÄÁ¬½Ó²»¿ÉÓÃ£¡");
+            this.logger.error("ä¸è¿œç¨‹cherryæœåŠ¡ç«¯ " + this.channel.remoteAddress() + " çš„è¿æ¥ä¸å¯ç”¨ï¼");
             return;
         }
         CherryProtocol protocol = new CherryProtocol(FLAG_ADD)
@@ -91,22 +91,22 @@ public class CherryClient {
                 .setStringTimePoint(timePoint.toString())
                 .setMetaData(metaData);
         this.channel.writeAndFlush(protocol);
-        this.logger.info("ÒÑ¾­³É¹¦ÏòÔ¶³Ìcherry·şÎñ¶Ë " + this.channel.remoteAddress() + " Ìá½»ÁËÒ»¸ö¶¨Ê±ÈÎÎñ£¡ÕıÔÚµÈ´ı²Ù×÷½á¹û£¡");
+        this.logger.info("å·²ç»æˆåŠŸå‘è¿œç¨‹cherryæœåŠ¡ç«¯ " + this.channel.remoteAddress() + " æäº¤äº†ä¸€ä¸ªå®šæ—¶ä»»åŠ¡ï¼æ­£åœ¨ç­‰å¾…æ“ä½œç»“æœï¼");
     }
 
     /**
-     * ´ÓÔ¶³Ìcherry·şÎñ¶ËÖĞÉ¾³ıÒ»¸ö¶¨Ê±ÈÎÎñ
+     * ä»è¿œç¨‹cherryæœåŠ¡ç«¯ä¸­åˆ é™¤ä¸€ä¸ªå®šæ—¶ä»»åŠ¡
      *
-     * @param timePoint Ê±¼äµã
-     * @param taskID ÈÎÎñID
+     * @param timePoint æ—¶é—´ç‚¹
+     * @param taskID ä»»åŠ¡ID
      */
     public void remove(TimePoint timePoint, int taskID) {
         if (this.channel == null) {
-            this.logger.error("ÓëÔ¶³Ìcherry·şÎñ¶ËµÄÁ¬½ÓÉĞÎ´½¨Á¢£¡");
+            this.logger.error("ä¸è¿œç¨‹cherryæœåŠ¡ç«¯çš„è¿æ¥å°šæœªå»ºç«‹ï¼");
             return;
         }
         if (!this.channel.isActive()) {
-            this.logger.error("ÓëÔ¶³Ìcherry·şÎñ¶Ë " + this.channel.remoteAddress() + " µÄÁ¬½Ó²»¿ÉÓÃ£¡");
+            this.logger.error("ä¸è¿œç¨‹cherryæœåŠ¡ç«¯ " + this.channel.remoteAddress() + " çš„è¿æ¥ä¸å¯ç”¨ï¼");
             return;
         }
         CherryProtocol protocol = new CherryProtocol(FLAG_REMOVE)
@@ -114,7 +114,7 @@ public class CherryClient {
                 .setStringTimePoint(timePoint.toString())
                 .setTaskID(taskID);
         this.channel.writeAndFlush(protocol);
-        this.logger.info("ÒÑ¾­³É¹¦ÏòÔ¶³Ìcherry·şÎñ¶Ë " + this.channel.remoteAddress() + " ·¢ËÍÁËÒ»¸ö¶¨Ê±ÈÎÎñÉ¾³ıÇëÇó£¡ÕıÔÚµÈ´ı²Ù×÷½á¹û£¡");
+        this.logger.info("å·²ç»æˆåŠŸå‘è¿œç¨‹cherryæœåŠ¡ç«¯ " + this.channel.remoteAddress() + " å‘é€äº†ä¸€ä¸ªå®šæ—¶ä»»åŠ¡åˆ é™¤è¯·æ±‚ï¼æ­£åœ¨ç­‰å¾…æ“ä½œç»“æœï¼");
     }
 
 }

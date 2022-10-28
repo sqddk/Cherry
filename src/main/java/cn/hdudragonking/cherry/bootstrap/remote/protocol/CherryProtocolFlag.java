@@ -5,47 +5,47 @@ public class CherryProtocolFlag {
     private CherryProtocolFlag() {}
 
     /**
-     * À´×Ô¿Í»§¶ËµÄĞÄÌø
+     * æ¥è‡ªå®¢æˆ·ç«¯çš„å¿ƒè·³
      */
     public static final int FLAG_PING = 1;
 
     /**
-     * À´×Ô·şÎñ¶ËµÄĞÄÌø
+     * æ¥è‡ªæœåŠ¡ç«¯çš„å¿ƒè·³
      */
     public static final int FLAG_PONG = 2;
 
     /**
-     * Ìá½»¶¨Ê±ÈÎÎñ
+     * æäº¤å®šæ—¶ä»»åŠ¡
      */
     public static final int FLAG_ADD = 3;
 
     /**
-     * È¡Ïû¶¨Ê±ÈÎÎñ
+     * å–æ¶ˆå®šæ—¶ä»»åŠ¡
      */
     public static final int FLAG_REMOVE = 4;
 
     /**
-     * Í¨ÖªÖ´ĞĞ¶¨Ê±ÈÎÎñ
+     * é€šçŸ¥æ‰§è¡Œå®šæ—¶ä»»åŠ¡
      */
     public static final int FLAG_NOTIFY = 5;
 
     /**
-     * »ã±¨´íÎó
+     * æ±‡æŠ¥é”™è¯¯
      */
     public static final int FLAG_ERROR = 6;
 
     /**
-     * Ö´ĞĞÌá½»²Ù×÷µÄ½á¹û
+     * æ‰§è¡Œæäº¤æ“ä½œçš„ç»“æœ
      */
     public static final int FLAG_RESULT_ADD = 7;
 
     /**
-     * Ö´ĞĞÉ¾³ı²Ù×÷µÄ½á¹û
+     * æ‰§è¡Œåˆ é™¤æ“ä½œçš„ç»“æœ
      */
     public static final int FLAG_RESULT_REMOVE = 8;
 
     /**
-     * ½øĞĞÍ¨ĞÅĞÅµÀ×¢²á
+     * è¿›è¡Œé€šä¿¡ä¿¡é“æ³¨å†Œ
      */
     public static final int FLAG_REGISTER = 9;
 

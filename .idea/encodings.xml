@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/CherryLocalStarter.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/CherryServer.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/bootstrap/remote/server/codec/CherryServerEncoder.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/DefaultTimingWheel.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/TimePoint.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/TimingWheel.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/executor/ScheduleExecutor.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/executor/TimingWheelExecutor.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/DefaultPointerLinkedList.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/DefaultPointerLinkedRing.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/struct/PointerLinkedList.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/task/ReminderTask.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/task/Task.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/BaseUtils.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/TimeUtils.java" charset="GBK" />
-    <file url="PROJECT" charset="GBK" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

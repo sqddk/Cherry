@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Logger;
 import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
 
 /**
- * cherryÍøÂçÍ¨ĞÅ²ãÃæµÄ¿Í»§¶Ë´¦ÀíÆ÷
- * ÓÃÀ´´¦ÀíÍøÂç¶¨Ê±ÈÎÎñµÄÖ´ĞĞÍ¨Öª
+ * cherryç½‘ç»œé€šä¿¡å±‚é¢çš„å®¢æˆ·ç«¯å¤„ç†å™¨
+ * ç”¨æ¥å¤„ç†ç½‘ç»œå®šæ—¶ä»»åŠ¡çš„æ‰§è¡Œé€šçŸ¥
  *
  * @since 2022/10/19
  * @author realDragonKing
@@ -30,11 +30,11 @@ public class ClientHandler extends SimpleChannelInboundHandler<CherryProtocol> {
      * <p>
      * Subclasses may override this method to change behavior.
      *
-     * @param ctx Í¨ĞÅ¹ÜµÀ
+     * @param ctx é€šä¿¡ç®¡é“
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        this.logger.info("Óë·şÎñ¶Ë " + ctx.channel().remoteAddress() + " µÄÍ¨ĞÅĞÅµÀÒÑ¾­´ò¿ª£¡");
+        this.logger.info("ä¸æœåŠ¡ç«¯ " + ctx.channel().remoteAddress() + " çš„é€šä¿¡ä¿¡é“å·²ç»æ‰“å¼€ï¼");
     }
 
     /**
@@ -50,7 +50,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<CherryProtocol> {
             case FLAG_NOTIFY :
                 TimePoint timePoint = TimePoint.parse(protocol.getStringTimePoint());
                 if (timePoint == null) {
-                    ctx.fireExceptionCaught(new Throwable("Ê±¼äĞÅÏ¢¸ñÊ½´íÎó£¡"));
+                    ctx.fireExceptionCaught(new Throwable("æ—¶é—´ä¿¡æ¯æ ¼å¼é”™è¯¯ï¼"));
                     return;
                 }
                 this.clientReceiver.receiveNotify(timePoint, protocol.getMetaData(), protocol.getTaskID());
@@ -73,8 +73,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<CherryProtocol> {
      * <p>
      * Subclasses may override this method to change behavior.
      *
-     * @param ctx Í¨ĞÅ¹ÜµÀ
-     * @param cause Òì³£ĞÅÏ¢
+     * @param ctx é€šä¿¡ç®¡é“
+     * @param cause å¼‚å¸¸ä¿¡æ¯
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

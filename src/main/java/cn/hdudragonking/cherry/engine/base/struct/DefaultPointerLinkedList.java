@@ -1,8 +1,7 @@
 package cn.hdudragonking.cherry.engine.base.struct;
 
-
 /**
- * Ö¸ÕëÁ´±íµÄÄ¬ÈÏÊµÏÖÀà
+ * æŒ‡é’ˆé“¾è¡¨çš„é»˜è®¤å®ç°ç±»
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -23,9 +22,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * ÔÚÄ©¶Ë²åÈëÒ»¸öĞÂµÄ½Úµã
+     * åœ¨æœ«ç«¯æ’å…¥ä¸€ä¸ªæ–°çš„èŠ‚ç‚¹
      *
-     * @param item ½ÚµãÖµ
+     * @param item èŠ‚ç‚¹å€¼
      */
     @Override
     public void add(E item) {
@@ -47,9 +46,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * É¾³ı²¢µ¯³öÖ¸Õë´¦µÄ½ÚµãÖµ
+     * åˆ é™¤å¹¶å¼¹å‡ºæŒ‡é’ˆå¤„çš„èŠ‚ç‚¹å€¼
      *
-     * @return µ¯³öµÄ½ÚµãÖµ
+     * @return å¼¹å‡ºçš„èŠ‚ç‚¹å€¼
      */
     @Override
     public E remove() {
@@ -57,8 +56,8 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
             return null;
         }
         Node<E> prev = this.pointer.prev,
-             next = this.pointer.next,
-             node = this.pointer;
+                next = this.pointer.next,
+                node = this.pointer;
         prev.next = next;
         next.prev = prev;
         this.size--;
@@ -74,7 +73,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * ÒÆ¶¯Ö¸Õëµ½ÏÂÒ»¸ö½Úµã
+     * ç§»åŠ¨æŒ‡é’ˆåˆ°ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
      */
     @Override
     public void moveNext() {
@@ -85,7 +84,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * ÒÆ¶¯Ö¸Õëµ½ÉÏÒ»¸ö½Úµã
+     * ç§»åŠ¨æŒ‡é’ˆåˆ°ä¸Šä¸€ä¸ªèŠ‚ç‚¹
      */
     @Override
     public void movePrevious() {
@@ -96,7 +95,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * ÖØÖÃÖ¸Õëµ½Í·½Úµã
+     * é‡ç½®æŒ‡é’ˆåˆ°å¤´èŠ‚ç‚¹
      */
     @Override
     public void resetHead() {
@@ -107,7 +106,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * ÖØÖÃÖ¸Õëµ½Î²½Úµã
+     * é‡ç½®æŒ‡é’ˆåˆ°å°¾èŠ‚ç‚¹
      */
     @Override
     public void resetTail() {
@@ -118,9 +117,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * »ñÈ¡Ö¸ÕëËùÖ¸µÄ½Úµã
+     * è·å–æŒ‡é’ˆæ‰€æŒ‡çš„èŠ‚ç‚¹
      *
-     * @return ½Úµã
+     * @return èŠ‚ç‚¹
      */
     @Override
     public E getPointer() {
@@ -128,9 +127,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * »ñÈ¡Ö¸ÕëËùÖ¸½ÚµãµÄÎ»ÖÃ
+     * è·å–æŒ‡é’ˆæ‰€æŒ‡èŠ‚ç‚¹çš„ä½ç½®
      *
-     * @return Î»ÖÃ
+     * @return ä½ç½®
      */
     @Override
     public int getPosition() {
@@ -138,9 +137,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * »ñÈ¡Á´±íµÄ´óĞ¡
+     * è·å–é“¾è¡¨çš„å¤§å°
      *
-     * @return Á´±íµÄ´óĞ¡
+     * @return é“¾è¡¨çš„å¤§å°
      */
     @Override
     public int size() {
@@ -148,9 +147,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * ·µ»Ø×Ö·û´®ĞÍÁ´±í
+     * è¿”å›å­—ç¬¦ä¸²å‹é“¾è¡¨
      *
-     * @return ×Ö·û´®ĞÍµÄÁ´±í
+     * @return å­—ç¬¦ä¸²å‹çš„é“¾è¡¨
      */
     @Override
     public String toString() {
@@ -173,7 +172,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * »·ĞÎÁ´±íµÄ½Úµã
+     * ç¯å½¢é“¾è¡¨çš„èŠ‚ç‚¹
      * @author realDragonKing
      */
     private static class Node<E> {

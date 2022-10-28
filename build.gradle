@@ -7,14 +7,15 @@ version '1.0'
 
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-//    manifest {
-//        attributes 'Main-Class': 'cn.hdudragonking.cherry.Main'
-//    }
+    manifest {
+        attributes 'Main-Class': 'cn.hdudragonking.cherry.Main'
+    }
     from {
         (configurations.runtimeClasspath).collect {
             it.isDirectory() ? it : zipTree(it)
         }
     }
+    from sourceSets.main.allJava
 }
 
 task sourcesJar(type: Jar) {

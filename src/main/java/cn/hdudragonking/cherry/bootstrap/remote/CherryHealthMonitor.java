@@ -3,7 +3,7 @@ package cn.hdudragonking.cherry.bootstrap.remote;
 import io.netty.channel.Channel;
 
 /**
- * cherry网络通信层面的连接心跳机制监视者，负责响应ping/pong
+ * cherry缃戠粶閫氫俊灞傞潰鐨勮繛鎺ュ績璺虫満鍒剁洃瑙嗚�咃紝璐熻矗鍝嶅簲ping/pong
  *
  * @since 2022/10/18
  * @author realDragonKing
@@ -20,18 +20,18 @@ public class CherryHealthMonitor {
     private CherryHealthMonitor() {}
 
     /**
-     * 接收ping心跳帧，服务端检测客户端是否断连
+     * 鎺ユ敹ping蹇冭烦甯э紝鏈嶅姟绔娴嬪鎴风鏄惁鏂繛
      *
-     * @param channelName 客户端的名称
+     * @param channelName 瀹㈡埛绔殑鍚嶇О
      */
     public void acceptPing(String channelName) {
 
     }
 
     /**
-     * 接收pong心跳帧，客户端检测服务端是否断连
+     * 鎺ユ敹pong蹇冭烦甯э紝瀹㈡埛绔娴嬫湇鍔＄鏄惁鏂繛
      *
-     * @param channel 与服务端的通信管道
+     * @param channel 涓庢湇鍔＄鐨勯�氫俊绠￠亾
      */
     public void acceptPong(Channel channel) {
 

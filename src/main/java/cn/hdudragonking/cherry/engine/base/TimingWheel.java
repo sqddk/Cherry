@@ -3,7 +3,7 @@ package cn.hdudragonking.cherry.engine.base;
 import cn.hdudragonking.cherry.engine.task.Task;
 
 /**
- * Ê±¼äÂÖµÄ½Ó¿Ú
+ * æ—¶é—´è½®çš„æ¥å£
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -11,45 +11,25 @@ import cn.hdudragonking.cherry.engine.task.Task;
 public interface TimingWheel {
 
     /**
-     * Ìá½»Ò»¸öĞÂµÄ¶¨Ê±ÈÎÎñ
+     * æäº¤ä¸€ä¸ªæ–°çš„å®šæ—¶ä»»åŠ¡
      *
-     * @param task ¶¨Ê±ÈÎÎñ
-     * @return Ìá½»ÊÇ·ñ³É¹¦ | ÈÎÎñID
+     * @param task å®šæ—¶ä»»åŠ¡
+     * @return æäº¤æ˜¯å¦æˆåŠŸ | ä»»åŠ¡ID
      */
     int[] submit(Task task);
 
     /**
-     * ¸ù¾İÈÎÎñID£¬ÒÆ³ıÒ»¸ö¶¨Ê±ÈÎÎñ
+     * æ ¹æ®ä»»åŠ¡IDï¼Œç§»é™¤ä¸€ä¸ªå®šæ—¶ä»»åŠ¡
      *
-     * @param timePoint ÈÎÎñÊ±¼äµã
-     * @param id ÈÎÎñID
-     * @return ÈÎÎñÊÇ·ñÉ¾³ı³É¹¦
+     * @param timePoint ä»»åŠ¡æ—¶é—´ç‚¹
+     * @param id ä»»åŠ¡ID
+     * @return ä»»åŠ¡æ˜¯å¦åˆ é™¤æˆåŠŸ
      */
     boolean remove(TimePoint timePoint, int id);
 
     /**
-     * Ê±¼äÂÖ½øĞĞÒ»´Î×ª¶¯
+     * æ—¶é—´è½®è¿›è¡Œä¸€æ¬¡è½¬åŠ¨
      */
     void turn();
-
-    /**
-     * ³¢ÊÔ»ñÈ¡µ½Ê±¼äÂÖµÄ²Ù×÷Ëø£¬ÈôÃ»»ñµÃÔò½øĞĞ×ÔĞı£¬×ÔĞı³¬¹ıÒ»¶¨Ê±¼äÔò·µ»ØËø»ñÈ¡Ê§°ÜµÄĞÅÏ¢
-     *
-     * @param stopNeed ÊÇ·ñ³¬Ê±Í£Ö¹
-     * @return ×îÖÕÊÇ·ñ³É¹¦»ñÈ¡
-     */
-    boolean tryLock(boolean stopNeed);
-
-    /**
-     * ÊÍ·ÅÊ±¼äÂÖµÄ²Ù×÷Ëø
-     */
-    void unLock();
-
-    /**
-     * ÆôÓÃÊ±¼ä½ÃÕı»úÖÆ£¬¼ÆËã³¬Ê±Ê±¼ä£¬¶ÔÓÚÑÓÆÚµÄÈÎÎñ»Ö¸´Ö´ĞĞ£¬²¢ÇÒ°´ÕÕ³¬Ê±Ê±¼äÏ÷¼õËùÓĞround
-     *
-     * @param wasteTicks ËğÊ§µÄ¿Ì¶ÈÊı
-     */
-    void recover(int wasteTicks);
 
 }

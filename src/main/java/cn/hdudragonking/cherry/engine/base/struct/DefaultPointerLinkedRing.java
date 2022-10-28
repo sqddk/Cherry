@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ä¬ÈÏµÄÊ±¼äÂÖµÄÊı¾İ½á¹¹ÊµÏÖ£¬»·ĞÎÁ´±í£¨¼Ì³ĞÓÚÖ¸ÕëÁ´±íµÄÄ¬ÈÏÊµÏÖÀà£©
+ * é»˜è®¤çš„æ—¶é—´è½®çš„æ•°æ®ç»“æ„å®ç°ï¼Œç¯å½¢é“¾è¡¨ï¼ˆç»§æ‰¿äºæŒ‡é’ˆé“¾è¡¨çš„é»˜è®¤å®ç°ç±»ï¼‰
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -19,7 +19,7 @@ public class DefaultPointerLinkedRing extends DefaultPointerLinkedList<Map<Integ
     }
 
     /**
-     * ÒÆ¶¯Ö¸Õëµ½ÏÂÒ»¸ö½Úµã£¬µ±Ö¸ÕëÒÑ¾­´¦ÓÚÎ²½ÚµãÊ±£¬»á»Øµ½Í·½Úµã
+     * ç§»åŠ¨æŒ‡é’ˆåˆ°ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ï¼Œå½“æŒ‡é’ˆå·²ç»å¤„äºå°¾èŠ‚ç‚¹æ—¶ï¼Œä¼šå›åˆ°å¤´èŠ‚ç‚¹
      */
     @Override
     public void moveNext() {
@@ -31,7 +31,7 @@ public class DefaultPointerLinkedRing extends DefaultPointerLinkedList<Map<Integ
     }
 
     /**
-     * ÒÆ¶¯Ö¸Õëµ½ÉÏÒ»¸ö½Úµã£¬µ±Ö¸ÕëÒÑ¾­´¦ÓÚÍ·½ÚµãÊ±£¬»á»Øµ½Î²½Úµã
+     * ç§»åŠ¨æŒ‡é’ˆåˆ°ä¸Šä¸€ä¸ªèŠ‚ç‚¹ï¼Œå½“æŒ‡é’ˆå·²ç»å¤„äºå¤´èŠ‚ç‚¹æ—¶ï¼Œä¼šå›åˆ°å°¾èŠ‚ç‚¹
      */
     @Override
     public void movePrevious() {

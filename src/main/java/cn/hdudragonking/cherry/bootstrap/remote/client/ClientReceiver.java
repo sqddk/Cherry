@@ -4,7 +4,7 @@ import cn.hdudragonking.cherry.engine.base.TimePoint;
 import com.alibaba.fastjson2.JSONObject;
 
 /**
- * ÏìÓ¦Ô¶³ÌµÄcherry¶¨Ê±ÈÎÎñµ÷¶ÈÒıÇæµÄÈÎÎñÖ´ĞĞÍ¨Öª£¬Ö´ĞĞ¾ßÌåµÄÈÎÎñ
+ * å“åº”è¿œç¨‹çš„cherryå®šæ—¶ä»»åŠ¡è°ƒåº¦å¼•æ“çš„ä»»åŠ¡æ‰§è¡Œé€šçŸ¥ï¼Œæ‰§è¡Œå…·ä½“çš„ä»»åŠ¡
  *
  * @since 2022/10/19
  * @author realDragonKing
@@ -12,36 +12,36 @@ import com.alibaba.fastjson2.JSONObject;
 public interface ClientReceiver {
 
     /**
-     * ½ÓÊÕ¶¨Ê±ÈÎÎñÖ´ĞĞÍ¨Öª
+     * æ¥æ”¶å®šæ—¶ä»»åŠ¡æ‰§è¡Œé€šçŸ¥
      *
-     * @param timePoint Ê±¼äµã
-     * @param metaData ÔªÊı¾İ
-     * @param taskID ÈÎÎñID
+     * @param timePoint æ—¶é—´ç‚¹
+     * @param metaData å…ƒæ•°æ®
+     * @param taskID ä»»åŠ¡ID
      */
     void receiveNotify(TimePoint timePoint, JSONObject metaData, int taskID);
 
     /**
-     * ½ÓÊÕ´íÎóĞÅÏ¢
+     * æ¥æ”¶é”™è¯¯ä¿¡æ¯
      *
-     * @param errorMessage ´íÎóĞÅÏ¢
+     * @param errorMessage é”™è¯¯ä¿¡æ¯
      */
     void receiveError(String errorMessage);
 
     /**
-     * ½ÓÊÕ¶¨Ê±ÈÎÎñÌá½»½á¹û
+     * æ¥æ”¶å®šæ—¶ä»»åŠ¡æäº¤ç»“æœ
      *
-     * @param metaData ÔªÊı¾İ
-     * @param taskID ÈÎÎñID
-     * @param result ½á¹û
+     * @param metaData å…ƒæ•°æ®
+     * @param taskID ä»»åŠ¡ID
+     * @param result ç»“æœ
      */
     void receiveAddResult(JSONObject metaData, int taskID, boolean result);
 
     /**
-     * ½ÓÊÕ¶¨Ê±ÈÎÎñÉ¾³ı½á¹û
+     * æ¥æ”¶å®šæ—¶ä»»åŠ¡åˆ é™¤ç»“æœ
      *
-     * @param metaData ÔªÊı¾İ
-     * @param taskID ÈÎÎñID
-     * @param result ½á¹û
+     * @param metaData å…ƒæ•°æ®
+     * @param taskID ä»»åŠ¡ID
+     * @param result ç»“æœ
      */
     void receiveRemoveResult(JSONObject metaData, int taskID, boolean result);
 

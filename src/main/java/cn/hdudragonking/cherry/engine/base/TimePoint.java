@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * Ê±¼äµã
+ * æ—¶é—´ç‚¹
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -17,10 +17,10 @@ import java.util.GregorianCalendar;
 public class TimePoint {
 
     /**
-     * ¸ù¾İ×Ö·û´®Ê±¼ä£¬´´½¨Ò»¸öÊ±¼äµã¶ÔÏó£¬²¢½øĞĞÑÏ¸ñĞ£Ñé
+     * æ ¹æ®å­—ç¬¦ä¸²æ—¶é—´ï¼Œåˆ›å»ºä¸€ä¸ªæ—¶é—´ç‚¹å¯¹è±¡ï¼Œå¹¶è¿›è¡Œä¸¥æ ¼æ ¡éªŒ
      *
-     * @param time String¸ñÊ½Ê±¼ä
-     * @return Ê±¼äµã
+     * @param time Stringæ ¼å¼æ—¶é—´
+     * @return æ—¶é—´ç‚¹
      */
     public static TimePoint parse(String time) {
         if (time == null || time.length() != 12 || (! BaseUtils.checkStringOfNumber(time))) {
@@ -45,10 +45,10 @@ public class TimePoint {
     }
 
     /**
-     * ¸ù¾İÊ±¼äÖµ£¬´´½¨Ò»¸öÊ±¼äµã¶ÔÏó
+     * æ ¹æ®æ—¶é—´å€¼ï¼Œåˆ›å»ºä¸€ä¸ªæ—¶é—´ç‚¹å¯¹è±¡
      *
-     * @param timeValue Ê±¼äÖµ£¬µ¥Î»ÎªºÁÃë£¨ms£©
-     * @return Ê±¼äµã¶ÔÏó
+     * @param timeValue æ—¶é—´å€¼ï¼Œå•ä½ä¸ºæ¯«ç§’ï¼ˆmsï¼‰
+     * @return æ—¶é—´ç‚¹å¯¹è±¡
      */
     public static TimePoint parse(long timeValue) {
         Calendar calendar = Calendar.getInstance();
@@ -62,9 +62,9 @@ public class TimePoint {
     }
 
     /**
-     * ¸ù¾İ{@link Calendar}½Ó¿ÚµÄÊµÏÖÀàÉú³ÉÊ±¼äµã
+     * æ ¹æ®{@link Calendar}æ¥å£çš„å®ç°ç±»ç”Ÿæˆæ—¶é—´ç‚¹
      *
-     * @return µ±Ç°Ê±¼äµã
+     * @return å½“å‰æ—¶é—´ç‚¹
      */
     public static TimePoint getCurrentTimePoint() {
         Calendar calendar = new GregorianCalendar();
@@ -87,24 +87,24 @@ public class TimePoint {
     }
 
     /**
-     * Ê±¼äĞÅÏ¢´æ´¢µ¥Ôª
+     * æ—¶é—´ä¿¡æ¯å­˜å‚¨å•å…ƒ
      */
     private final int[] timeUnitStorage;
     private final long timeValue;
 
     /**
-     * ·µ»Øµ±Ç°Ê±¼äµãµÄ¾ø¶ÔÊ±¼ä
+     * è¿”å›å½“å‰æ—¶é—´ç‚¹çš„ç»å¯¹æ—¶é—´
      *
-     * @return ¾ø¶ÔÊ±¼äÖµ
+     * @return ç»å¯¹æ—¶é—´å€¼
      */
     public final long getTimeValue() {
         return this.timeValue;
     }
 
     /**
-     * ·µ»Ø×Ö·û´®ĞÍÊ±¼äÊı¾İ
+     * è¿”å›å­—ç¬¦ä¸²å‹æ—¶é—´æ•°æ®
      *
-     * @return ×Ö·û´®ĞÍÊ±¼äÊı¾İ
+     * @return å­—ç¬¦ä¸²å‹æ—¶é—´æ•°æ®
      */
     @Override
     public final String toString(){

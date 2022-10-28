@@ -6,7 +6,7 @@ import com.alibaba.fastjson2.JSONObject;
 import java.util.Map;
 
 /**
- * ÊµÏÖÁËcherryÍ¨ĞÅĞ­ÒéµÄÏûÏ¢Ìå
+ * å®ç°äº†cherryé€šä¿¡åè®®çš„æ¶ˆæ¯ä½“
  *
  * @since 2022/10/18
  * @author realDragonKing
@@ -20,27 +20,27 @@ public class CherryProtocol {
     }
 
     /**
-     * »ñÈ¡Êı¾İ°üµÄÀàĞÍ
+     * è·å–æ•°æ®åŒ…çš„ç±»å‹
      *
-     * @return Êı¾İ°üµÄÀàĞÍ
+     * @return æ•°æ®åŒ…çš„ç±»å‹
      */
     public Integer getFlag() {
         return this.dataBucket.getInteger("flag");
     }
 
     /**
-     * »ñÈ¡¿Í»§¶ËµÄÃû³Æ
+     * è·å–å®¢æˆ·ç«¯çš„åç§°
      *
-     * @return ¿Í»§¶ËµÄÃû³Æ
+     * @return å®¢æˆ·ç«¯çš„åç§°
      */
     public String getChannelName() {
         return this.dataBucket.getString("channelName");
     }
 
     /**
-     * ÉèÖÃ¿Í»§¶ËµÄÃû³Æ
+     * è®¾ç½®å®¢æˆ·ç«¯çš„åç§°
      *
-     * @param channelName ¿Í»§¶ËµÄÃû³Æ
+     * @param channelName å®¢æˆ·ç«¯çš„åç§°
      * @return this
      */
     public CherryProtocol setChannelName(String channelName) {
@@ -49,18 +49,18 @@ public class CherryProtocol {
     }
 
     /**
-     * »ñÈ¡×Ö·û´®¸ñÊ½µÄÊ±¼äµã
+     * è·å–å­—ç¬¦ä¸²æ ¼å¼çš„æ—¶é—´ç‚¹
      *
-     * @return ×Ö·û´®¸ñÊ½µÄÊ±¼äµã
+     * @return å­—ç¬¦ä¸²æ ¼å¼çš„æ—¶é—´ç‚¹
      */
     public String getStringTimePoint() {
         return this.dataBucket.getString("timePoint");
     }
 
     /**
-     * ÉèÖÃ×Ö·û´®¸ñÊ½µÄÊ±¼äµã
+     * è®¾ç½®å­—ç¬¦ä¸²æ ¼å¼çš„æ—¶é—´ç‚¹
      *
-     * @param timePointString ×Ö·û´®¸ñÊ½µÄÊ±¼äµã
+     * @param timePointString å­—ç¬¦ä¸²æ ¼å¼çš„æ—¶é—´ç‚¹
      * @return this
      */
     public CherryProtocol setStringTimePoint(String timePointString) {
@@ -69,19 +69,19 @@ public class CherryProtocol {
     }
 
     /**
-     * »ñÈ¡ÔªÊı¾İ
+     * è·å–å…ƒæ•°æ®
      *
-     * @return ÔªÊı¾İ
+     * @return å…ƒæ•°æ®
      */
     public JSONObject getMetaData() {
         return this.dataBucket.getJSONObject("metaData");
     }
 
     /**
-     * ÉèÖÃÔªÊı¾İ
+     * è®¾ç½®å…ƒæ•°æ®
      *
-     * @param key ¼ü
-     * @param value Öµ
+     * @param key é”®
+     * @param value å€¼
      * @return this
      */
     public CherryProtocol setMetaData(String key, Object value) {
@@ -90,9 +90,9 @@ public class CherryProtocol {
     }
 
     /**
-     * ÉèÖÃÔªÊı¾İ
+     * è®¾ç½®å…ƒæ•°æ®
      *
-     * @param metaData Ò»×éÔªÊı¾İ
+     * @param metaData ä¸€ç»„å…ƒæ•°æ®
      * @return this
      */
     public CherryProtocol setMetaData(JSONObject metaData) {
@@ -101,18 +101,18 @@ public class CherryProtocol {
     }
 
     /**
-     * »ñÈ¡ÈÎÎñID
+     * è·å–ä»»åŠ¡ID
      *
-     * @return ÈÎÎñID
+     * @return ä»»åŠ¡ID
      */
     public int getTaskID() {
         return this.dataBucket.getInteger("taskID");
     }
 
     /**
-     * ÉèÖÃÈÎÎñID
+     * è®¾ç½®ä»»åŠ¡ID
      *
-     * @param taskID ÈÎÎñID
+     * @param taskID ä»»åŠ¡ID
      * @return this
      */
     public CherryProtocol setTaskID(int taskID) {
@@ -121,18 +121,18 @@ public class CherryProtocol {
     }
 
     /**
-     * »ñÈ¡´íÎóĞÅÏ¢
+     * è·å–é”™è¯¯ä¿¡æ¯
      *
-     * @return ´íÎóĞÅÏ¢
+     * @return é”™è¯¯ä¿¡æ¯
      */
     public String getErrorMessage() {
         return this.dataBucket.getString("errorMessage");
     }
 
     /**
-     * ÉèÖÃ´íÎóĞÅÏ¢
+     * è®¾ç½®é”™è¯¯ä¿¡æ¯
      *
-     * @param errorMessage ´íÎóĞÅÏ¢
+     * @param errorMessage é”™è¯¯ä¿¡æ¯
      * @return this
      */
     public CherryProtocol setErrorMessage(String errorMessage) {
@@ -141,18 +141,18 @@ public class CherryProtocol {
     }
 
     /**
-     * »ñÈ¡²Ù×÷½á¹ûĞÅÏ¢
+     * è·å–æ“ä½œç»“æœä¿¡æ¯
      *
-     * @return ²Ù×÷½á¹ûĞÅÏ¢
+     * @return æ“ä½œç»“æœä¿¡æ¯
      */
     public boolean getResult() {
         return this.dataBucket.getBooleanValue("result");
     }
 
     /**
-     * ÉèÖÃ²Ù×÷½á¹ûĞÅÏ¢
+     * è®¾ç½®æ“ä½œç»“æœä¿¡æ¯
      *
-     * @param result ²Ù×÷½á¹û
+     * @param result æ“ä½œç»“æœ
      * @return this
      */
     public CherryProtocol setResult(boolean result) {
