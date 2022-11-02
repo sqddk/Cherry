@@ -1,6 +1,6 @@
-package cn.hdudragonking.cherry.bootstrap.remote.server.codec;
+package cn.hdudragonking.cherry.service.remote.server.codec;
 
-import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
+import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
@@ -15,7 +15,7 @@ import java.util.List;
  * @since 2022/10/18
  * @author realDragonKing
  */
-public class CherryServerEncoder extends MessageToMessageEncoder<CherryProtocol> {
+public class CherryServerEncoder extends MessageToMessageEncoder<JSONObject> {
 
     private final Charset charset;
 
@@ -33,7 +33,7 @@ public class CherryServerEncoder extends MessageToMessageEncoder<CherryProtocol>
      *            needs to do some kind of aggregation
      */
     @Override
-    protected void encode(ChannelHandlerContext ctx, CherryProtocol protocol, List<Object> out) {
+    protected void encode(ChannelHandlerContext ctx, JSONObject protocol, List<Object> out) {
         out.add(ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(protocol + "\n"), charset));
     }
 

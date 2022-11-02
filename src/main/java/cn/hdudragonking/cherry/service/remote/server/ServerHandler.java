@@ -1,7 +1,6 @@
-package cn.hdudragonking.cherry.bootstrap.remote.server;
+package cn.hdudragonking.cherry.service.remote.server;
 
-import cn.hdudragonking.cherry.bootstrap.CherryLocalStarter;
-import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
+import cn.hdudragonking.cherry.service.CherryLocalStarter;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 import cn.hdudragonking.cherry.engine.task.ReminderTask;
 import com.alibaba.fastjson2.JSONObject;
@@ -9,9 +8,10 @@ import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
+import static cn.hdudragonking.cherry.service.remote.CherryProtocolFlag.*;
 
 /**
  * cherry网络通信层面的服务端处理器，
@@ -20,7 +20,7 @@ import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFl
  * @since 2022/10/18
  * @author realDragonKing
  */
-public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
+public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
 
     private final ConcurrentHashMap<String, Channel> channelMap = CherryServer.getInstance().getChannelMap();
     private final Logger logger = LogManager.getLogger("Cherry");
@@ -40,22 +40,22 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
     }
 
     /**
-     * Is called for each message of type {@link CherryProtocol}.
+     * Is called for each message of type {@link JSONObject}.
      *
      * @param ctx the {@link ChannelHandlerContext} which this {@link SimpleChannelInboundHandler}
      *            belongs to
-     * @param requestProtocol the message to handle
+     * @param reqProtocol the message to handle
      */
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, CherryProtocol requestProtocol) {
-        TimePoint timePoint = TimePoint.parse(requestProtocol.getStringTimePoint());
+    protected void channelRead0(ChannelHandlerContext ctx, JSONObject reqProtocol) {
+        TimePoint timePoint = TimePoint.parse(reqProtocol.getString("timePoint"));
         if (timePoint == null) {
             ctx.fireExceptionCaught(new Throwable("时间信息格式错误！"));
             return;
         }
-        CherryProtocol responseProtocol;
-        String channelName = requestProtocol.getChannelName();
-        JSONObject metaData = requestProtocol.getMetaData();
+        JSONObject resProtocol = new JSONObject();
+        String channelName = reqProtocol.getString("channelName");
+        JSONObject metaData = reqProtocol.getJSONObject("metaData");
         if (channelName == null) {
             ctx.fireExceptionCaught(new Throwable("未提交客户端名称！"));
             return;
@@ -65,7 +65,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
             this.channelMap.put(channelName, ctx.channel());
         }
 
-        switch (requestProtocol.getFlag()) {
+        switch (reqProtocol.getIntValue("flag")) {
 
             case FLAG_ADD :
                 this.logger.info(channelName + " 提交了一个定时任务！");
@@ -75,32 +75,32 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
                                 timePoint,
                                 metaData.toJSONString()
                         ));
-                responseProtocol = new CherryProtocol(FLAG_RESULT_ADD)
-                        .setMetaData(metaData);
+                resProtocol.put("flag", FLAG_RESULT_ADD);
+                resProtocol.put("metaData", metaData);
                 if (result.length == 2) {
-                    responseProtocol.setTaskID(result[1]).setResult(true);
+                    resProtocol.put("taskId", result[1]);
+                    resProtocol.put("result", true);
                     this.logger.info(channelName + " 定时任务提交成功！");
                 } else {
-                    responseProtocol.setResult(false);
+                    resProtocol.put("result", false);
                     this.logger.info(channelName + " 定时任务提交失败！");
                 }
-                ctx.writeAndFlush(responseProtocol);
+                ctx.writeAndFlush(resProtocol);
                 break;
 
             case FLAG_REMOVE :
                 this.logger.info(channelName + " 尝试删除一个定时任务！");
-                int taskID = requestProtocol.getTaskID();
-                responseProtocol = new CherryProtocol(FLAG_RESULT_REMOVE)
-                        .setMetaData(metaData)
-                        .setTaskID(taskID);
-                if (this.cherryLocalStarter.remove(timePoint, taskID)) {
-                    responseProtocol.setResult(true);
+                int taskId = reqProtocol.getIntValue("taskId");
+                resProtocol.put("flag", FLAG_RESULT_REMOVE);
+                resProtocol.put("metaData", metaData);
+                if (this.cherryLocalStarter.remove(timePoint, taskId)) {
+                    resProtocol.put("result", true);
                     this.logger.info(channelName + " 定时任务删除成功！");
                 } else {
-                    responseProtocol.setResult(false);
+                    resProtocol.put("result", false);
                     this.logger.info(channelName + " 定时任务删除失败！");
                 }
-                ctx.writeAndFlush(responseProtocol);
+                ctx.writeAndFlush(resProtocol);
                 break;
         }
     }
@@ -117,8 +117,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<CherryProtocol> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.logger.error(cause.getMessage());
-        CherryProtocol protocol = new CherryProtocol(FLAG_ERROR)
-                .setErrorMessage(cause.getMessage());
+        JSONObject protocol = new JSONObject(Map.of(
+                "flag", FLAG_ERROR,
+                "errorMessage", cause.getMessage()
+        ));
         ctx.writeAndFlush(protocol);
     }
 

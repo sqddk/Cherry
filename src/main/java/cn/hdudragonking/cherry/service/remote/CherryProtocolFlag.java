@@ -1,4 +1,4 @@
-package cn.hdudragonking.cherry.bootstrap.remote.protocol;
+package cn.hdudragonking.cherry.service.remote;
 
 public class CherryProtocolFlag {
 

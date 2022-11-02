@@ -1,4 +1,4 @@
-package cn.hdudragonking.cherry.bootstrap.remote;
+package cn.hdudragonking.cherry.service.remote;
 
 import io.netty.channel.Channel;
 

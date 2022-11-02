@@ -1,4 +1,4 @@
-package cn.hdudragonking.cherry.bootstrap.remote.client;
+package cn.hdudragonking.cherry.service.remote.client;
 
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 import com.alibaba.fastjson2.JSONObject;

@@ -1,7 +1,6 @@
-package cn.hdudragonking.cherry.bootstrap.remote.server.codec;
+package cn.hdudragonking.cherry.service.remote.server.codec;
 
-import cn.hdudragonking.cherry.bootstrap.remote.CherryHealthMonitor;
-import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
+import cn.hdudragonking.cherry.service.remote.CherryHealthMonitor;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBuf;
@@ -10,7 +9,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 
 import java.util.List;
 
-import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
+import static cn.hdudragonking.cherry.service.remote.CherryProtocolFlag.*;
 
 /**
  * 基于cherry协议的服务端解码器
@@ -37,30 +36,16 @@ public class CherryServerDecoder extends MessageToMessageDecoder<ByteBuf> {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
         try {
-            CherryProtocol protocol;
-            JSONObject json = JSON.parseObject(msg.array());
-            String channelName = json.getString("channelName");
-            String timePoint = json.getString("timePoint");
+            JSONObject protocol = JSON.parseObject(msg.array());
 
-            switch (json.getIntValue("flag")) {
+            switch (protocol.getIntValue("flag")) {
 
                 case FLAG_PING :
-                    monitor.acceptPing(channelName);
+                    monitor.acceptPing(protocol.getString("channelName"));
                     break;
 
                 case FLAG_ADD :
-                    protocol = new CherryProtocol(FLAG_ADD)
-                            .setChannelName(channelName)
-                            .setStringTimePoint(timePoint)
-                            .setMetaData(json.getJSONObject("metaData"));
-                    out.add(protocol);
-                    break;
-
                 case FLAG_REMOVE :
-                    protocol = new CherryProtocol(FLAG_ADD)
-                            .setChannelName(channelName)
-                            .setStringTimePoint(timePoint)
-                            .setTaskID(json.getIntValue("taskID"));
                     out.add(protocol);
                     break;
 

@@ -1,12 +1,12 @@
-package cn.hdudragonking.cherry.bootstrap.remote.client;
+package cn.hdudragonking.cherry.service.remote.client;
 
-import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
+import cn.hdudragonking.cherry.service.remote.protocol.CherryProtocol;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
+import static cn.hdudragonking.cherry.service.remote.CherryProtocolFlag.*;
 
 /**
  * cherry网络通信层面的客户端处理器
@@ -18,10 +18,12 @@ import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFl
 public class ClientHandler extends SimpleChannelInboundHandler<CherryProtocol> {
 
     private final ClientReceiver clientReceiver;
+    private final CherryClient cherryClient;
     private final Logger logger = LogManager.getLogger("Cherry");
 
     public ClientHandler(ClientReceiver clientReceiver) {
         this.clientReceiver = clientReceiver;
+        this.cherryClient = CherryClient.getInstance();
     }
 
     /**

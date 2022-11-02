@@ -1,7 +1,7 @@
-package cn.hdudragonking.cherry.bootstrap.remote.server;
+package cn.hdudragonking.cherry.service.remote.server;
 
-import cn.hdudragonking.cherry.bootstrap.remote.server.codec.CherryServerDecoder;
-import cn.hdudragonking.cherry.bootstrap.remote.server.codec.CherryServerEncoder;
+import cn.hdudragonking.cherry.service.remote.server.codec.CherryServerDecoder;
+import cn.hdudragonking.cherry.service.remote.server.codec.CherryServerEncoder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

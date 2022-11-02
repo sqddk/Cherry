@@ -1,6 +1,5 @@
-package cn.hdudragonking.cherry.bootstrap.remote.client;
+package cn.hdudragonking.cherry.service.remote.client;
 
-import cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocol;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.bootstrap.Bootstrap;
@@ -12,9 +11,12 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.concurrent.Executors;
+import java.util.Map;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import static cn.hdudragonking.cherry.bootstrap.remote.protocol.CherryProtocolFlag.*;
+import static cn.hdudragonking.cherry.service.remote.CherryProtocolFlag.*;
+
 
 /**
  * cherry定时任务调度引擎的 socket 网络服务客户端启动引导类
@@ -32,14 +34,20 @@ public class CherryClient {
     }
 
     private final Bootstrap bootstrap;
-    private Channel channel;
-    private String channelName;
     private final NioEventLoopGroup workerGroup;
     private final Logger logger = LogManager.getLogger("Cherry");
+    private Channel channel;
+    private String channelName;
+    private final AtomicInteger monitor;
+    private final Map<Integer, CompletableFuture<Integer>> addResultBucket;
+    private final Map<Integer, CompletableFuture<Integer>> removeResultBucket;
 
     private CherryClient() {
         this.bootstrap = new Bootstrap();
         this.workerGroup = new NioEventLoopGroup(2);
+        this.monitor = new AtomicInteger(0);
+        this.addResultBucket = new ConcurrentHashMap<>();
+        this.removeResultBucket = new ConcurrentHashMap<>();
     }
 
     /**
@@ -77,21 +85,30 @@ public class CherryClient {
      * @param timePoint 时间点
      * @param metaData 元数据
      */
-    public void submit(TimePoint timePoint, JSONObject metaData) {
+    public int submit(TimePoint timePoint, JSONObject metaData, int timeout)
+            throws ExecutionException, InterruptedException, TimeoutException {
         if (this.channel == null) {
             this.logger.error("与远程cherry服务端的连接尚未建立！");
-            return;
+            return -1;
         }
         if (!this.channel.isActive()) {
             this.logger.error("与远程cherry服务端 " + this.channel.remoteAddress() + " 的连接不可用！");
-            return;
+            return -1;
         }
-        CherryProtocol protocol = new CherryProtocol(FLAG_ADD)
-                .setChannelName(this.channelName)
-                .setStringTimePoint(timePoint.toString())
-                .setMetaData(metaData);
+        final int sendingId = this.monitor.addAndGet(1);
+        JSONObject protocol = new JSONObject(Map.of(
+                        "channelName", this.channelName,
+                        "flag", FLAG_ADD,
+                        "metaData", metaData,
+                        "timePoint", timePoint.toString(),
+                        "sendingId", sendingId
+                )
+        );
         this.channel.writeAndFlush(protocol);
         this.logger.info("已经成功向远程cherry服务端 " + this.channel.remoteAddress() + " 提交了一个定时任务！正在等待操作结果！");
+        final CompletableFuture<Integer> future = new CompletableFuture<>();
+        this.addResultBucket.put(sendingId, future);
+        return future.get(timeout, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -100,21 +117,42 @@ public class CherryClient {
      * @param timePoint 时间点
      * @param taskID 任务ID
      */
-    public void remove(TimePoint timePoint, int taskID) {
+    public int remove(TimePoint timePoint, int taskID, int timeout)
+            throws ExecutionException, InterruptedException, TimeoutException {
         if (this.channel == null) {
             this.logger.error("与远程cherry服务端的连接尚未建立！");
-            return;
+            return -1;
         }
         if (!this.channel.isActive()) {
             this.logger.error("与远程cherry服务端 " + this.channel.remoteAddress() + " 的连接不可用！");
-            return;
+            return -1;
         }
-        CherryProtocol protocol = new CherryProtocol(FLAG_REMOVE)
-                .setChannelName(this.channelName)
-                .setStringTimePoint(timePoint.toString())
-                .setTaskID(taskID);
+        final int sendingId = this.monitor.addAndGet(1);
+        JSONObject protocol = new JSONObject(Map.of(
+                        "channelName", this.channelName,
+                        "flag", FLAG_REMOVE,
+                        "taskId", taskID,
+                        "timePoint", timePoint.toString(),
+                        "sendingId", sendingId
+                )
+        );
         this.channel.writeAndFlush(protocol);
         this.logger.info("已经成功向远程cherry服务端 " + this.channel.remoteAddress() + " 发送了一个定时任务删除请求！正在等待操作结果！");
+        final CompletableFuture<Integer> future = new CompletableFuture<>();
+        this.removeResultBucket.put(sendingId, future);
+        return future.get(timeout, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * 接受远程cherry服务端的定时任务执行结果
+     *
+     * @param type 执行操作的类型
+     * @param sendingId 发送序号
+     * @param taskID 任务编号
+     * @param result 执行结果
+     */
+    public void receiveInvokeResult(int type, int sendingId, int taskID, boolean result) {
+        
     }
 
 }
