@@ -1,7 +1,7 @@
 package cn.hdudragonking.cherry.service.remote.client;
 
-import cn.hdudragonking.cherry.service.remote.protocol.CherryProtocol;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
+import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +15,7 @@ import static cn.hdudragonking.cherry.service.remote.CherryProtocolFlag.*;
  * @since 2022/10/19
  * @author realDragonKing
  */
-public class ClientHandler extends SimpleChannelInboundHandler<CherryProtocol> {
+public class ClientHandler extends SimpleChannelInboundHandler<JSONObject> {
 
     private final ClientReceiver clientReceiver;
     private final CherryClient cherryClient;
@@ -40,31 +40,42 @@ public class ClientHandler extends SimpleChannelInboundHandler<CherryProtocol> {
     }
 
     /**
-     * Is called for each message of type {@link CherryProtocol}.
+     * Is called for each message of type {@link JSONObject}.
      *
      * @param ctx the {@link ChannelHandlerContext} which this {@link SimpleChannelInboundHandler}
      *            belongs to
      * @param protocol the message to handle
      */
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, CherryProtocol protocol) {
-        switch (protocol.getFlag()) {
+    protected void channelRead0(ChannelHandlerContext ctx, JSONObject protocol) {
+        switch (protocol.getIntValue("flag")) {
             case FLAG_NOTIFY :
-                TimePoint timePoint = TimePoint.parse(protocol.getStringTimePoint());
+                TimePoint timePoint = TimePoint.parse(protocol.getString("timePoint"));
                 if (timePoint == null) {
                     ctx.fireExceptionCaught(new Throwable("时间信息格式错误！"));
                     return;
                 }
-                this.clientReceiver.receiveNotify(timePoint, protocol.getMetaData(), protocol.getTaskID());
+                this.clientReceiver.receiveNotify(
+                        timePoint,
+                        protocol.getJSONObject("metaData"),
+                        protocol.getIntValue("taskId"));
                 break;
             case FLAG_ERROR :
-                this.clientReceiver.receiveError(protocol.getErrorMessage());
+                this.clientReceiver.receiveError(protocol.getString("errorMessage"));
                 break;
             case FLAG_RESULT_ADD :
-                this.clientReceiver.receiveAddResult(protocol.getMetaData(), protocol.getTaskID(), protocol.getResult());
+                this.cherryClient.receiveInvokeResult(
+                        FLAG_RESULT_ADD,
+                        protocol.getIntValue("sendingId"),
+                        protocol.getIntValue("taskId"),
+                        null);
                 break;
             case FLAG_RESULT_REMOVE :
-                this.clientReceiver.receiveRemoveResult(protocol.getMetaData(), protocol.getTaskID(), protocol.getResult());
+                this.cherryClient.receiveInvokeResult(
+                        FLAG_RESULT_REMOVE,
+                        protocol.getIntValue("sendingId"),
+                        null,
+                        protocol.getBooleanValue("result"));
                 break;
         }
     }

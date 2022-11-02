@@ -1,12 +1,13 @@
 package cn.hdudragonking.cherry.engine.task;
 
-import cn.hdudragonking.cherry.service.remote.protocol.CherryProtocol;
 import cn.hdudragonking.cherry.service.remote.server.CherryServer;
 import cn.hdudragonking.cherry.engine.base.TimePoint;
-import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.Channel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Map;
 
 import static cn.hdudragonking.cherry.service.remote.CherryProtocolFlag.*;
 
@@ -66,10 +67,12 @@ public class ReminderTask implements Task {
      */
     @Override
     public void execute() {
-        CherryProtocol protocol = new CherryProtocol(FLAG_NOTIFY);
-        protocol.setStringTimePoint(this.timePoint.toString())
-                .setMetaData(JSON.parseObject(this.metaData))
-                .setTaskID(this.taskID);
+        JSONObject protocol = new JSONObject(Map.of(
+                "flag", FLAG_NOTIFY,
+                "metaData", metaData,
+                "taskId", taskID,
+                "timePoint", timePoint.toString()
+        ));
         Channel channel = CherryServer.getInstance().getChannelMap().get(channelName);
         if (channel != null && channel.isActive()) {
             channel.writeAndFlush(protocol);

@@ -27,22 +27,4 @@ public interface ClientReceiver {
      */
     void receiveError(String errorMessage);
 
-    /**
-     * 接收定时任务提交结果
-     *
-     * @param metaData 元数据
-     * @param taskID 任务ID
-     * @param result 结果
-     */
-    void receiveAddResult(JSONObject metaData, int taskID, boolean result);
-
-    /**
-     * 接收定时任务删除结果
-     *
-     * @param metaData 元数据
-     * @param taskID 任务ID
-     * @param result 结果
-     */
-    void receiveRemoveResult(JSONObject metaData, int taskID, boolean result);
-
 }
