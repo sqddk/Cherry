@@ -1,14 +1,16 @@
 package cn.hdudragonking.cherry.engine.utils;
 
 import cn.hdudragonking.cherry.engine.base.TimePoint;
-import java.text.SimpleDateFormat;
+
 import java.util.List;
 
 public class TimeUtils {
 
     private TimeUtils(){}
 
-    public static final SimpleDateFormat DateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+    /**
+     * 有31天的月份列表
+     */
     public static final List<Integer> BigMonthList = List.of(1, 3, 5 ,7, 8, 10, 12);
 
     /**
@@ -17,7 +19,7 @@ public class TimeUtils {
      * @param piece 月份字符串
      * @return 月份数字
      */
-    public static int parseMonth(String piece){
+    public static int parseAndCheckMonth(String piece){
         int month = Integer.parseInt(piece);
         return month > 12 ? -1 : month;
     }
@@ -30,7 +32,7 @@ public class TimeUtils {
      * @param month 月份数字
      * @return 月份内日期数字
      */
-    public static int parseDay(String piece, int year, int month){
+    public static int parseAndCheckDay(String piece, int year, int month){
         int day = Integer.parseInt(piece);
         int maxDay;
         if(day == 0) return -1;
@@ -50,7 +52,7 @@ public class TimeUtils {
      * @param piece 小时数字符串
      * @return 小时数
      */
-    public static int parseHour(String piece){
+    public static int parseAndCheckHour(String piece){
         int hour = Integer.parseInt(piece);
         return hour > 23 ? -1 : hour;
     }
@@ -61,7 +63,7 @@ public class TimeUtils {
      * @param piece 分钟数字符串
      * @return 分钟数
      */
-    public static int parseMinute(String piece){
+    public static int parseAndCheckMinute(String piece){
         int minute = Integer.parseInt(piece);
         return minute > 59 ? -1 : minute;
     }

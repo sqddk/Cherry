@@ -3,13 +3,10 @@ package cn.hdudragonking.cherry.engine.base;
 import cn.hdudragonking.cherry.engine.utils.BaseUtils;
 import cn.hdudragonking.cherry.engine.utils.TimeUtils;
 
-import java.text.ParseException;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
- * 时间点
+ * 时间点，结合{@link Calendar}完成时间信息的转换
  *
  * @since 2022/10/17
  * @author realDragonKing
@@ -19,7 +16,7 @@ public class TimePoint {
     /**
      * 根据字符串时间，创建一个时间点对象，并进行严格校验
      *
-     * @param time String格式时间
+     * @param time String格式时间，格式为“yyyyMMddHHmm”
      * @return 时间点
      */
     public static TimePoint parse(String time) {
@@ -28,20 +25,20 @@ public class TimePoint {
         }
         int year, month, day, hour, minute;
         year = Integer.parseInt(time.substring(0, 4));
-        month = TimeUtils.parseMonth(time.substring(4, 6));
+        month = TimeUtils.parseAndCheckMonth(time.substring(4, 6));
         if (month == -1) {
             return null;
         }
-        day = TimeUtils.parseDay(time.substring(6, 8), year, month);
-        if (day == -1) {
+        day = TimeUtils.parseAndCheckDay(time.substring(6, 8), year, month);
+        hour = TimeUtils.parseAndCheckHour(time.substring(8, 10));
+        minute = TimeUtils.parseAndCheckMinute(time.substring(10, 12));
+        if(day == -1 || hour == -1 || minute == -1){
             return null;
         }
-        hour = TimeUtils.parseHour(time.substring(8, 10));
-        minute = TimeUtils.parseMinute(time.substring(10, 12));
-        if(hour == -1 || minute == -1){
-            return null;
-        }
-        return new TimePoint(year, month, day, hour, minute);
+        // TODO 以后可以搞一个Calender的资源池，在线程安全的前提下保障多calender并行处理时间，提高速度
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day, hour, minute);
+        return new TimePoint(calendar);
     }
 
     /**
@@ -51,49 +48,43 @@ public class TimePoint {
      * @return 时间点对象
      */
     public static TimePoint parse(long timeValue) {
+        // TODO 以后可以搞一个Calender的资源池，在线程安全的前提下保障多calender并行处理时间，提高速度
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeValue);
-        return new TimePoint(
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH) + 1,
-                calendar.get(Calendar.DAY_OF_MONTH),
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE));
+        return new TimePoint(calendar);
     }
 
     /**
-     * 根据{@link Calendar}接口的实现类生成时间点
+     * 生成当前的时间点
      *
      * @return 当前时间点
      */
     public static TimePoint getCurrentTimePoint() {
-        Calendar calendar = new GregorianCalendar();
-        return new TimePoint(
+        return TimePoint.parse(System.currentTimeMillis());
+    }
+
+    private TimePoint(Calendar calendar){
+        this.timeString = String.format("%04d%02d%02d%02d%02d",
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH) + 1,
                 calendar.get(Calendar.DAY_OF_MONTH),
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE));
-    }
-
-    private TimePoint(int year, int month, int day, int hour, int minute){
-        this.timeUnitStorage = new int[]{year, month, day, hour, minute};
-        try {
-            Date time = TimeUtils.DateFormat.parse(this.toString());
-            this.timeValue = time.getTime();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        this.timeValue = calendar.getTimeInMillis();
     }
 
     /**
-     * 时间信息存储单元
+     * 当前时间点的绝对时间值，单位为毫秒（ms）
      */
-    private final int[] timeUnitStorage;
     private final long timeValue;
 
     /**
-     * 返回当前时间点的绝对时间
+     * String格式时间，格式为“yyyyMMddHHmm”
+     */
+    private final String timeString;
+
+    /**
+     * 返回当前时间点的绝对时间值，单位为毫秒（ms）
      *
      * @return 绝对时间值
      */
@@ -102,18 +93,13 @@ public class TimePoint {
     }
 
     /**
-     * 返回字符串型时间数据
+     * 返回String格式时间，格式为“yyyyMMddHHmm”
      *
-     * @return 字符串型时间数据
+     * @return String格式时间
      */
     @Override
     public final String toString(){
-        return String.format("%04d%02d%02d%02d%02d",
-                this.timeUnitStorage[0],
-                this.timeUnitStorage[1],
-                this.timeUnitStorage[2],
-                this.timeUnitStorage[3],
-                this.timeUnitStorage[4]);
+        return this.timeString;
     }
 
 }
