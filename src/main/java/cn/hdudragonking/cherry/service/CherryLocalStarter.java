@@ -42,7 +42,7 @@ public class CherryLocalStarter {
     /**
      * 默认的每个刻度之间的时间间隔
      */
-    private final static int DEFAULT_INTERVAL = 60000;
+    private final static int DEFAULT_INTERVAL = 60_000;
 
     /**
      * 日志打印类
@@ -65,7 +65,7 @@ public class CherryLocalStarter {
         ExecutorService threadPool = Executors.newFixedThreadPool(2);
         this.timingWheel = new DefaultTimingWheel(interval);
         BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>(1);
-        threadPool.submit(new ScheduleExecutor(DEFAULT_INTERVAL, blockingQueue));
+        threadPool.submit(new ScheduleExecutor(interval, blockingQueue));
         threadPool.submit(new TimingWheelExecutor(this.timingWheel, blockingQueue));
         BaseUtils.printLogo();
         this.logger.info("定时任务调度引擎已经在本地成功启动并可提供服务！");

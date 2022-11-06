@@ -57,9 +57,11 @@ public class CherryClient {
      * @param host host地址
      * @param port port端口
      * @param clientReceiver 响应接收/执行者
+     * @return this
      */
-    public void initial(String channelName, String host, int port, ClientReceiver clientReceiver) {
+    public CherryClient initial(String channelName, String host, int port, ClientReceiver clientReceiver) {
         this.channelName = channelName;
+        CompletableFuture<Boolean> waiter = new CompletableFuture<>();
         Executors.newSingleThreadExecutor().submit(() -> {
             try {
                 this.bootstrap
@@ -70,6 +72,7 @@ public class CherryClient {
                 ChannelFuture future = this.bootstrap.connect(host, port).sync();
                 this.channel = future.channel();
                 this.logger.info("与远程cherry服务端 " + this.channel.remoteAddress() + " 的连接已经建立！");
+                waiter.complete(true);
                 this.channel.closeFuture().sync();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -77,6 +80,12 @@ public class CherryClient {
                 this.workerGroup.shutdownGracefully();
             }
         });
+        try {
+            waiter.get(500, TimeUnit.MILLISECONDS);
+            return this;
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -84,17 +93,20 @@ public class CherryClient {
      *
      * @param timePoint 时间点
      * @param metaData 元数据
-     * @param timeout 超时时间
      *
      * @return 任务编号（-1为提交失败）
      */
-    public int submit(TimePoint timePoint, JSONObject metaData, int timeout) {
+    public int submit(TimePoint timePoint, JSONObject metaData) {
         if (this.channel == null) {
             this.logger.error("与远程cherry服务端的连接尚未建立！");
             return -1;
         }
         if (!this.channel.isActive()) {
             this.logger.error("与远程cherry服务端 " + this.channel.remoteAddress() + " 的连接不可用！");
+            return -1;
+        }
+        if (metaData == null) {
+            this.logger.error("提交的元数据不能为null！");
             return -1;
         }
         final int sendingId = this.monitor.addAndGet(1);
@@ -111,11 +123,21 @@ public class CherryClient {
         final CompletableFuture<Integer> future = new CompletableFuture<>();
         this.addResultBucket.put(sendingId, future);
         try {
-            return future.get(timeout, TimeUnit.MILLISECONDS);
+            return future.get(100, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-            this.logger.error(e.getMessage());
+            this.logger.error(e.toString());
             return -1;
         }
+    }
+
+    /**
+     * 向远程cherry服务端提交一个定时任务（空元数据API）
+     *
+     * @param timePoint 时间点
+     * @return 任务编号（-1为提交失败）
+     */
+    public int submit(TimePoint timePoint) {
+        return this.submit(timePoint, new JSONObject());
     }
 
     /**
@@ -123,11 +145,10 @@ public class CherryClient {
      *
      * @param timePoint 时间点
      * @param taskID 任务ID
-     * @param timeout 超时时间
      *
      * @return 任务编号（-1为删除失败）
      */
-    public boolean remove(TimePoint timePoint, int taskID, int timeout) {
+    public boolean remove(TimePoint timePoint, int taskID) {
         if (this.channel == null) {
             this.logger.error("与远程cherry服务端的连接尚未建立！");
             return false;
@@ -150,7 +171,7 @@ public class CherryClient {
         final CompletableFuture<Boolean> future = new CompletableFuture<>();
         this.removeResultBucket.put(sendingId, future);
         try {
-            return future.get(timeout, TimeUnit.MILLISECONDS);
+            return future.get(100, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             this.logger.error(e.getMessage());
             return false;
@@ -166,7 +187,16 @@ public class CherryClient {
      * @param result 执行结果
      */
     public void receiveInvokeResult(int type, int sendingId, Integer taskID, Boolean result) {
-        
+        switch (type) {
+            case FLAG_RESULT_ADD :
+                CompletableFuture<Integer> addFuture = this.addResultBucket.remove(sendingId);
+                addFuture.complete(taskID);
+                break;
+            case FLAG_RESULT_REMOVE :
+                CompletableFuture<Boolean> removeFuture = this.removeResultBucket.remove(sendingId);
+                removeFuture.complete(result);
+                break;
+        }
     }
 
 }

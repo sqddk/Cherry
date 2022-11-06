@@ -34,7 +34,7 @@ public class CherryServerEncoder extends MessageToMessageEncoder<JSONObject> {
      */
     @Override
     protected void encode(ChannelHandlerContext ctx, JSONObject protocol, List<Object> out) {
-        out.add(ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(protocol + "\n"), charset));
+        out.add(ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(protocol.toJSONString() + "\n"), charset));
     }
 
 }

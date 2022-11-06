@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static cn.hdudragonking.cherry.service.remote.CherryProtocolFlag.*;
@@ -20,9 +21,11 @@ import static cn.hdudragonking.cherry.service.remote.CherryProtocolFlag.*;
 public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
 
     private final CherryHealthMonitor monitor;
+    private final Charset charset;
 
     public CherryClientDecoder() {
         this.monitor = CherryHealthMonitor.getInstance();
+        this.charset = Charset.defaultCharset();
     }
 
     /**
@@ -36,7 +39,7 @@ public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
         try {
-            JSONObject protocol = JSON.parseObject(msg.array());
+            JSONObject protocol = JSON.parseObject(msg.toString(this.charset));
 
             switch (protocol.getIntValue("flag")) {
 

@@ -154,10 +154,8 @@ public class DefaultTimingWheel implements TimingWheel {
         this.linkedRing.moveNext();
         Map<Integer, TaskList> map = this.linkedRing.getPointer();
         this.currentTimePoint = TimePoint.getCurrentTimePoint();
-        for (Map.Entry<Integer, TaskList> entry : map.entrySet()) {
-            int round = entry.getKey();
-            TaskList list = entry.getValue();
-            map.remove(round);
+        for (Integer round : map.keySet()) {
+            TaskList list = map.remove(round);
             if (round == 0) {
                 for (int i = 0; i < list.size(); i++) {
                     Task task = list.getPointer();

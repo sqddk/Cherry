@@ -46,8 +46,8 @@ public class CherryServer {
     /**
      * 通过提供的host地址和端口，初始化和启动 Netty socket 服务端
      *
-     * @param host host��ַ
-     * @param port port�˿�
+     * @param host host地址
+     * @param port port端口
      */
     public void initial(String host, int port) {
         Executors.newSingleThreadExecutor().submit(() -> {

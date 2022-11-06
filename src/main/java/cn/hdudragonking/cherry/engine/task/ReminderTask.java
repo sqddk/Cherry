@@ -29,7 +29,6 @@ public class ReminderTask implements Task {
         this.channelName = channelName;
         this.timePoint = timePoint;
         this.metaData = metaData;
-        this.taskID = -1;
     }
 
     /**
@@ -73,7 +72,8 @@ public class ReminderTask implements Task {
                 "taskId", taskID,
                 "timePoint", timePoint.toString()
         ));
-        Channel channel = CherryServer.getInstance().getChannelMap().get(channelName);
+        Map<String, Channel> channelBucket = CherryServer.getInstance().getChannelMap();
+        Channel channel = channelBucket.get(channelName);
         if (channel != null && channel.isActive()) {
             channel.writeAndFlush(protocol);
             this.logger.info(this.channelName + " 的定时任务 " + this.taskID + " 执行通知成功！");

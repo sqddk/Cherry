@@ -53,17 +53,20 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
             ctx.fireExceptionCaught(new Throwable("时间信息格式错误！"));
             return;
         }
+
         JSONObject resProtocol = new JSONObject();
         String channelName = reqProtocol.getString("channelName");
         JSONObject metaData = reqProtocol.getJSONObject("metaData");
+
+        resProtocol.put("metaData", metaData);
+        resProtocol.put("sendingId", reqProtocol.getIntValue("sendingId"));
+
         if (channelName == null) {
             ctx.fireExceptionCaught(new Throwable("未提交客户端名称！"));
             return;
         }
         // TODO 这里以后应当考虑布隆过滤器
-        if (this.channelMap.get(channelName) == null) {
-            this.channelMap.put(channelName, ctx.channel());
-        }
+        this.channelMap.put(channelName, ctx.channel());
 
         switch (reqProtocol.getIntValue("flag")) {
 
@@ -73,16 +76,13 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
                         .submit(new ReminderTask(
                                 channelName,
                                 timePoint,
-                                metaData.toJSONString()
+                                metaData == null ? null : metaData.toJSONString()
                         ));
                 resProtocol.put("flag", FLAG_RESULT_ADD);
-                resProtocol.put("metaData", metaData);
                 if (result.length == 2) {
                     resProtocol.put("taskId", result[1]);
-                    resProtocol.put("result", true);
                     this.logger.info(channelName + " 定时任务提交成功！");
                 } else {
-                    resProtocol.put("result", false);
                     this.logger.info(channelName + " 定时任务提交失败！");
                 }
                 ctx.writeAndFlush(resProtocol);
@@ -92,7 +92,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
                 this.logger.info(channelName + " 尝试删除一个定时任务！");
                 int taskId = reqProtocol.getIntValue("taskId");
                 resProtocol.put("flag", FLAG_RESULT_REMOVE);
-                resProtocol.put("metaData", metaData);
                 if (this.cherryLocalStarter.remove(timePoint, taskId)) {
                     resProtocol.put("result", true);
                     this.logger.info(channelName + " 定时任务删除成功！");

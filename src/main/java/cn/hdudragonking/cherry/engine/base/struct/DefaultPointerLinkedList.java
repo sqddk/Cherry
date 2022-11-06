@@ -63,12 +63,14 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         this.size--;
         if (this.size == 0) {
             this.pointer = null;
+            this.position = -1;
+        } else if (this.size == this.position) {
+            this.pointer = prev;
             this.position--;
         } else {
             this.pointer = next;
         }
-        node.next = null;
-        node.prev = null;
+        node.next = node.prev = null;
         return node.item;
     }
 
@@ -172,7 +174,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
-     * 环形链表的节点
+     * 指针链表的节点
      * @author realDragonKing
      */
     private static class Node<E> {
