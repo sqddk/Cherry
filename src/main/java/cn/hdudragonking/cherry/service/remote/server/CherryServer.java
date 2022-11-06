@@ -1,5 +1,6 @@
 package cn.hdudragonking.cherry.service.remote.server;
 
+import cn.hdudragonking.cherry.service.CherryConfigLoader;
 import cn.hdudragonking.cherry.service.CherryLocalStarter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -44,12 +45,13 @@ public class CherryServer {
     }
 
     /**
-     * 通过提供的host地址和端口，初始化和启动 Netty socket 服务端
-     *
-     * @param host host地址
-     * @param port port端口
+     * 初始化和启动 Netty socket 服务端
      */
-    public void initial(String host, int port) {
+    public void initial() {
+        CherryConfigLoader configLoader = CherryConfigLoader.getInstance();
+        String host = configLoader.getValue("host");
+        int port = configLoader.getIntValue("port");
+
         Executors.newSingleThreadExecutor().submit(() -> {
             try {
                 CherryLocalStarter.getInstance().initial();

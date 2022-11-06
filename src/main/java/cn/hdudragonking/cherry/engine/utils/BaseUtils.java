@@ -1,5 +1,10 @@
 package cn.hdudragonking.cherry.engine.utils;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.*;
 
 public final class BaseUtils {
@@ -14,7 +19,9 @@ public final class BaseUtils {
      */
     public static boolean checkStringOfNumber(String s){
         for(char c : s.toCharArray()){
-            if(c < 48 || c > 57) return false;
+            if(c < 48 || c > 57) {
+                return false;
+            }
         }
         return true;
     }
@@ -52,6 +59,26 @@ public final class BaseUtils {
                 "  \\_____| |_| |_|  \\___| |_|    |_|     \\__, |\n" +
                 "                                         __/ |\n" +
                 "                                        |___/ \n");
+    }
+
+    /**
+     * 获取当前程序运行路径
+     *
+     * @return 程序运行路径
+     */
+    public static String getFilePath() {
+        URL url = BaseUtils.class.getProtectionDomain().getCodeSource().getLocation();
+        String filePath = null;
+        try {
+            filePath = URLDecoder.decode(url.getPath(), StandardCharsets.UTF_8);
+            if (filePath.endsWith(".jar")) {
+                filePath = filePath.substring(0, filePath.lastIndexOf("/") + 1);
+            }
+            filePath = new File(filePath).getAbsolutePath();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return filePath;
     }
 
 }

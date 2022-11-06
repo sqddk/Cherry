@@ -35,19 +35,14 @@ public class DefaultTimingWheel implements TimingWheel {
     private final int interval;
 
     /**
+     * 时间轮的自旋锁获取超时时间（超时放弃自旋）
+     */
+    private final int waitTimeout;
+
+    /**
      * 具体执行定时任务的线程池
      */
     private final ExecutorService executor;
-
-    /**
-     * 默认的刻度总数
-     */
-    private final static int DEFAULT_TOTAL_TICKS = 10;
-
-    /**
-     * 尝试获取对象的最大自旋时间，单位为纳秒（ns）
-     */
-    private final static long DEFAULT_MAX_WAIT_TIME = 5000000;
 
     /**
      * 时间轮的轻量级操作锁
@@ -59,16 +54,14 @@ public class DefaultTimingWheel implements TimingWheel {
      */
     private final PointerLinkedList<Map<Integer, TaskList>> linkedRing;
 
-    public DefaultTimingWheel(int interval) {
-        this(interval, DEFAULT_TOTAL_TICKS);
-    }
-
-    public DefaultTimingWheel(int interval, int totalTicks) {
-        if (interval <= 0 || totalTicks <= 0) {
+    public DefaultTimingWheel(int interval, int totalTicks, int waitTimeout) {
+        if (interval <= 0 || totalTicks <= 0 || waitTimeout <= 0) {
             throw new RuntimeException();
         }
-        this.totalTicks = totalTicks;
         this.interval = interval;
+        this.totalTicks = totalTicks;
+        this.waitTimeout = waitTimeout;
+
         int coreSize = Runtime.getRuntime().availableProcessors();
         this.executor = BaseUtils.createWorkerThreadPool(2, coreSize * 2, 1000);
         this.linkedRing = new DefaultPointerLinkedRing(this.totalTicks);
@@ -179,7 +172,7 @@ public class DefaultTimingWheel implements TimingWheel {
         if (stopNeed) {
             long startWaitingTime = System.nanoTime();
             while (!this.monitor.compareAndSet(false, true)) {
-                if (System.nanoTime() - startWaitingTime > DEFAULT_MAX_WAIT_TIME) return false;
+                if (System.nanoTime() - startWaitingTime > this.waitTimeout) return false;
             }
         } else {
             while (!this.monitor.compareAndSet(false, true)) {}

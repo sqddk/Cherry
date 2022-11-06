@@ -40,11 +40,6 @@ public class CherryLocalStarter {
     private TimingWheel timingWheel;
 
     /**
-     * 默认的每个刻度之间的时间间隔
-     */
-    private final static int DEFAULT_INTERVAL = 60_000;
-
-    /**
      * 日志打印类
      */
     private final Logger logger = LogManager.getLogger("Cherry");
@@ -53,17 +48,23 @@ public class CherryLocalStarter {
      * 为cherry引擎的启动进行初始化，使用默认的时间间隔
      */
     public void initial() {
-        this.initial(DEFAULT_INTERVAL);
+        CherryConfigLoader configLoader = CherryConfigLoader.getInstance();
+        int interval = configLoader.getIntValue("interval"),
+            totalTicks = configLoader.getIntValue("ticks"),
+            wheelTimeout = configLoader.getIntValue("wheel_timeout");
+        this.initial(interval, totalTicks, wheelTimeout);
     }
 
     /**
      * 为cherry引擎的启动进行初始化
      *
-     * @param interval 时间间隔
+     * @param interval 刻度间隔时间
+     * @param totalTicks 总刻度数
+     * @param wheelTimeout 时间轮的自旋锁获取超时时间（超时放弃自旋）
      */
-    public void initial(int interval) {
+    public void initial(int interval, int totalTicks, int wheelTimeout) {
         ExecutorService threadPool = Executors.newFixedThreadPool(2);
-        this.timingWheel = new DefaultTimingWheel(interval);
+        this.timingWheel = new DefaultTimingWheel(interval, totalTicks, wheelTimeout);
         BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>(1);
         threadPool.submit(new ScheduleExecutor(interval, blockingQueue));
         threadPool.submit(new TimingWheelExecutor(this.timingWheel, blockingQueue));
