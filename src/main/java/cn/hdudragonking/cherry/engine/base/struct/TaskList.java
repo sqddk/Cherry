@@ -42,7 +42,7 @@ public class TaskList extends DefaultPointerLinkedList<Task> {
                 return false;
             }
             this.resetHead();
-            while (this.getPosition() < maxPosition) {
+            while (this.position() < maxPosition) {
                 if (this.getPointer().getTaskID() == taskID) {
                     this.remove();
                     return true;

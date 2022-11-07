@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @since 2022/10/17
  * @author realDragonKing
  */
-public class DefaultTimingWheel implements TimingWheel {
+public class DefaultTimingWheel extends TimingWheel {
 
     /**
      * 当前时间点

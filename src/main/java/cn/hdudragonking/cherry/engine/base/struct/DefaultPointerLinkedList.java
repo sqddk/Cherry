@@ -6,17 +6,14 @@ package cn.hdudragonking.cherry.engine.base.struct;
  * @since 2022/10/17
  * @author realDragonKing
  */
-public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
+public class DefaultPointerLinkedList<E> extends PointerLinkedList<E> {
 
-    private int size;
-    private int position;
     private Node<E> pointer;
     private final Node<E> head;
     private final Node<E> tail;
 
     public DefaultPointerLinkedList(){
-        this.size = 0;
-        this.position = -1;
+
         this.head = new Node<>(null);
         this.tail = new Node<>(null);
     }
@@ -30,12 +27,12 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     public void add(E item) {
         if (item == null) return;
         Node<E> node = new Node<>(item);
-        this.size++;
-        if (this.size == 1) {
+        this.sizeAdd();
+        if (this.size() == 1) {
             this.head.next = node;
             node.prev = this.head;
             this.pointer = node;
-            this.position++;
+            this.positionAdd();
         } else {
             Node<E> prev = this.tail.prev;
             prev.next = node;
@@ -47,31 +44,29 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
 
     /**
      * 删除并弹出指针处的节点值
-     *
-     * @return 弹出的节点值
      */
     @Override
-    public E remove() {
-        if (this.position == -1) {
-            return null;
+    public void remove() {
+        if (this.position() == -1) {
+            return;
         }
         Node<E> prev = this.pointer.prev,
                 next = this.pointer.next,
                 node = this.pointer;
         prev.next = next;
         next.prev = prev;
-        this.size--;
-        if (this.size == 0) {
+        this.sizeDec();
+        if (this.size() == 0) {
             this.pointer = null;
-            this.position = -1;
-        } else if (this.size == this.position) {
+            this.setPositionAtHead();
+            this.positionDec();
+        } else if (this.size() == this.position()) {
             this.pointer = prev;
-            this.position--;
+            this.positionDec();
         } else {
             this.pointer = next;
         }
         node.next = node.prev = null;
-        return node.item;
     }
 
     /**
@@ -79,9 +74,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void moveNext() {
-        if (this.position + 1 < this.size && this.position > -1) {
+        if (this.position() + 1 < this.size() && this.position() > -1) {
             this.pointer = this.pointer.next;
-            this.position++;
+            this.positionAdd();
         }
     }
 
@@ -90,9 +85,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void movePrevious() {
-        if (this.position > 0) {
+        if (this.position() > 0) {
             this.pointer = this.pointer.prev;
-            this.position--;
+            this.positionDec();
         }
     }
 
@@ -101,9 +96,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void resetHead() {
-        if (this.size > 0) {
+        if (this.size() > 0) {
             this.pointer = this.head.next;
-            this.position = 0;
+            this.setPositionAtTail();
         }
     }
 
@@ -112,9 +107,9 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void resetTail() {
-        if (this.size > 0) {
+        if (this.size() > 0) {
             this.pointer = this.tail.prev;
-            this.position = this.size - 1;
+            this.setPositionAtTail();
         }
     }
 
@@ -126,26 +121,6 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     @Override
     public E getPointer() {
         return this.pointer.item;
-    }
-
-    /**
-     * 获取指针所指节点的位置
-     *
-     * @return 位置
-     */
-    @Override
-    public int getPosition() {
-        return this.position;
-    }
-
-    /**
-     * 获取链表的大小
-     *
-     * @return 链表的大小
-     */
-    @Override
-    public int size() {
-        return this.size;
     }
 
     /**
@@ -161,11 +136,11 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         }
         Node<E> pointer = this.head.next;
         int position = 0;
-        while (position < this.size) {
+        while (position < this.size()) {
             builder.append(pointer.item.toString());
             pointer = pointer.next;
             position++;
-            if (position < this.size) {
+            if (position < this.size()) {
                 builder.append(',').append(' ');
             }
         }

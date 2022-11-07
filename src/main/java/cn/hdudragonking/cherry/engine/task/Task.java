@@ -8,32 +8,50 @@ import cn.hdudragonking.cherry.engine.base.TimePoint;
  * @since 2022/10/17
  * @author realDragonKing
  */
-public interface Task {
+public abstract class Task {
+
+    private TimePoint timePoint;
+    private int taskId;
+
+    /**
+     * 设置执行的时间点
+     *
+     * @param timePoint 时间点
+     */
+    public void setTimePoint(TimePoint timePoint) {
+        this.timePoint = timePoint;
+    }
 
     /**
      * 获取执行的时间点
      *
      * @return 时间点
      */
-    TimePoint getTimePoint();
+    public TimePoint getTimePoint() {
+        return this.timePoint;
+    }
 
     /**
      * 设置任务的ID
      *
-     * @param id 任务ID
+     * @param taskId 任务ID
      */
-    void setTaskID(int id);
+    public void setTaskID(int taskId) {
+        this.taskId = taskId;
+    }
 
     /**
      * 获取任务的ID
      *
      * @return 任务ID
      */
-    int getTaskID();
+    public int getTaskID() {
+        return this.taskId;
+    }
 
     /**
      * 执行任务
      */
-    void execute();
+    public abstract void execute();
 
 }

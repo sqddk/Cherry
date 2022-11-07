@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="cherry version0.0.1，修复了一些bug">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Config" afterDir="false" />
+    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="cherry version0.0.1，配置文件化">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/DefaultTimingWheel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/base/DefaultTimingWheel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/BaseUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/engine/utils/BaseUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/service/CherryConfigLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/service/CherryConfigLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/service/CherryLocalStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/hdudragonking/cherry/service/CherryLocalStarter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +209,7 @@
       <workItem from="1667650666567" duration="5542000" />
       <workItem from="1667709950450" duration="5278000" />
       <workItem from="1667726132816" duration="17000" />
-      <workItem from="1667730130885" duration="4213000" />
+      <workItem from="1667730130885" duration="5013000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -448,7 +442,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667720650046</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="cherry version0.0.1，配置文件化">
+      <created>1667735375723</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1667735375723</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -490,6 +491,7 @@
     <MESSAGE value="cherry version0.0.1" />
     <MESSAGE value="cherry version0.0.1，TimePoint小优化" />
     <MESSAGE value="cherry version0.0.1，修复了一些bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="cherry version0.0.1，修复了一些bug" />
+    <MESSAGE value="cherry version0.0.1，配置文件化" />
+    <option name="LAST_COMMIT_MESSAGE" value="cherry version0.0.1，配置文件化" />
   </component>
 </project>

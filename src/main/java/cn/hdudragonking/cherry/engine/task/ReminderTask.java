@@ -17,48 +17,16 @@ import static cn.hdudragonking.cherry.service.remote.CherryProtocolFlag.*;
  * @since 2022/10/17
  * @author realDragonKing
  */
-public class ReminderTask implements Task {
+public class ReminderTask extends Task {
 
-    private final TimePoint timePoint;
     private final String channelName;
     private final String metaData;
-    private int taskID;
     private final Logger logger = LogManager.getLogger("Cherry");
 
     public ReminderTask (String channelName, TimePoint timePoint, String metaData) {
         this.channelName = channelName;
-        this.timePoint = timePoint;
+        this.setTimePoint(timePoint);
         this.metaData = metaData;
-    }
-
-    /**
-     * 获取执行的时间点
-     *
-     * @return 时间点
-     */
-    @Override
-    public TimePoint getTimePoint() {
-        return this.timePoint;
-    }
-
-    /**
-     * 设置任务的ID
-     *
-     * @param id 任务ID
-     */
-    @Override
-    public void setTaskID(int id) {
-        this.taskID = id;
-    }
-
-    /**
-     * 获取任务的ID
-     *
-     * @return 任务ID
-     */
-    @Override
-    public int getTaskID() {
-        return this.taskID;
     }
 
     /**
@@ -66,19 +34,21 @@ public class ReminderTask implements Task {
      */
     @Override
     public void execute() {
+        int taskId = this.getTaskID();
         JSONObject protocol = new JSONObject(Map.of(
                 "flag", FLAG_NOTIFY,
                 "metaData", metaData,
-                "taskId", taskID,
-                "timePoint", timePoint.toString()
+                "taskId", taskId,
+                "timePoint", this.getTimePoint().toString()
         ));
         Map<String, Channel> channelBucket = CherryServer.getInstance().getChannelMap();
         Channel channel = channelBucket.get(channelName);
         if (channel != null && channel.isActive()) {
             channel.writeAndFlush(protocol);
-            this.logger.info(this.channelName + " 的定时任务 " + this.taskID + " 执行通知成功！");
+            this.logger.info(this.channelName + " 的定时任务 " + taskId + " 执行通知成功！");
             return;
         }
-        this.logger.info(this.channelName + " 的定时任务 " + this.taskID + " 执行通知失败！");
+        this.logger.info(this.channelName + " 的定时任务 " + taskId + " 执行通知失败！");
     }
+
 }

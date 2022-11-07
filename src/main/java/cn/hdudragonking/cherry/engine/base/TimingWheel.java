@@ -8,7 +8,7 @@ import cn.hdudragonking.cherry.engine.task.Task;
  * @since 2022/10/17
  * @author realDragonKing
  */
-public interface TimingWheel {
+public abstract class TimingWheel {
 
     /**
      * 提交一个新的定时任务
@@ -16,7 +16,7 @@ public interface TimingWheel {
      * @param task 定时任务
      * @return 提交是否成功 | 任务ID
      */
-    int[] submit(Task task);
+    public abstract int[] submit(Task task);
 
     /**
      * 根据任务ID，移除一个定时任务
@@ -25,11 +25,11 @@ public interface TimingWheel {
      * @param id 任务ID
      * @return 任务是否删除成功
      */
-    boolean remove(TimePoint timePoint, int id);
+    public abstract boolean remove(TimePoint timePoint, int id);
 
     /**
      * 时间轮进行一次转动
      */
-    void turn();
+    public abstract void turn();
 
 }

@@ -23,7 +23,7 @@ public class DefaultPointerLinkedRing extends DefaultPointerLinkedList<Map<Integ
      */
     @Override
     public void moveNext() {
-        if (this.getPosition() == this.size() - 1) {
+        if (this.position() == this.size() - 1) {
             this.resetHead();
         } else {
             super.moveNext();
@@ -35,7 +35,7 @@ public class DefaultPointerLinkedRing extends DefaultPointerLinkedList<Map<Integ
      */
     @Override
     public void movePrevious() {
-        if (this.getPosition() == 0) {
+        if (this.position() == 0) {
             this.resetTail();
         } else {
             super.movePrevious();
