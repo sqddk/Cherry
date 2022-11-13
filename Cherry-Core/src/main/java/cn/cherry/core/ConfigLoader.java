@@ -3,7 +3,7 @@ package cn.cherry.core;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * 配置加载类的顶层接口
+ * 配置加载器的顶层抽象类
  *
  * @since 2022/11/13
  * @author realDragonKing

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 配置文件的读取和初始化类，管理全局配置
+ * 配置加载器的服务端实现
  *
  * @since 2022/11/06
  * @author realDragonKing

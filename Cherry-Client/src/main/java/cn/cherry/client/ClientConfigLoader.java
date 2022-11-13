@@ -4,7 +4,7 @@ import cn.cherry.core.ConfigLoader;
 
 
 /**
- * 配置加载类的客户端实现
+ * 配置加载器的客户端实现
  *
  * @since 2022/11/13
  * @author realDragonKing
