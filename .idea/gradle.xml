@@ -11,6 +11,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Cherry-Client" />
+            <option value="$PROJECT_DIR$/Cherry-Core" />
+            <option value="$PROJECT_DIR$/Cherry-Server" />
           </set>
         </option>
       </GradleProjectSettings>

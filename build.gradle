@@ -1,54 +1,88 @@
-plugins {
-    id 'java'
+subprojects {
+
+    apply plugin: 'java'
+
+    group 'cn.cherry'
+    version '1.0'
+
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allJava
+        archiveClassifier.set("sources")
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+
+    artifacts {
+        archives sourcesJar
+    }
+
+    repositories {
+        mavenCentral()
+        maven{ url 'https://maven.aliyun.com/nexus/content/groups/public'}
+        maven{ url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        maven{ url 'https://repo1.maven.org/maven2/'}
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+        implementation (
+                'io.netty:netty-all:4.1.84.Final',
+                'com.alibaba.fastjson2:fastjson2:2.0.18',
+                'org.apache.logging.log4j:log4j-api:2.19.0',
+                'org.apache.logging.log4j:log4j-core:2.19.0'
+        )
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
 }
 
-group 'cn.hdudragonking.cherry'
-version '1.0'
-
-jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    manifest {
-        attributes 'Main-Class': 'cn.hdudragonking.cherry.Main'
-    }
-    from {
-        (configurations.runtimeClasspath).collect {
-            it.isDirectory() ? it : zipTree(it)
+project('Cherry-Server') {
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        manifest {
+            attributes 'Main-Class': 'cn.cherry.server.Application'
         }
+        from {
+            (configurations.runtimeClasspath).collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+        }
+        from sourceSets.main.allJava
     }
-    from sourceSets.main.allJava
+    dependencies {
+        implementation project(":Cherry-Core")
+    }
 }
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    archiveClassifier.set("sources")
+project('Cherry-Client') {
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        from {
+            (configurations.runtimeClasspath).collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+        }
+        from sourceSets.main.allJava
+    }
+    dependencies {
+        implementation project(":Cherry-Core")
+    }
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
-
-artifacts {
-    archives sourcesJar
-}
-
-repositories {
-    mavenCentral()
-    maven{ url 'https://maven.aliyun.com/nexus/content/groups/public'}
-    maven{ url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
-    maven{ url 'https://repo1.maven.org/maven2/'}
-}
-
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
-    implementation (
-            'io.netty:netty-all:4.1.84.Final',
-            'com.alibaba.fastjson2:fastjson2:2.0.17',
-            'org.apache.logging.log4j:log4j-api:2.19.0',
-            'org.apache.logging.log4j:log4j-core:2.19.0'
-    )
-}
-
-test {
-    useJUnitPlatform()
+project('Cherry-Core') {
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        from {
+            (configurations.runtimeClasspath).collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+        }
+        from sourceSets.main.allJava
+    }
 }

@@ -1,2 +1,5 @@
 rootProject.name = 'Cherry'
+include 'Cherry-Client'
+include 'Cherry-Core'
+include 'Cherry-Server'
 
