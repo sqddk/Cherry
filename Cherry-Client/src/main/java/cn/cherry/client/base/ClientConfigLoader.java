@@ -1,6 +1,6 @@
 package cn.cherry.client.base;
 
-import cn.cherry.core.ConfigLoader;
+import cn.cherry.core.infra.ConfigLoader;
 
 
 /**

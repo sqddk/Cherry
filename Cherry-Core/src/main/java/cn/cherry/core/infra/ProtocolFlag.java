@@ -1,4 +1,4 @@
-package cn.cherry.core;
+package cn.cherry.core.infra;
 
 public class ProtocolFlag {
 

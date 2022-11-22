@@ -1,6 +1,6 @@
 package cn.cherry.server.base;
 
-import cn.cherry.core.ConfigLoader;
+import cn.cherry.core.infra.ConfigLoader;
 import cn.cherry.core.engine.utils.BaseUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
