@@ -1,4 +1,4 @@
-package cn.cherry.server.bucket;
+package cn.cherry.server.base.bucket;
 
 import io.netty.channel.Channel;
 
@@ -13,6 +13,8 @@ import io.netty.channel.Channel;
  * @author realDragonKing
  */
 public interface ChannelBucket {
+
+    ChannelBucket INSTANCE = new DefaultChannelBucket();
 
     /**
      * 根据服务组名称获取到其中一个通信信道

@@ -1,13 +1,13 @@
 package cn.cherry.client.service;
 
-import cn.cherry.client.Receiver;
+import cn.cherry.client.base.Receiver;
 import cn.cherry.core.engine.base.TimePoint;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static cn.cherry.core.CherryProtocolFlag.*;
+import static cn.cherry.core.ProtocolFlag.*;
 
 /**
  * cherry网络通信层面的客户端处理器
@@ -19,12 +19,12 @@ import static cn.cherry.core.CherryProtocolFlag.*;
 public class ClientHandler extends SimpleChannelInboundHandler<JSONObject> {
 
     private final Receiver receiver;
-    private final CherryClient cherryClient;
+    private final ClientStarter clientStarter;
     private final Logger logger = LogManager.getLogger("Cherry");
 
     public ClientHandler(Receiver receiver) {
         this.receiver = receiver;
-        this.cherryClient = CherryClient.getInstance();
+        this.clientStarter = ClientStarter.getInstance();
     }
 
     /**
@@ -65,14 +65,14 @@ public class ClientHandler extends SimpleChannelInboundHandler<JSONObject> {
                 this.receiver.receiveError(protocol.getString("errorMessage"));
                 break;
             case FLAG_RESULT_ADD :
-                this.cherryClient.receiveInvokeResult(
+                this.clientStarter.receiveInvokeResult(
                         FLAG_RESULT_ADD,
                         protocol.getIntValue("sendingId"),
                         protocol.getIntValue("taskId"),
                         null);
                 break;
             case FLAG_RESULT_REMOVE :
-                this.cherryClient.receiveInvokeResult(
+                this.clientStarter.receiveInvokeResult(
                         FLAG_RESULT_REMOVE,
                         protocol.getIntValue("sendingId"),
                         null,

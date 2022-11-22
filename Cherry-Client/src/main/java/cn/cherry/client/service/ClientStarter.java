@@ -1,6 +1,6 @@
 package cn.cherry.client.service;
 
-import cn.cherry.client.Receiver;
+import cn.cherry.client.base.Receiver;
 import cn.cherry.core.engine.base.TimePoint;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.bootstrap.Bootstrap;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static cn.cherry.core.CherryProtocolFlag.*;
+import static cn.cherry.core.ProtocolFlag.*;
 
 
 /**
@@ -25,13 +25,13 @@ import static cn.cherry.core.CherryProtocolFlag.*;
  * @since 2022/10/19
  * @author realDragonKing
  */
-public class CherryClient {
+public class ClientStarter {
 
-    private final static class SocketClientHolder {
-        private final static CherryClient INSTANCE = new CherryClient();
+    private final static class ClientStarterHolder {
+        private final static ClientStarter INSTANCE = new ClientStarter();
     }
-    public static CherryClient getInstance() {
-        return SocketClientHolder.INSTANCE;
+    public static ClientStarter getInstance() {
+        return ClientStarterHolder.INSTANCE;
     }
 
     private final Bootstrap bootstrap;
@@ -43,7 +43,7 @@ public class CherryClient {
     private final Map<Integer, CompletableFuture<Integer>> addResultBucket;
     private final Map<Integer, CompletableFuture<Boolean>> removeResultBucket;
 
-    private CherryClient() {
+    private ClientStarter() {
         this.bootstrap = new Bootstrap();
         this.workerGroup = new NioEventLoopGroup(2);
         this.monitor = new AtomicInteger(0);
@@ -60,7 +60,7 @@ public class CherryClient {
      * @param receiver 响应接收/执行者
      * @return this
      */
-    public CherryClient initial(String channelName, String host, int port, Receiver receiver) {
+    public ClientStarter initial(String channelName, String host, int port, Receiver receiver) {
         this.groupName = channelName;
         CompletableFuture<Boolean> waiter = new CompletableFuture<>();
         new Thread(() -> {

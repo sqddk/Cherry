@@ -4,7 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="cherry version0.0.2，项目结构较大变动，从单模块修改为Client、Server、Core三模块" />
+    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="cherry version0.0.2，项目结构较大变动，从单模块修改为Client、Server、Core三模块">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/codec/CherryClientDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/codec/ClientDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/codec/CherryClientEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/codec/ClientEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/CherryClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientStarter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/CherryLocalStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/LocalStarter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/CherryProtocolFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/ProtocolFlag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/ConfigLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/ConfigLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/ServerConfigLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/ServerConfigLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/bucket/ChannelBucket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/internal/bucket/ChannelBucket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/bucket/DefaultChannelBucket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/internal/bucket/DefaultChannelBucket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/codec/CherryServerDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/codec/ServerDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/codec/CherryServerEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/codec/ServerEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/CherryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/ServerStarter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/ServerInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/ServerInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/task/NotifyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/internal/task/NotifyTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/resources/Config" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/resources/Config" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,6 +42,12 @@
         <task path="$PROJECT_DIR$">
           <activation />
         </task>
+        <task path="$PROJECT_DIR$/Cherry-Server">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/Cherry-Client">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -31,11 +58,18 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Cherry" type="f1a62948:ProjectNode" />
+                <item name="Cherry-Client" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Cherry" type="f1a62948:ProjectNode" />
+                <item name="Cherry-Client" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Cherry" type="f1a62948:ProjectNode" />
+                <item name="Cherry-Client" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="build" type="c8890929:TasksNode$1" />
               </path>
@@ -74,26 +108,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11 (4)&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/realDragonKing/Desktop/JavaProjects/Cherry/Cherry-Client/src/main/resources&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "dart.analysis.tool.window.visible": "false",
+    "extract.method.default.visibility": "private",
+    "jdk.selected.JAVA_MODULE": "11 (4)",
+    "last_opened_file_path": "C:/Users/realDragonKing/Desktop/JavaProjects/Cherry",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.常规",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\realDragonKing\Desktop\JavaProjects\Cherry\Cherry-Client\src\main\resources" />
@@ -104,7 +138,7 @@
       <recent name="service" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Cherry [build]">
+  <component name="RunManager" selected="Gradle.Cherry:Cherry-Client [build]">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.hdudragonking.cherry.Main" />
       <module name="Cherry.main" />
@@ -160,8 +194,52 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="Cherry:Cherry-Client [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Cherry-Client" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="Cherry:Cherry-Server [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Cherry-Server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Cherry:Cherry-Client [build]" />
+        <item itemvalue="Gradle.Cherry:Cherry-Server [build]" />
         <item itemvalue="Gradle.Cherry [build]" />
         <item itemvalue="Gradle.Cherry [jar]" />
         <item itemvalue="应用程序.Main" />
@@ -222,7 +300,11 @@
       <workItem from="1667822467248" duration="665000" />
       <workItem from="1667835712075" duration="5000" />
       <workItem from="1668316824814" duration="10057000" />
-      <workItem from="1668328580925" duration="1032000" />
+      <workItem from="1668328580925" duration="1663000" />
+      <workItem from="1668838945671" duration="1387000" />
+      <workItem from="1668907782551" duration="2152000" />
+      <workItem from="1668951463889" duration="743000" />
+      <workItem from="1669130631213" duration="805000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -476,7 +558,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668329598330</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="cherry version0.0.2，项目结构较大变动，从单模块修改为Client、Server、Core三模块">
+      <created>1668329771126</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1668329771126</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

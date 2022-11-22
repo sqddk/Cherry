@@ -1,7 +1,7 @@
 package cn.cherry.server.service;
 
-import cn.cherry.server.codec.CherryServerDecoder;
-import cn.cherry.server.codec.CherryServerEncoder;
+import cn.cherry.server.service.codec.ServerDecoder;
+import cn.cherry.server.service.codec.ServerEncoder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -9,7 +9,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 
 /**
- * Netty Server 流水线初始化器
+ * Netty ServerStarter 流水线初始化器
  *
  * @since 2022/10/19
  * @author realDragonKing
@@ -25,8 +25,8 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) {
         ch.pipeline().addLast(new LineBasedFrameDecoder(4096));
-        ch.pipeline().addLast(new CherryServerEncoder());
-        ch.pipeline().addLast(new CherryServerDecoder());
+        ch.pipeline().addLast(new ServerEncoder());
+        ch.pipeline().addLast(new ServerDecoder());
         ch.pipeline().addLast(new ServerHandler());
     }
 }

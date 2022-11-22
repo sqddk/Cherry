@@ -1,4 +1,4 @@
-package cn.cherry.server;
+package cn.cherry.server.base;
 
 import cn.cherry.core.ConfigLoader;
 import cn.cherry.core.engine.utils.BaseUtils;
@@ -20,7 +20,7 @@ public class ServerConfigLoader extends ConfigLoader {
 
     private final String filePath;
     private final Map<String, String> configBucket;
-    private static final String CONFIG_PATH = "\\Config";
+    private static final String CONFIG_PATH = "/Config";
 
     /**
      * 日志打印类
@@ -79,7 +79,6 @@ public class ServerConfigLoader extends ConfigLoader {
             while((length = inputStream.read(b)) > 0){
                 fileOutputStream.write(b, 0, length);
             }
-            this.logger.info("配置文件初始化完成！");
         } catch (IOException e) {
             this.logger.error(e.toString());
             throw new RuntimeException(e);

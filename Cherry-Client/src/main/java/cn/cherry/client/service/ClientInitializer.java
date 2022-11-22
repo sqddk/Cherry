@@ -1,8 +1,8 @@
 package cn.cherry.client.service;
 
-import cn.cherry.client.Receiver;
-import cn.cherry.client.codec.CherryClientDecoder;
-import cn.cherry.client.codec.CherryClientEncoder;
+import cn.cherry.client.base.Receiver;
+import cn.cherry.client.service.codec.ClientDecoder;
+import cn.cherry.client.service.codec.ClientEncoder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -32,8 +32,8 @@ public class ClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) {
         ch.pipeline().addLast(new LineBasedFrameDecoder(4096));
-        ch.pipeline().addLast(new CherryClientEncoder());
-        ch.pipeline().addLast(new CherryClientDecoder());
+        ch.pipeline().addLast(new ClientEncoder());
+        ch.pipeline().addLast(new ClientDecoder());
         ch.pipeline().addLast(new ClientHandler(this.receiver));
     }
 

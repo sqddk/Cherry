@@ -1,5 +1,6 @@
 package cn.cherry.core;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -20,11 +21,15 @@ public abstract class ConfigLoader {
      */
     public static ConfigLoader getInstance(Class<? extends ConfigLoader> clazz) {
         if (configLoader == null) {
-            try {
-                configLoader = clazz.getDeclaredConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                     NoSuchMethodException e) {
-                throw new RuntimeException(e);
+            synchronized (ConfigLoader.class) {
+                try {
+                    Constructor<? extends ConfigLoader> constructor = clazz.getDeclaredConstructor();
+                    constructor.setAccessible(true);
+                    configLoader = constructor.newInstance();
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                         NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         return configLoader;

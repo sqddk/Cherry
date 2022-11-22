@@ -8,7 +8,7 @@ port = 4000
 interval = 60000
 
 # 时间轮的刻度总数
-ticks = 10
+totalTicks = 10
 
 # 时间轮的轻量级锁获取超时时间，单位为ms
-wheel_timeout = 10
+wheelTimeout = 10

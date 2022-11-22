@@ -1,4 +1,4 @@
-package cn.cherry.server.codec;
+package cn.cherry.server.service.codec;
 
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBufUtil;
@@ -15,11 +15,11 @@ import java.util.List;
  * @since 2022/10/18
  * @author realDragonKing
  */
-public class CherryServerEncoder extends MessageToMessageEncoder<JSONObject> {
+public class ServerEncoder extends MessageToMessageEncoder<JSONObject> {
 
     private final Charset charset;
 
-    public CherryServerEncoder() {
+    public ServerEncoder() {
         this.charset = Charset.defaultCharset();
     }
 

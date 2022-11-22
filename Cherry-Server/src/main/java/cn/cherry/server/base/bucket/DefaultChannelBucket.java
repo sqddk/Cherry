@@ -1,4 +1,4 @@
-package cn.cherry.server.bucket;
+package cn.cherry.server.base.bucket;
 
 import io.netty.channel.Channel;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,14 +12,8 @@ import cn.cherry.core.engine.base.struct.PointerLinkedList;
  * @author realDragonKing
  */
 public class DefaultChannelBucket implements ChannelBucket {
-    private static final class DefaultChannelBucketHolder {
-        private final static DefaultChannelBucket INSTANCE = new DefaultChannelBucket();
-    }
-    public static DefaultChannelBucket getInstance() {
-        return DefaultChannelBucketHolder.INSTANCE;
-    }
 
-    private DefaultChannelBucket() {}
+    public DefaultChannelBucket() {}
 
     /**
      * 根据服务组名称获取到其中一个通信信道

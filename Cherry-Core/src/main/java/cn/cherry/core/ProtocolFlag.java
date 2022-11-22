@@ -1,8 +1,8 @@
 package cn.cherry.core;
 
-public class CherryProtocolFlag {
+public class ProtocolFlag {
 
-    private CherryProtocolFlag() {}
+    private ProtocolFlag() {}
 
     /**
      * 来自客户端的心跳

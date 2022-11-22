@@ -1,4 +1,4 @@
-package cn.cherry.client;
+package cn.cherry.client.base;
 
 import cn.cherry.core.ConfigLoader;
 

@@ -19,15 +19,15 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @since 2022/10/17
  * @author realDragonKing
  */
-public class CherryLocalStarter {
+public class LocalStarter {
     private final static class CherryLocalStarterHolder {
-        private final static CherryLocalStarter INSTANCE = new CherryLocalStarter();
+        private final static LocalStarter INSTANCE = new LocalStarter();
     }
-    public static CherryLocalStarter getInstance() {
+    public static LocalStarter getInstance() {
         return CherryLocalStarterHolder.INSTANCE;
     }
 
-    private CherryLocalStarter() {}
+    private LocalStarter() {}
 
     /**
      * 时间轮！

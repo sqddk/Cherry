@@ -1,8 +1,8 @@
 package cn.cherry.server.service;
 
-import cn.cherry.core.CherryLocalStarter;
+import cn.cherry.core.LocalStarter;
 import cn.cherry.core.ConfigLoader;
-import cn.cherry.server.ServerConfigLoader;
+import cn.cherry.server.base.ServerConfigLoader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.concurrent.Executors;
 
 /**
  * cherry定时任务调度引擎的 socket 网络服务启动引导类
@@ -21,13 +20,13 @@ import java.util.concurrent.Executors;
  * @since 2022/10/18
  * @author realDragonKing
  */
-public class CherryServer {
+public class ServerStarter {
 
-    private final static class CherrySocketServerHolder {
-        private final static CherryServer INSTANCE = new CherryServer();
+    private final static class ServerStarterHolder {
+        private final static ServerStarter INSTANCE = new ServerStarter();
     }
-    public static CherryServer getInstance() {
-        return CherrySocketServerHolder.INSTANCE;
+    public static ServerStarter getInstance() {
+        return ServerStarterHolder.INSTANCE;
     }
 
     private final ServerBootstrap serverBootstrap;
@@ -35,7 +34,7 @@ public class CherryServer {
     private final NioEventLoopGroup workerGroup;
     private final Logger logger = LogManager.getLogger("Cherry");
 
-    private CherryServer() {
+    private ServerStarter() {
         this.serverBootstrap = new ServerBootstrap();
         this.bossGroup = new NioEventLoopGroup(1);
         this.workerGroup = new NioEventLoopGroup();
@@ -46,6 +45,7 @@ public class CherryServer {
      */
     public void initial() {
         ConfigLoader configLoader = ConfigLoader.getInstance(ServerConfigLoader.class);
+        this.logger.info("配置文件初始化完成！");
         String host = configLoader.getValue("host");
         int port = configLoader.getIntValue("port"),
             interval = configLoader.getIntValue("interval"),
@@ -54,7 +54,7 @@ public class CherryServer {
 
         new Thread(() -> {
             try {
-                CherryLocalStarter.getInstance().initial(interval, totalTicks, wheelTimeout);
+                LocalStarter.getInstance().initial(interval, totalTicks, wheelTimeout);
                 this.serverBootstrap
                         .channel(NioServerSocketChannel.class)
                         .group(this.bossGroup, this.workerGroup)
@@ -71,7 +71,7 @@ public class CherryServer {
                 this.bossGroup.shutdownGracefully();
                 this.workerGroup.shutdownGracefully();
             }
-        });
+        }).start();
     }
 
 }

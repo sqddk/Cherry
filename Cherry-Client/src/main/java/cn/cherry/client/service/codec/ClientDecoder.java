@@ -1,4 +1,4 @@
-package cn.cherry.client.codec;
+package cn.cherry.client.service.codec;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
@@ -9,7 +9,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import static cn.cherry.core.CherryProtocolFlag.*;
+import static cn.cherry.core.ProtocolFlag.*;
 
 
 /**
@@ -18,11 +18,11 @@ import static cn.cherry.core.CherryProtocolFlag.*;
  * @since 2022/10/19
  * @author realDragonKing
  */
-public class CherryClientDecoder extends MessageToMessageDecoder<ByteBuf> {
+public class ClientDecoder extends MessageToMessageDecoder<ByteBuf> {
 
     private final Charset charset;
 
-    public CherryClientDecoder() {
+    public ClientDecoder() {
         this.charset = Charset.defaultCharset();
     }
 
