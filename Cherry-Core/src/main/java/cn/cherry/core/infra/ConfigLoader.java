@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * 配置加载器的顶层抽象类
  *
- * @since 2022/11/13
+ * @since 2022/11/25
  * @author realDragonKing
  */
 public abstract class ConfigLoader {
@@ -33,6 +33,10 @@ public abstract class ConfigLoader {
             }
         }
         return configLoader;
+    }
+
+    protected ConfigLoader() {
+        this.loadConfig();
     }
 
     /**

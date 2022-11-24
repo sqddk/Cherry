@@ -1,8 +1,14 @@
-package cn.cherry.core.infra;
+package cn.cherry.core.infra.message;
 
-public class ProtocolFlag {
+/**
+ * {@link Command}的类型标志位，静态字段集中地
+ *
+ * @since 2022/11/25
+ * @author realDragonKing
+ */
+public class CommandFlag {
 
-    private ProtocolFlag() {}
+    private CommandFlag() {}
 
     /**
      * 来自客户端的心跳

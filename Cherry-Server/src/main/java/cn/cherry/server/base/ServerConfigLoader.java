@@ -1,7 +1,7 @@
 package cn.cherry.server.base;
 
 import cn.cherry.core.infra.ConfigLoader;
-import cn.cherry.core.engine.utils.BaseUtils;
+import cn.cherry.core.infra.utils.BaseUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,20 +18,16 @@ import java.util.Map;
  */
 public class ServerConfigLoader extends ConfigLoader {
 
-    private final String filePath;
-    private final Map<String, String> configBucket;
     private static final String CONFIG_PATH = "/Config";
+    private final String filePath = BaseUtils.getFilePath();
+    private final Map<String, String> configBucket = new HashMap<>();
 
     /**
      * 日志打印类
      */
     private final Logger logger = LogManager.getLogger("Cherry");
 
-    private ServerConfigLoader() {
-        this.filePath = BaseUtils.getFilePath();
-        this.configBucket = new HashMap<>();
-        this.loadConfig();
-    }
+    private ServerConfigLoader() {}
 
     /**
      * 读取已经加载的外部配置文件
@@ -42,8 +38,8 @@ public class ServerConfigLoader extends ConfigLoader {
         if (!configFile.exists()) {
             this.initialConfig(configFile);
         }
-        try (InputStream inputStream = new FileInputStream(configFile);
-             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+        try (BufferedReader br = new BufferedReader(
+                     new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8))) {
             String line, key, value;
             String[] setting;
             while ((line = br.readLine()) != null) {
@@ -72,7 +68,8 @@ public class ServerConfigLoader extends ConfigLoader {
         try (InputStream inputStream = ServerConfigLoader.class.getResourceAsStream(CONFIG_PATH);
              FileOutputStream fileOutputStream = new FileOutputStream(configFile)) {
             if (inputStream == null) {
-                return;
+                this.logger.error("无法检测到内部备份的初始化配置文件！");
+                throw new RuntimeException();
             }
             byte[] b = new byte[1024];
             int length;
@@ -81,7 +78,7 @@ public class ServerConfigLoader extends ConfigLoader {
             }
         } catch (IOException e) {
             this.logger.error(e.toString());
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 

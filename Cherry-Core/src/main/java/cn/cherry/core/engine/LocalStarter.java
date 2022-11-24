@@ -6,7 +6,7 @@ import cn.cherry.core.engine.base.TimePoint;
 import cn.cherry.core.engine.base.TimingWheel;
 import cn.cherry.core.engine.base.executor.ScheduleExecutor;
 import cn.cherry.core.engine.base.executor.TimingWheelExecutor;
-import cn.cherry.core.engine.utils.BaseUtils;
+import cn.cherry.core.infra.utils.BaseUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

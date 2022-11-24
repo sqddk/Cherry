@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static cn.cherry.core.infra.ProtocolFlag.*;
+import static cn.cherry.core.infra.message.CommandFlag.*;
 
 
 /**
@@ -34,22 +34,16 @@ public class ClientStarter {
         return ClientStarterHolder.INSTANCE;
     }
 
-    private final Bootstrap bootstrap;
-    private final NioEventLoopGroup workerGroup;
+    private final Bootstrap bootstrap = new Bootstrap();
+    private final NioEventLoopGroup workerGroup = new NioEventLoopGroup(2);
     private final Logger logger = LogManager.getLogger("Cherry");
     private Channel channel;
     private String groupName;
-    private final AtomicInteger monitor;
-    private final Map<Integer, CompletableFuture<Integer>> addResultBucket;
-    private final Map<Integer, CompletableFuture<Boolean>> removeResultBucket;
+    private final AtomicInteger monitor = new AtomicInteger(0);
+    private final Map<Integer, CompletableFuture<Integer>> addResultBucket = new ConcurrentHashMap<>();
+    private final Map<Integer, CompletableFuture<Boolean>> removeResultBucket = new ConcurrentHashMap<>();
 
-    private ClientStarter() {
-        this.bootstrap = new Bootstrap();
-        this.workerGroup = new NioEventLoopGroup(2);
-        this.monitor = new AtomicInteger(0);
-        this.addResultBucket = new ConcurrentHashMap<>();
-        this.removeResultBucket = new ConcurrentHashMap<>();
-    }
+    private ClientStarter() {}
 
     /**
      * 通过提供的host地址和端口，初始化客户端，尝试连接目标服务端

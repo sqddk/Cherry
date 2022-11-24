@@ -1,8 +1,8 @@
 package cn.cherry.core.engine.base;
 
 import cn.cherry.core.engine.base.struct.PointerLinkedList;
-import cn.cherry.core.engine.utils.BaseUtils;
-import cn.cherry.core.engine.utils.TimeUtils;
+import cn.cherry.core.infra.utils.BaseUtils;
+import cn.cherry.core.infra.utils.TimeUtils;
 import cn.cherry.core.engine.base.struct.DefaultPointerLinkedRing;
 import cn.cherry.core.engine.base.struct.TaskList;
 
@@ -21,7 +21,7 @@ public class DefaultTimingWheel implements TimingWheel {
     /**
      * 当前时间点
      */
-    private TimePoint currentTimePoint;
+    private TimePoint currentTimePoint = TimePoint.getCurrentTimePoint();
 
     /**
      * 刻度总数
@@ -46,7 +46,7 @@ public class DefaultTimingWheel implements TimingWheel {
     /**
      * 时间轮的轻量级操作锁
      */
-    private final AtomicBoolean monitor;
+    private final AtomicBoolean monitor = new AtomicBoolean(false);
 
     /**
      * 时间轮的数据结构实现，环形链表
@@ -61,11 +61,11 @@ public class DefaultTimingWheel implements TimingWheel {
         this.totalTicks = totalTicks;
         this.waitTimeout = waitTimeout;
 
-        int coreSize = Runtime.getRuntime().availableProcessors();
-        this.executor = BaseUtils.createWorkerThreadPool(2, coreSize * 2, 1000);
+        this.executor = BaseUtils.createWorkerThreadPool(
+                2,
+                Runtime.getRuntime().availableProcessors() * 2,
+                1000);
         this.linkedRing = new DefaultPointerLinkedRing(this.totalTicks);
-        this.monitor = new AtomicBoolean(false);
-        this.currentTimePoint = TimePoint.getCurrentTimePoint();
     }
 
     /**

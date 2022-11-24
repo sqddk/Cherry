@@ -7,7 +7,7 @@ import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static cn.cherry.core.infra.ProtocolFlag.*;
+import static cn.cherry.core.infra.message.CommandFlag.*;
 
 /**
  * cherry网络通信层面的客户端处理器

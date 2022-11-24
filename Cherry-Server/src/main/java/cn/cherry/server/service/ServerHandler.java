@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-import static cn.cherry.core.infra.ProtocolFlag.*;
+import static cn.cherry.core.infra.message.CommandFlag.*;
 
 
 /**
