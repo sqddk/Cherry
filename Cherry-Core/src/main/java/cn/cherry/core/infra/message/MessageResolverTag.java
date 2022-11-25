@@ -1,4 +1,4 @@
-package cn.cherry.core.infra.command;
+package cn.cherry.core.infra.message;
 
 import java.lang.annotation.*;
 

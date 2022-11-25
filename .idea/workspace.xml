@@ -4,22 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="cherry version0.0.2，日常增加一点内容">
-      <change afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/command/MessageResolver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/command/MessageResolverTag.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/base/bucket/BucketHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientStarter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/codec/ClientDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/codec/ClientDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/message/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/command/Message.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/message/CommandFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/command/MessageFlag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/message/CommandResolver.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/base/ServerConfigLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/base/ServerConfigLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/ServerHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/codec/ServerDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/codec/ServerDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-    </list>
+    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="cherry version0.0.2，消息解析器体系完成" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -292,7 +277,7 @@
       <workItem from="1669343986300" duration="91000" />
       <workItem from="1669347013073" duration="1571000" />
       <workItem from="1669349346444" duration="15000" />
-      <workItem from="1669352414796" duration="5438000" />
+      <workItem from="1669352414796" duration="5790000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -574,7 +559,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669311414392</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="cherry version0.0.2，消息解析器体系完成">
+      <created>1669358136521</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1669358136521</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -593,7 +585,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="修复指针链表的add方法" />
     <MESSAGE value="完善了指针链表的remove方法" />
     <MESSAGE value="Scheduler的默认实现DefaultScheduler类完成，实现了单层时间轮算法。" />
     <MESSAGE value="项目整体结构搭建完成，分为bootstrap和engine两个包" />
@@ -618,6 +609,7 @@
     <MESSAGE value="cherry version0.0.2，项目结构较大变动，从单模块修改为Client、Server、Core三模块" />
     <MESSAGE value="cherry version0.0.2，包结构变动" />
     <MESSAGE value="cherry version0.0.2，日常增加一点内容" />
-    <option name="LAST_COMMIT_MESSAGE" value="cherry version0.0.2，日常增加一点内容" />
+    <MESSAGE value="cherry version0.0.2，消息解析器体系完成" />
+    <option name="LAST_COMMIT_MESSAGE" value="cherry version0.0.2，消息解析器体系完成" />
   </component>
 </project>

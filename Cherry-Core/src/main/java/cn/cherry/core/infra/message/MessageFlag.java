@@ -1,4 +1,4 @@
-package cn.cherry.core.infra.command;
+package cn.cherry.core.infra.message;
 
 /**
  * {@link Message}的类型标志位，静态字段集中地

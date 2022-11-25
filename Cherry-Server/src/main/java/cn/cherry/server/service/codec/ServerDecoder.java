@@ -9,7 +9,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import static cn.cherry.core.infra.command.MessageFlag.*;
+import static cn.cherry.core.infra.message.MessageFlag.*;
 
 
 /**

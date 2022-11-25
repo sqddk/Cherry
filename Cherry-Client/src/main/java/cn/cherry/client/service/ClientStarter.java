@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static cn.cherry.core.infra.command.MessageFlag.*;
+import static cn.cherry.core.infra.message.MessageFlag.*;
 
 
 /**
