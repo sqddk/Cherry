@@ -21,10 +21,6 @@ public class ServerConfigLoader extends ConfigLoader {
     private static final String CONFIG_PATH = "/Config";
     private final String filePath = BaseUtils.getFilePath();
     private final Map<String, String> configBucket = new HashMap<>();
-
-    /**
-     * 日志打印类
-     */
     private final Logger logger = LogManager.getLogger("Cherry");
 
     private ServerConfigLoader() {}

@@ -26,6 +26,7 @@ public abstract class ConfigLoader {
                     Constructor<? extends ConfigLoader> constructor = clazz.getDeclaredConstructor();
                     constructor.setAccessible(true);
                     configLoader = constructor.newInstance();
+                    configLoader.loadConfig();
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                          NoSuchMethodException e) {
                     throw new RuntimeException(e);
@@ -35,14 +36,10 @@ public abstract class ConfigLoader {
         return configLoader;
     }
 
-    protected ConfigLoader() {
-        this.loadConfig();
-    }
-
     /**
      * 加载配置，对于加载失败的情况将抛出{@link RuntimeException}
      */
-    public abstract void loadConfig();
+    protected abstract void loadConfig();
 
     /**
      * 获取int类型配置值

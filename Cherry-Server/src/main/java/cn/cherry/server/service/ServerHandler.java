@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-import static cn.cherry.core.infra.message.CommandFlag.*;
+import static cn.cherry.core.infra.command.MessageFlag.*;
 
 
 /**
@@ -71,7 +71,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
 
         switch (reqProtocol.getIntValue("flag")) {
 
-            case FLAG_ADD :
+            case ADD:
                 this.logger.info(groupName + " 提交了一个定时任务！");
                 int[] result = this.localStarter
                         .submit(new NotifyTask(
@@ -79,7 +79,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
                                 timePoint,
                                 metaData == null ? null : metaData.toJSONString()
                         ));
-                resProtocol.put("flag", FLAG_RESULT_ADD);
+                resProtocol.put("flag", ADD_RESULT);
                 if (result.length == 2) {
                     resProtocol.put("taskId", result[1]);
                     this.logger.info(groupName + " 定时任务提交成功！");
@@ -89,10 +89,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
                 ctx.writeAndFlush(resProtocol);
                 break;
 
-            case FLAG_REMOVE :
+            case REMOVE:
                 this.logger.info(groupName + " 尝试删除一个定时任务！");
                 int taskId = reqProtocol.getIntValue("taskId");
-                resProtocol.put("flag", FLAG_RESULT_REMOVE);
+                resProtocol.put("flag", REMOVE_RESULT);
                 if (this.localStarter.remove(timePoint, taskId)) {
                     resProtocol.put("result", true);
                     this.logger.info(groupName + " 定时任务删除成功！");
@@ -118,7 +118,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.logger.error(cause.getMessage());
         JSONObject protocol = new JSONObject(Map.of(
-                "flag", FLAG_ERROR,
+                "flag", ERROR,
                 "errorMessage", cause.getMessage()
         ));
         ctx.writeAndFlush(protocol);

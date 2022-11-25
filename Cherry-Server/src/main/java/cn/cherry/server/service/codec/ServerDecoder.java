@@ -9,7 +9,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import static cn.cherry.core.infra.message.CommandFlag.*;
+import static cn.cherry.core.infra.command.MessageFlag.*;
 
 
 /**
@@ -41,8 +41,8 @@ public class ServerDecoder extends MessageToMessageDecoder<ByteBuf> {
 
             switch (protocol.getIntValue("flag")) {
 
-                case FLAG_ADD :
-                case FLAG_REMOVE :
+                case ADD:
+                case REMOVE:
                     out.add(protocol);
                     break;
 

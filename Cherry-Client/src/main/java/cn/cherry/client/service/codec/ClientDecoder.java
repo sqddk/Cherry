@@ -9,7 +9,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import static cn.cherry.core.infra.message.CommandFlag.*;
+import static cn.cherry.core.infra.command.MessageFlag.*;
 
 
 /**
@@ -40,10 +40,10 @@ public class ClientDecoder extends MessageToMessageDecoder<ByteBuf> {
             JSONObject protocol = JSON.parseObject(msg.toString(this.charset));
 
             switch (protocol.getIntValue("flag")) {
-                case FLAG_NOTIFY :
-                case FLAG_RESULT_REMOVE :
-                case FLAG_RESULT_ADD :
-                case FLAG_ERROR :
+                case NOTIFY:
+                case REMOVE_RESULT:
+                case ADD_RESULT:
+                case ERROR:
                     out.add(protocol);
                     break;
 

@@ -4,15 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="cherry version0.0.2，包结构变动">
+    <list default="true" id="f5b0b82e-759d-47bd-a1a8-a42e3bf1d453" name="变更" comment="cherry version0.0.2，日常增加一点内容">
+      <change afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/command/MessageResolver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/command/MessageResolverTag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/base/bucket/BucketHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/engine/LocalStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/engine/LocalStarter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/engine/base/DefaultTimingWheel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/engine/base/DefaultTimingWheel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/engine/base/TimePoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/engine/base/TimePoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/engine/utils/BaseUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/utils/BaseUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/engine/utils/TimeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/utils/TimeUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/ConfigLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/ConfigLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/ClientStarter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/codec/ClientDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Client/src/main/java/cn/cherry/client/service/codec/ClientDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/message/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/command/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/message/CommandFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/command/MessageFlag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Core/src/main/java/cn/cherry/core/infra/message/CommandResolver.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/base/ServerConfigLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/base/ServerConfigLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/codec/ServerDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cherry-Server/src/main/java/cn/cherry/server/service/codec/ServerDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +78,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
+        <option value="Enum" />
+        <option value="AnnotationType" />
         <option value="Class" />
       </list>
     </option>
@@ -96,26 +104,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11 (4)&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/realDragonKing/Desktop/JavaProjects/Cherry&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.常规&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "dart.analysis.tool.window.visible": "false",
+    "deletionFromPopupRequiresConfirmation": "false",
+    "extract.method.default.visibility": "private",
+    "jdk.selected.JAVA_MODULE": "11 (4)",
+    "last_opened_file_path": "C:/Users/realDragonKing/Desktop/JavaProjects/Cherry",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.常规",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\realDragonKing\Desktop\JavaProjects\Cherry\Cherry-Client\src\main\resources" />
@@ -126,20 +135,7 @@
       <recent name="service" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Cherry:Cherry-Client [build]">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cn.hdudragonking.cherry.Main" />
-      <module name="Cherry.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="cn.hdudragonking.cherry.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Gradle.Cherry [build]">
     <configuration name="Cherry [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -230,7 +226,6 @@
         <item itemvalue="Gradle.Cherry:Cherry-Server [build]" />
         <item itemvalue="Gradle.Cherry [build]" />
         <item itemvalue="Gradle.Cherry [jar]" />
-        <item itemvalue="应用程序.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -293,7 +288,11 @@
       <workItem from="1668907782551" duration="2152000" />
       <workItem from="1668951463889" duration="743000" />
       <workItem from="1669130631213" duration="1344000" />
-      <workItem from="1669309116393" duration="1146000" />
+      <workItem from="1669309116393" duration="2521000" />
+      <workItem from="1669343986300" duration="91000" />
+      <workItem from="1669347013073" duration="1571000" />
+      <workItem from="1669349346444" duration="15000" />
+      <workItem from="1669352414796" duration="5438000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1665851423483</created>
@@ -568,7 +567,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669131728698</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="cherry version0.0.2，日常增加一点内容">
+      <created>1669311414392</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1669311414392</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -587,7 +593,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="双向链表更正为指针链表，底层数据结构完成" />
     <MESSAGE value="修复指针链表的add方法" />
     <MESSAGE value="完善了指针链表的remove方法" />
     <MESSAGE value="Scheduler的默认实现DefaultScheduler类完成，实现了单层时间轮算法。" />
@@ -612,6 +617,7 @@
     <MESSAGE value="cherry version0.0.1，部分接口改造为抽象类" />
     <MESSAGE value="cherry version0.0.2，项目结构较大变动，从单模块修改为Client、Server、Core三模块" />
     <MESSAGE value="cherry version0.0.2，包结构变动" />
-    <option name="LAST_COMMIT_MESSAGE" value="cherry version0.0.2，包结构变动" />
+    <MESSAGE value="cherry version0.0.2，日常增加一点内容" />
+    <option name="LAST_COMMIT_MESSAGE" value="cherry version0.0.2，日常增加一点内容" />
   </component>
 </project>

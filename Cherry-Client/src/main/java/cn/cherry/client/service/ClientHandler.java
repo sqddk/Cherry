@@ -7,7 +7,7 @@ import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static cn.cherry.core.infra.message.CommandFlag.*;
+import static cn.cherry.core.infra.command.MessageFlag.*;
 
 /**
  * cherry网络通信层面的客户端处理器
@@ -50,7 +50,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<JSONObject> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, JSONObject protocol) {
         switch (protocol.getIntValue("flag")) {
-            case FLAG_NOTIFY :
+            case NOTIFY:
                 TimePoint timePoint = TimePoint.parse(protocol.getString("timePoint"));
                 if (timePoint == null) {
                     ctx.fireExceptionCaught(new Throwable("时间信息格式错误！"));
@@ -61,19 +61,19 @@ public class ClientHandler extends SimpleChannelInboundHandler<JSONObject> {
                         protocol.getJSONObject("metaData"),
                         protocol.getIntValue("taskId"));
                 break;
-            case FLAG_ERROR :
+            case ERROR:
                 this.receiver.receiveError(protocol.getString("errorMessage"));
                 break;
-            case FLAG_RESULT_ADD :
+            case ADD_RESULT:
                 this.clientStarter.receiveInvokeResult(
-                        FLAG_RESULT_ADD,
+                        ADD_RESULT,
                         protocol.getIntValue("sendingId"),
                         protocol.getIntValue("taskId"),
                         null);
                 break;
-            case FLAG_RESULT_REMOVE :
+            case REMOVE_RESULT:
                 this.clientStarter.receiveInvokeResult(
-                        FLAG_RESULT_REMOVE,
+                        REMOVE_RESULT,
                         protocol.getIntValue("sendingId"),
                         null,
                         protocol.getBooleanValue("result"));

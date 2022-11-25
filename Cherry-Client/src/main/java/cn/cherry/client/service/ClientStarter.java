@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static cn.cherry.core.infra.message.CommandFlag.*;
+import static cn.cherry.core.infra.command.MessageFlag.*;
 
 
 /**
@@ -107,7 +107,7 @@ public class ClientStarter {
         final int sendingId = this.monitor.addAndGet(1);
         JSONObject protocol = new JSONObject(Map.of(
                         "groupName", this.groupName,
-                        "flag", FLAG_ADD,
+                        "flag", ADD,
                         "metaData", metaData,
                         "timePoint", timePoint.toString(),
                         "sendingId", sendingId
@@ -155,7 +155,7 @@ public class ClientStarter {
         final int sendingId = this.monitor.addAndGet(1);
         JSONObject protocol = new JSONObject(Map.of(
                         "groupName", this.groupName,
-                        "flag", FLAG_REMOVE,
+                        "flag", REMOVE,
                         "taskId", taskID,
                         "timePoint", timePoint.toString(),
                         "sendingId", sendingId
@@ -183,11 +183,11 @@ public class ClientStarter {
      */
     public void receiveInvokeResult(int type, int sendingId, Integer taskID, Boolean result) {
         switch (type) {
-            case FLAG_RESULT_ADD :
+            case ADD_RESULT:
                 CompletableFuture<Integer> addFuture = this.addResultBucket.remove(sendingId);
                 addFuture.complete(taskID);
                 break;
-            case FLAG_RESULT_REMOVE :
+            case REMOVE_RESULT:
                 CompletableFuture<Boolean> removeFuture = this.removeResultBucket.remove(sendingId);
                 removeFuture.complete(result);
                 break;
