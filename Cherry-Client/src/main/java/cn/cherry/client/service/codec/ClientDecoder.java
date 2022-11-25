@@ -1,15 +1,13 @@
 package cn.cherry.client.service.codec;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
+import cn.cherry.core.infra.message.Message;
+import cn.cherry.core.infra.message.MessageResolver;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
 import java.nio.charset.Charset;
 import java.util.List;
-
-import static cn.cherry.core.infra.message.MessageFlag.*;
 
 
 /**
@@ -37,20 +35,12 @@ public class ClientDecoder extends MessageToMessageDecoder<ByteBuf> {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
         try {
-            JSONObject protocol = JSON.parseObject(msg.toString(this.charset));
-
-            switch (protocol.getIntValue("flag")) {
-                case NOTIFY:
-                case REMOVE_RESULT:
-                case ADD_RESULT:
-                case ERROR:
-                    out.add(protocol);
-                    break;
-
-                default: ctx.fireExceptionCaught(new Throwable("无效协议！"));
-            }
+            Message message = MessageResolver.tryResolve(msg, charset);
+            if (message != null) {
+                out.add(message);
+            } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
         } catch (Exception e) {
-            ctx.fireExceptionCaught(new Throwable("无效协议！"));
+            ctx.fireExceptionCaught(e);
         }
     }
 

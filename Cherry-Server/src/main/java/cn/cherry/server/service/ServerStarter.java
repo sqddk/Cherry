@@ -2,6 +2,7 @@ package cn.cherry.server.service;
 
 import cn.cherry.core.engine.LocalStarter;
 import cn.cherry.core.infra.ConfigLoader;
+import cn.cherry.core.infra.message.MessageResolver;
 import cn.cherry.server.base.ServerConfigLoader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -46,32 +47,34 @@ public class ServerStarter {
     public void initial() {
         ConfigLoader configLoader = ConfigLoader.getInstance(ServerConfigLoader.class);
         this.logger.info("配置文件初始化完成！");
-        String host = configLoader.getValue("host");
+
+        String host = configLoader.getValue("host"),
+               resolverPack = configLoader.getValue("resolverPack");
         int port = configLoader.getIntValue("port"),
             interval = configLoader.getIntValue("interval"),
             totalTicks = configLoader.getIntValue("totalTicks"),
             wheelTimeout = configLoader.getIntValue("wheelTimeout");
 
-        new Thread(() -> {
-            try {
-                LocalStarter.getInstance().initial(interval, totalTicks, wheelTimeout);
-                this.serverBootstrap
-                        .channel(NioServerSocketChannel.class)
-                        .group(this.bossGroup, this.workerGroup)
-                        .childOption(ChannelOption.TCP_NODELAY, true)
-                        .childHandler(new ServerInitializer());
-                SocketAddress localAddress = new InetSocketAddress(host, port);
-                ChannelFuture future = this.serverBootstrap.bind(localAddress).sync();
-                this.logger.info("服务端已经在 " + localAddress + " 上成功启动并可提供服务！");
-                this.logger.info("等待cherry客户端连接接入本服务端！");
-                future.channel().closeFuture().sync();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                this.bossGroup.shutdownGracefully();
-                this.workerGroup.shutdownGracefully();
-            }
-        }).start();
+        MessageResolver.load(resolverPack);
+        LocalStarter.getInstance().initial(interval, totalTicks, wheelTimeout);
+
+        try {
+            this.serverBootstrap
+                    .channel(NioServerSocketChannel.class)
+                    .group(this.bossGroup, this.workerGroup)
+                    .childOption(ChannelOption.TCP_NODELAY, true)
+                    .childHandler(new ServerInitializer());
+            SocketAddress localAddress = new InetSocketAddress(host, port);
+            ChannelFuture future = this.serverBootstrap.bind(localAddress).sync();
+            this.logger.info("服务端已经在 " + localAddress + " 上成功启动并可提供服务！");
+            this.logger.info("等待cherry客户端连接接入本服务端！");
+            future.channel().closeFuture().sync();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.bossGroup.shutdownGracefully();
+            this.workerGroup.shutdownGracefully();
+        }
     }
 
 }
