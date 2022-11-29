@@ -73,15 +73,15 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
 
             case ADD:
                 this.logger.info(groupName + " 提交了一个定时任务！");
-                int[] result = this.localStarter
+                long result = this.localStarter
                         .submit(new NotifyTask(
                                 groupName,
                                 timePoint,
                                 metaData == null ? null : metaData.toJSONString()
                         ));
                 resProtocol.put("flag", ADD_RESULT);
-                if (result.length == 2) {
-                    resProtocol.put("taskId", result[1]);
+                if (result > -1) {
+                    resProtocol.put("taskId", result);
                     this.logger.info(groupName + " 定时任务提交成功！");
                 } else {
                     this.logger.info(groupName + " 定时任务提交失败！");

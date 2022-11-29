@@ -16,27 +16,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @since 2022/10/17
  * @author realDragonKing
  */
-public class DefaultTimingWheel implements TimingWheel {
+public class DefaultTimingWheel extends AbstractTimingWheel {
 
     /**
      * 当前时间点
      */
     private TimePoint currentTimePoint = TimePoint.getCurrentTimePoint();
-
-    /**
-     * 刻度总数
-     */
-    private final int totalTicks;
-
-    /**
-     * 每个刻度间的时间间隔，单位为毫秒（ms）
-     */
-    private final int interval;
-
-    /**
-     * 时间轮的自旋锁获取超时时间（超时放弃自旋）
-     */
-    private final int waitTimeout;
 
     /**
      * 具体执行定时任务的线程池
@@ -53,19 +38,14 @@ public class DefaultTimingWheel implements TimingWheel {
      */
     private final PointerLinkedList<Map<Integer, TaskList>> linkedRing;
 
-    public DefaultTimingWheel(int interval, int totalTicks, int waitTimeout) {
-        if (interval <= 0 || totalTicks <= 0 || waitTimeout <= 0) {
-            throw new RuntimeException();
-        }
-        this.interval = interval;
-        this.totalTicks = totalTicks;
-        this.waitTimeout = waitTimeout;
+    public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout) {
+        super(interval, totalTicks, waitTimeout);
 
         this.executor = BaseUtils.createWorkerThreadPool(
                 2,
                 Runtime.getRuntime().availableProcessors() * 2,
                 1000);
-        this.linkedRing = new DefaultPointerLinkedRing(this.totalTicks);
+        this.linkedRing = new DefaultPointerLinkedRing(this.getTotalTicks());
     }
 
     /**
@@ -76,21 +56,20 @@ public class DefaultTimingWheel implements TimingWheel {
      * @param task 定时任务
      * @return 提交是否成功 | 任务ID
      */
-    @Override
-    public int[] submit(Task task) {
-        int difference = TimeUtils.calDifference(this.currentTimePoint, task.getTimePoint(), this.interval);
+    public long submit(Task task) {
+        int difference = TimeUtils.calDifference(this.currentTimePoint, task.getTimePoint(), this.getInterval());
         if (difference <= 0) {
-            return new int[]{0};
+            return -1;
         }
-        int round = difference / this.totalTicks;
-        int ticks = difference % this.totalTicks;
+        int round = difference / this.getTotalTicks();
+        int ticks = difference % this.getTotalTicks();
 
         if (!this.tryLock(true)) {
-            return new int[]{0};
+            return -1;
         }
         Map<Integer, TaskList> bucket = this.getSpecBucket(ticks);
         if (bucket == null) {
-            return new int[]{0};
+            return -1;
         }
         TaskList taskList = bucket.get(round);
         if (taskList == null) {
@@ -99,7 +78,18 @@ public class DefaultTimingWheel implements TimingWheel {
         }
         taskList.add(task);
         this.unLock();
-        return new int[]{1, task.getTaskID()};
+        return task.getTaskID();
+    }
+
+    /**
+     * 删除一个任务
+     *
+     * @param taskId 任务的id
+     * @return 任务是否删除成功（成功返回 1， 失败返回 0）
+     */
+    @Override
+    public int remove(int taskId) {
+        return 0;
     }
 
     /**
@@ -111,7 +101,6 @@ public class DefaultTimingWheel implements TimingWheel {
      * @param id 任务ID
      * @return 任务是否删除成功
      */
-    @Override
     public boolean remove(TimePoint timePoint, int id) {
         int difference = TimeUtils.calDifference(this.currentTimePoint, timePoint, this.interval);
         if (difference <= 0) {

@@ -1,9 +1,6 @@
 package cn.cherry.core.engine;
 
-import cn.cherry.core.engine.base.DefaultTimingWheel;
-import cn.cherry.core.engine.base.Task;
-import cn.cherry.core.engine.base.TimePoint;
-import cn.cherry.core.engine.base.TimingWheel;
+import cn.cherry.core.engine.base.*;
 import cn.cherry.core.engine.base.executor.ScheduleExecutor;
 import cn.cherry.core.engine.base.executor.TimingWheelExecutor;
 import cn.cherry.core.infra.utils.BaseUtils;
@@ -32,7 +29,7 @@ public class LocalStarter {
     /**
      * 时间轮！
      */
-    private TimingWheel timingWheel;
+    private AbstractTimingWheel timingWheel;
 
     /**
      * 日志打印类
@@ -59,9 +56,9 @@ public class LocalStarter {
      * 通过本地进程内API，向时间轮中提交任务
      *
      * @param task 待执行的任务
-     * @return 是否成功提交 | 任务ID
+     * @return 任务的id
      */
-    public int[] submit(Task task) {
+    public long submit(Task task) {
         return this.timingWheel.submit(task);
     }
 
@@ -73,7 +70,7 @@ public class LocalStarter {
      * @return 是否成功删除
      */
     public boolean remove(TimePoint timePoint, int taskID) {
-        return this.timingWheel.remove(timePoint, taskID);
+        return this.timingWheel.remove(taskID) == 1;
     }
 
 }
