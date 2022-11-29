@@ -21,4 +21,5 @@ public class AddResultMessageResolver extends MessageResolver {
     protected Message resolve(JSONObject data) {
         return new AddResultMessage();
     }
+
 }
