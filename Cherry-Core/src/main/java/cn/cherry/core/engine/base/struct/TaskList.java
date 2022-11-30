@@ -1,6 +1,6 @@
 package cn.cherry.core.engine.base.struct;
 
-import cn.cherry.core.engine.base.Task;
+import cn.cherry.core.infra.Task;
 
 
 /**

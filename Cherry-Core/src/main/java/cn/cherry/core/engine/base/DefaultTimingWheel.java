@@ -1,10 +1,11 @@
 package cn.cherry.core.engine.base;
 
 import cn.cherry.core.engine.base.struct.PointerLinkedList;
-import cn.cherry.core.infra.utils.BaseUtils;
-import cn.cherry.core.infra.utils.TimeUtils;
+import cn.cherry.core.engine.utils.BaseUtils;
+import cn.cherry.core.engine.utils.TimeUtils;
 import cn.cherry.core.engine.base.struct.DefaultPointerLinkedRing;
 import cn.cherry.core.engine.base.struct.TaskList;
+import cn.cherry.core.infra.Task;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -102,12 +103,12 @@ public class DefaultTimingWheel extends AbstractTimingWheel {
      * @return 任务是否删除成功
      */
     public boolean remove(TimePoint timePoint, int id) {
-        int difference = TimeUtils.calDifference(this.currentTimePoint, timePoint, this.interval);
+        int difference = TimeUtils.calDifference(this.currentTimePoint, timePoint, this.getInterval());
         if (difference <= 0) {
             return false;
         }
-        int round = difference / this.totalTicks;
-        int ticks = difference % this.totalTicks;
+        int round = difference / this.getTotalTicks();
+        int ticks = difference % this.getTotalTicks();
 
         if (!this.tryLock(true)) {
             return false;
@@ -160,7 +161,7 @@ public class DefaultTimingWheel extends AbstractTimingWheel {
         if (stopNeed) {
             long startWaitingTime = System.nanoTime();
             while (!this.monitor.compareAndSet(false, true)) {
-                if (System.nanoTime() - startWaitingTime > this.waitTimeout) return false;
+                if (System.nanoTime() - startWaitingTime > this.getWaitTimeout()) return false;
             }
         } else {
             while (!this.monitor.compareAndSet(false, true)) {}
@@ -191,15 +192,6 @@ public class DefaultTimingWheel extends AbstractTimingWheel {
             this.linkedRing.movePrevious();
         }
         return bucket;
-    }
-
-    /**
-     * 启用时间矫正机制，计算超时时间，对于延期的任务恢复执行，并且按照超时时间削减所有round
-     *
-     * @param wasteTicks 损失的刻度数
-     */
-    private void recover(int wasteTicks) {
-
     }
 
 }

@@ -2,7 +2,7 @@ package cn.cherry.server.service;
 
 import cn.cherry.core.engine.LocalStarter;
 import cn.cherry.core.infra.ConfigLoader;
-import cn.cherry.core.infra.message.MessageResolver;
+import cn.cherry.core.infra.message.MessageAccepter;
 import cn.cherry.server.base.ServerConfigLoader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -30,6 +30,9 @@ public class ServerStarter {
         return ServerStarterHolder.INSTANCE;
     }
 
+    private static final String resolverPackageName = "cn.cherry.server.base.message.resolver";
+    private static final String handlerPackageName = "cn.cherry.server.base.message.handler";
+
     private final ServerBootstrap serverBootstrap;
     private final NioEventLoopGroup bossGroup;
     private final NioEventLoopGroup workerGroup;
@@ -48,14 +51,13 @@ public class ServerStarter {
         ConfigLoader configLoader = ConfigLoader.getInstance(ServerConfigLoader.class);
         this.logger.info("配置文件初始化完成！");
 
-        String host = configLoader.getValue("host"),
-               resolverPack = configLoader.getValue("resolverPack");
+        String host = configLoader.getValue("host");
         int port = configLoader.getIntValue("port"),
-            interval = configLoader.getIntValue("interval"),
-            totalTicks = configLoader.getIntValue("totalTicks"),
-            wheelTimeout = configLoader.getIntValue("wheelTimeout");
+                interval = configLoader.getIntValue("interval"),
+                totalTicks = configLoader.getIntValue("totalTicks"),
+                wheelTimeout = configLoader.getIntValue("wheelTimeout");
 
-        MessageResolver.load(resolverPack);
+        MessageAccepter.tryLoad(resolverPackageName, handlerPackageName);
         LocalStarter.getInstance().initial(interval, totalTicks, wheelTimeout);
 
         try {
