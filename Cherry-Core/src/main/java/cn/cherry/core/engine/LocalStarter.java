@@ -66,11 +66,10 @@ public class LocalStarter {
     /**
      * 根据任务执行时间点和任务ID，通过本地进程内API，向时间轮中删除一个任务
      *
-     * @param timePoint 任务执行时间点
      * @param taskID 任务ID
      * @return 是否成功删除
      */
-    public boolean remove(TimePoint timePoint, int taskID) {
+    public boolean remove(int taskID) {
         return this.timingWheel.remove(taskID) == 1;
     }
 

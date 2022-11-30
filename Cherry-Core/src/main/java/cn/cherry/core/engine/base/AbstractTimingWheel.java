@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static cn.cherry.core.engine.utils.BaseUtils.*;
 
 /**
- * 时间轮的主要抽象实现，提供了一系列操作接口。并且为了保证线程安全，通过CAS操作类{@link AtomicBoolean}提供了一种自旋锁实现
+ * 时间轮{@link TimingWheel}的抽象实现，提供了一系列操作接口。并且为了保证线程安全，通过CAS操作类{@link AtomicBoolean}提供了一种自旋锁实现
  *
  * @author realDragonKing
  */
