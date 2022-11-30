@@ -1,4 +1,4 @@
-package cn.cherry.core.infra.utils;
+package cn.cherry.core.engine.utils;
 
 import java.io.File;
 import java.net.URL;
@@ -78,6 +78,30 @@ public final class BaseUtils {
             e.printStackTrace();
         }
         return filePath;
+    }
+
+    /**
+     * 对int值进行检查，非正数时抛出异常
+     *
+     * @param value 待检查的int值
+     * @param name 值的名称
+     * @return 检查完毕的int值
+     */
+    public static int checkPositive(int value, String name) {
+        if (value <= 0) throw new IllegalArgumentException(name);
+        return value;
+    }
+
+    /**
+     * 对long值进行检查，非正数时抛出异常
+     *
+     * @param value 待检查的long值
+     * @param name 值的名称
+     * @return 检查完毕的long值
+     */
+    public static long checkPositive(long value, String name) {
+        if (value <= 0) throw new IllegalArgumentException(name);
+        return value;
     }
 
 }

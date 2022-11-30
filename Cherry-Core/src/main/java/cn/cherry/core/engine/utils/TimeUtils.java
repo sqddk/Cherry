@@ -1,4 +1,4 @@
-package cn.cherry.core.infra.utils;
+package cn.cherry.core.engine.utils;
 
 import cn.cherry.core.engine.base.TimePoint;
 
@@ -75,7 +75,7 @@ public class TimeUtils {
      *
      * @return 对应格式的时间差值
      */
-    public static int calDifference(TimePoint p1, TimePoint p2, int ticks) {
+    public static int calDifference(TimePoint p1, TimePoint p2, long ticks) {
         return (int) ((p2.getTimeValue() - p1.getTimeValue()) / ticks);
     }
 
