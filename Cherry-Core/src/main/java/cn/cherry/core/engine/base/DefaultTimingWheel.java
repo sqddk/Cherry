@@ -9,7 +9,6 @@ import cn.cherry.core.infra.Task;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 时间轮的默认实现类，进行任务调度
@@ -28,11 +27,6 @@ public class DefaultTimingWheel extends AbstractTimingWheel {
      * 具体执行定时任务的线程池
      */
     private final ExecutorService executor;
-
-    /**
-     * 时间轮的轻量级操作锁
-     */
-    private final AtomicBoolean monitor = new AtomicBoolean(false);
 
     /**
      * 时间轮的数据结构实现，环形链表
@@ -65,7 +59,7 @@ public class DefaultTimingWheel extends AbstractTimingWheel {
         int round = difference / this.getTotalTicks();
         int ticks = difference % this.getTotalTicks();
 
-        if (!this.tryLock(true)) {
+        if (!this.lock()) {
             return -1;
         }
         Map<Integer, TaskList> bucket = this.getSpecBucket(ticks);
@@ -89,7 +83,7 @@ public class DefaultTimingWheel extends AbstractTimingWheel {
      * @return 任务是否删除成功（成功返回 1， 失败返回 0）
      */
     @Override
-    public int remove(int taskId) {
+    public int remove(long taskId) {
         return 0;
     }
 
@@ -110,7 +104,7 @@ public class DefaultTimingWheel extends AbstractTimingWheel {
         int round = difference / this.getTotalTicks();
         int ticks = difference % this.getTotalTicks();
 
-        if (!this.tryLock(true)) {
+        if (!this.lock()) {
             return false;
         }
         Map<Integer, TaskList> bucket = this.getSpecBucket(ticks);
@@ -131,7 +125,7 @@ public class DefaultTimingWheel extends AbstractTimingWheel {
      */
     @Override
     public void turn() {
-        this.tryLock(false);
+        this.lock();
         // TODO 超时矫正机制等待完善
         this.linkedRing.moveNext();
         Map<Integer, TaskList> map = this.linkedRing.getPointer();
@@ -149,31 +143,6 @@ public class DefaultTimingWheel extends AbstractTimingWheel {
             }
         }
         this.unLock();
-    }
-
-    /**
-     * 尝试获取到时间轮的操作锁，若没获得则进行自旋，自旋超过一定时间则返回锁获取失败的信息
-     *
-     * @param stopNeed 是否超时停止
-     * @return 最终是否成功获取
-     */
-    private boolean tryLock(boolean stopNeed) {
-        if (stopNeed) {
-            long startWaitingTime = System.nanoTime();
-            while (!this.monitor.compareAndSet(false, true)) {
-                if (System.nanoTime() - startWaitingTime > this.getWaitTimeout()) return false;
-            }
-        } else {
-            while (!this.monitor.compareAndSet(false, true)) {}
-        }
-        return true;
-    }
-
-    /**
-     * 释放时间轮的操作锁
-     */
-    private void unLock() {
-        this.monitor.set(false);
     }
 
     /**

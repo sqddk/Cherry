@@ -59,7 +59,7 @@ public abstract class AbstractTimingWheel implements TimingWheel {
      * @param taskId 任务的id
      * @return 任务是否删除成功（成功返回 1， 失败返回 0）
      */
-    public abstract int remove(int taskId);
+    public abstract int remove(long taskId);
 
     /**
      * 尝试获取到时间轮的操作锁，若没获得则进行自旋，自旋超过时间{@link #waitTimeout}则返回锁获取失败的信息
@@ -67,11 +67,12 @@ public abstract class AbstractTimingWheel implements TimingWheel {
      * @return 是否获取锁成功
      */
     public final boolean lock() {
-        final long startWaitingTime = System.nanoTime(),
-                    waitTimeout = this.getWaitTimeout();
-        final AtomicBoolean monitor = this.monitor;
+        long endWaitingTime = System.nanoTime() + this.getWaitTimeout();
+        AtomicBoolean monitor = this.monitor;
         while (!monitor.compareAndSet(false, true)) {
-            if (System.nanoTime() - startWaitingTime > waitTimeout) return false;
+            if (System.nanoTime() > endWaitingTime) {
+                return false;
+            }
         }
         return true;
     }
@@ -79,7 +80,7 @@ public abstract class AbstractTimingWheel implements TimingWheel {
     /**
      * 释放时间轮的操作锁
      */
-    public final void unlock() {
+    public final void unLock() {
         this.monitor.set(false);
     }
 
