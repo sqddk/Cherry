@@ -41,8 +41,6 @@ public abstract class MessageResolver extends MessageAccepter {
     /**
      * 用于分门别类地装载消息接收者{@link MessageAccepter}的实现子类
      * （有{@link MessageResolver}和{@link MessageHandler}两个类别）
-     *
-     * @param accepter {@link MessageAccepter}的实现子类
      */
     @Override
     public final void load() {
