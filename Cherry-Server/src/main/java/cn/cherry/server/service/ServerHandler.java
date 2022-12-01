@@ -93,7 +93,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
                 this.logger.info(groupName + " 尝试删除一个定时任务！");
                 int taskId = reqProtocol.getIntValue("taskId");
                 resProtocol.put("flag", REMOVE_RESULT);
-                if (this.localStarter.remove(timePoint, taskId)) {
+                if (this.localStarter.remove(taskId)) {
                     resProtocol.put("result", true);
                     this.logger.info(groupName + " 定时任务删除成功！");
                 } else {

@@ -2,7 +2,6 @@ package cn.cherry.server.base.bucket;
 
 import io.netty.channel.Channel;
 import java.util.concurrent.ConcurrentHashMap;
-import cn.cherry.core.engine.base.struct.PointerLinkedList;
 
 
 /**
