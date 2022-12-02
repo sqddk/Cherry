@@ -1,13 +1,13 @@
 package cn.cherry.core.engine.base.executor;
 
-import cn.cherry.core.engine.base.TimingWheel;
+import cn.cherry.core.engine.base.Rotatable;
 
 import java.util.concurrent.BlockingQueue;
 
 /**
  * 时间轮操作者，（实现了{@link java.lang.Runnable}接口），在独立线程中运行
  * <p>
- * 通过阻塞队列收到来自计时器的通知信息后，会解除阻塞状态，执行{@link TimingWheel#turn()}方法，
+ * 通过阻塞队列收到来自计时器的通知信息后，会解除阻塞状态，执行{@link Rotatable#turn()}方法，
  * 推动时间轮转动，把任务分配到干活的线程池里面具体执行
  *
  * @since 2022/10/17
@@ -16,10 +16,10 @@ import java.util.concurrent.BlockingQueue;
 public class TimingWheelExecutor implements Runnable {
 
     private final BlockingQueue<Integer> messageChannel;
-    private final TimingWheel timingWheel;
+    private final Rotatable rotatable;
 
-    public TimingWheelExecutor(TimingWheel timingWheel, BlockingQueue<Integer> messageChannel) {
-        this.timingWheel = timingWheel;
+    public TimingWheelExecutor(Rotatable rotatable, BlockingQueue<Integer> messageChannel) {
+        this.rotatable = rotatable;
         this.messageChannel = messageChannel;
     }
 
@@ -39,7 +39,7 @@ public class TimingWheelExecutor implements Runnable {
         for (;;) {
             try {
                 this.messageChannel.take();
-                this.timingWheel.turn();
+                this.rotatable.turn();
             } catch (Exception e) {
                 break;
             }

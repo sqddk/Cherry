@@ -3,11 +3,11 @@ package cn.cherry.core.engine.base;
 import cn.cherry.core.infra.Task;
 
 /**
- * 时间轮{@link TimingWheel}和{@link AbstractTimingWheel}的默认具体实现
+ * 时间轮{@link Rotatable}和{@link TimingWheel}的默认具体实现
  *
  * @author realDragonKing
  */
-public class DefaultTimingWheel extends AbstractTimingWheel{
+public class DefaultTimingWheel extends TimingWheel {
 
     public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout) {
         super(interval, totalTicks, waitTimeout);
