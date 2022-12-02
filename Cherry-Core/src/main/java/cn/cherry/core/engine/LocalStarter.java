@@ -30,7 +30,7 @@ public class LocalStarter {
     /**
      * 时间轮！
      */
-    private AbstractTimingWheel timingWheel;
+    private TimingWheel timingWheel;
 
     /**
      * 日志打印类
