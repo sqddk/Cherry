@@ -51,6 +51,14 @@ public class Node<E> {
     }
 
     /**
+     * 设置前、后节点
+     */
+    public void set(Node<E> prev, Node<E> next) {
+        this.prev = prev;
+        this.next = next;
+    }
+
+    /**
      * @return 当前节点的值
      */
     public E getValue() {

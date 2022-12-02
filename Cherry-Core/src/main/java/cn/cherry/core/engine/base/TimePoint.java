@@ -1,5 +1,6 @@
 package cn.cherry.core.engine.base;
 
+
 import cn.cherry.core.engine.utils.BaseUtils;
 import cn.cherry.core.engine.utils.TimeUtils;
 
@@ -23,9 +24,9 @@ public class TimePoint {
         if (time == null || time.length() != 12 || (! BaseUtils.checkStringOfNumber(time))) {
             return null;
         }
-        int year, month, day, hour, minute;
+        int year, day, hour, minute;
         year = Integer.parseInt(time.substring(0, 4));
-        month = TimeUtils.parseAndCheckMonth(time.substring(4, 6));
+        int month = TimeUtils.parseAndCheckMonth(time.substring(4, 6));
         if (month == -1) {
             return null;
         }
