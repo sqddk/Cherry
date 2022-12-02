@@ -30,7 +30,7 @@ public class PointerLinkedRing<E> implements PointerLinked<E> {
         }
         this.pointer = first;
         prev.setNext(first);
-        first.setPrev(this.pointer);
+        first.setPrev(prev);
         this.size = values.size();
     }
 
