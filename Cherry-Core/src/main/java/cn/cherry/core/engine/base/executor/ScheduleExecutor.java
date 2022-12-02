@@ -1,6 +1,6 @@
 package cn.cherry.core.engine.base.executor;
 
-import cn.cherry.core.engine.base.TimingWheel;
+import cn.cherry.core.engine.base.Rotatable;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -10,7 +10,7 @@ import java.util.concurrent.BlockingQueue;
  * 计时器会通过自旋的方式实现 休眠-执行 的轮回（休眠时间由传入的参数决定，单位为秒）
  * <p>
  * 每次执行都会通过阻塞队列传入元素的方式，通知运行在另外一个线程上的时间轮操作者
- * {@link TimingWheelExecutor}执行{@link TimingWheel#turn()}方法
+ * {@link TimingWheelExecutor}执行{@link Rotatable#turn()}方法
  *
  * @since 2022/10/17
  * @author realDragonKing
