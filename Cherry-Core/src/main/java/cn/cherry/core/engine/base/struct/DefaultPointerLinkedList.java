@@ -9,16 +9,10 @@ package cn.cherry.core.engine.base.struct;
 public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
 
     private Node<E> pointer;
-    private final Node<E> head;
-    private final Node<E> tail;
-    private int size;
+    private final Node<E> head = new Node<>(null);
+    private final Node<E> tail = new Node<>(null);
+    private int size = 0;
 
-    public DefaultPointerLinkedList() {
-
-        this.head = new Node<>(null);
-        this.tail = new Node<>(null);
-        this.size = 0;
-    }
 
     /**
      * 在末端插入一个新的节点
