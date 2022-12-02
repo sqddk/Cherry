@@ -3,22 +3,14 @@ package cn.cherry.core.engine.base.struct;
 /**
  * 指针链表的默认实现类
  *
- * @author realDragonKing
- * @since 2022/10/17
+ * @author realDragonKing、liehu1
  */
 public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
 
     private Node<E> pointer;
-    private final Node<E> head;
-    private final Node<E> tail;
-    private int size;
-
-    public DefaultPointerLinkedList() {
-
-        this.head = new Node<>(null);
-        this.tail = new Node<>(null);
-        this.size = 0;
-    }
+    private final Node<E> head = new Node<>(null);
+    private final Node<E> tail = new Node<>(null);
+    private int size = 0;
 
     /**
      * 在末端插入一个新的节点
@@ -29,7 +21,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     public void add(E value) {
         if (value == null) return;
         Node<E> node = new Node<>(value);
-        sizeAdd();
+        this.size++;
         if (this.size == 1) {
             this.head.setNext(node);
             node.setPrev(this.head);
@@ -41,10 +33,6 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         }
         this.tail.setPrev(node);
         node.setNext(tail);
-    }
-
-    private void sizeAdd() {
-        this.size++;
     }
 
     /**
@@ -60,21 +48,14 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
                 node = this.pointer;
         prev.setNext(next);
         next.setPrev(prev);
-        sizeDec();
+        this.size--;
         if (this.size == 0) {
             this.pointer = null;
-        } else if (next == this.tail) {
-            this.pointer = prev;
         } else {
-            this.pointer = next;
+            this.pointer = next == this.tail ? prev : next;
         }
-        node.setNext(null);
-        node.setPrev(null);
+        node.set(null, null);
         return node.getValue();
-    }
-
-    private void sizeDec() {
-        this.size--;
     }
 
     @Override
@@ -91,8 +72,6 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
             this.pointer = this.pointer.getNext();
         }
     }
-
-
 
     /**
      * 移动指针到上一个节点
@@ -128,8 +107,6 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
             this.pointer = this.tail.getNext();
         }
     }
-
-
 
     /**
      * 返回字符串型链表
