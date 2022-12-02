@@ -22,7 +22,6 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
 
     /**
      * 在末端插入一个新的节点
-     *
      * @param value 节点值
      */
     @Override
@@ -38,7 +37,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
             Node<E> prev = this.tail.getPrev();
             prev.setNext(node);
             node.setPrev(prev);
-            this.pointer=node;
+            this.pointer = node;
         }
         this.tail.setPrev(node);
         node.setNext(tail);
@@ -46,16 +45,14 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
 
     /**
      * 在指定位置插入一个新的节点
-     *
      * @param position 下标 @param value 节点值
      */
-    public void add(int position,E value){
-        if(value==null)
+    public void add(int position, E value) {
+        if (value == null)
             return;
-        if(size==position)
+        if (size == position)
             add(value);
-        else if(move(position))
-        {
+        else if (move(position)) {
             Node<E> node = new Node<>(value);
             sizeAdd();
             if (this.size == 1) {
@@ -68,10 +65,11 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
                 node.setPrev(prev);
                 node.setNext(this.pointer);
                 this.pointer.setPrev(node);
-                this.pointer=node;
+                this.pointer = node;
             }
         }
     }
+
     private void sizeAdd() {
         this.size++;
     }
@@ -104,10 +102,10 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
 
     /**
      * @param position 下标
-     * 删除并弹出指定位置的节点值
+     *删除并弹出指定位置的节点值
      */
-    public E remove(int position){
-        if(move(position))
+    public E remove(int position) {
+        if (move(position))
             return remove();
         return null;
     }
@@ -120,20 +118,21 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      * @param position 下标
      * 移动指针到指定位置的节点
      */
-    public Boolean move(int position){
-        if(position>=size||position<0)
+    public Boolean move(int position) {
+        if (position >= size || position < 0)
             return false;
-        else if(position==0)
+        else if (position == 0)
             resetHead();
-        else{
+        else {
             resetHead();
-            Node<E> node= this.head.getNext();
+            Node<E> node = this.head.getNext();
             for (int i = 0; i < position; i++)
-                node=node.getNext();
-            this.pointer=node;
+                node = node.getNext();
+            this.pointer = node;
         }
         return true;
     }
+
     /**
      * 移动指针到下一个节点
      */
@@ -165,18 +164,19 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         return this.pointer.getValue();
     }
 
-    public E getValue(int position){
-        if(move(position)) {
+    public E getValue(int position) {
+        if (move(position)) {
             return getValue();
         }
         return null;
     }
+
     /**
      * 重置指针到头节点
      */
     @Override
     public void resetHead() {
-        if (this.size>0) {
+        if (this.size > 0) {
             this.pointer = this.head.getNext();
         }
     }
@@ -186,7 +186,7 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void resetTail() {
-        if (this.size>0) {
+        if (this.size > 0) {
             this.pointer = this.tail.getPrev();
         }
     }
