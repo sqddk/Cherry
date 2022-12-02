@@ -38,11 +38,40 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
             Node<E> prev = this.tail.getPrev();
             prev.setNext(node);
             node.setPrev(prev);
+            this.pointer=node;
         }
         this.tail.setPrev(node);
         node.setNext(tail);
     }
 
+    /**
+     * 在指定位置插入一个新的节点
+     *
+     * @param position 下标 @param value 节点值
+     */
+    public void add(int position,E value){
+        if(value==null)
+            return;
+        if(size==position)
+            add(value);
+        else if(move(position))
+        {
+            Node<E> node = new Node<>(value);
+            sizeAdd();
+            if (this.size == 1) {
+                this.head.setNext(node);
+                node.setPrev(this.head);
+                this.pointer = node;
+            } else {
+                Node<E> prev = this.pointer.getPrev();
+                prev.setNext(node);
+                node.setPrev(prev);
+                node.setNext(this.pointer);
+                this.pointer.setPrev(node);
+                this.pointer=node;
+            }
+        }
+    }
     private void sizeAdd() {
         this.size++;
     }
@@ -73,25 +102,47 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         return node.getValue();
     }
 
+    /**
+     * @param position 下标
+     * 删除并弹出指定位置的节点值
+     */
+    public E remove(int position){
+        if(move(position))
+            return remove();
+        return null;
+    }
+
     private void sizeDec() {
         this.size--;
     }
 
-    @Override
-    public E getValue() {
-        return this.pointer.getValue();
+    /**
+     * @param position 下标
+     * 移动指针到指定位置的节点
+     */
+    public Boolean move(int position){
+        if(position>=size||position<0)
+            return false;
+        else if(position==0)
+            resetHead();
+        else{
+            resetHead();
+            Node<E> node= this.head.getNext();
+            for (int i = 0; i < position; i++)
+                node=node.getNext();
+            this.pointer=node;
+        }
+        return true;
     }
-
     /**
      * 移动指针到下一个节点
      */
     @Override
     public void moveNext() {
-        if (this.pointer.getNext() != this.tail ) {
+        if (this.pointer.getNext() != this.tail) {
             this.pointer = this.pointer.getNext();
         }
     }
-
 
 
     /**
@@ -109,12 +160,23 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         return this.size;
     }
 
+    @Override
+    public E getValue() {
+        return this.pointer.getValue();
+    }
+
+    public E getValue(int position){
+        if(move(position)) {
+            return getValue();
+        }
+        return null;
+    }
     /**
      * 重置指针到头节点
      */
     @Override
     public void resetHead() {
-        if (this.pointer.getPrev() != this.head) {
+        if (this.size>0) {
             this.pointer = this.head.getNext();
         }
     }
@@ -124,11 +186,10 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
      */
     @Override
     public void resetTail() {
-        if (this.pointer.getNext() != this.tail) {
-            this.pointer = this.tail.getNext();
+        if (this.size>0) {
+            this.pointer = this.tail.getPrev();
         }
     }
-
 
 
     /**
