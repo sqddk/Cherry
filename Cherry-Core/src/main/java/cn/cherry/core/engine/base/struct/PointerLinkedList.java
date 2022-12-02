@@ -10,7 +10,7 @@ package cn.cherry.core.engine.base.struct;
 public interface PointerLinkedList<E> extends PointerLinked<E> {
 
     /**
-     * 在指针指向位置添加一个节点
+     * 在尾部添加一个节点
      *
      * @param value 节点值
      */
