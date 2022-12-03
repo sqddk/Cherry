@@ -31,7 +31,7 @@ public class DefaultPointerLinkedRing extends PointerLinkedRing<Map<Integer, Tas
     public void add(Map<Integer, Map<Integer, TaskList>> map) {
         Node<Map<Integer, TaskList>> node;
         for (int i : map.keySet()) {//i为节点
-            node=nodeAt(i);
+            node = nodeAt(i);
             Map<Integer, TaskList> newValue = map.get(i);
             Map<Integer, TaskList> nodeValue = node.getValue();
             for (int round:newValue.keySet()) {//round为圈数
@@ -48,10 +48,10 @@ public class DefaultPointerLinkedRing extends PointerLinkedRing<Map<Integer, Tas
      * 将时间轮中所有节点中圈数为0的TaskList删除
      */
     public void clear(){
-        Node<Map<Integer, TaskList>> node=getFirst();
+        Node<Map<Integer, TaskList>> node = getFirst();
         for (int i = 0; i < getSize(); i++) {
             node.getValue().remove(0);
-            node=node.getNext();
+            node = node.getNext();
         }
     }
 }

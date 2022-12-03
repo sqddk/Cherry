@@ -27,14 +27,7 @@ public class LocalStarter {
 
     private LocalStarter() {}
 
-    /**
-     * 时间轮！
-     */
     private TimingWheel timingWheel;
-
-    /**
-     * 日志打印类
-     */
     private final Logger logger = LogManager.getLogger("Cherry");
 
     /**
@@ -44,8 +37,8 @@ public class LocalStarter {
      * @param totalTicks 总刻度数
      * @param wheelTimeout 时间轮的自旋锁获取超时时间（超时放弃自旋）
      */
-    public void initial(int interval, int totalTicks, int wheelTimeout) {
-        this.timingWheel = new DefaultTimingWheel(interval, totalTicks, wheelTimeout);
+    public void initial(int interval, int totalTicks, int wheelTimeout, int threadNumber, int taskListSize) {
+        this.timingWheel = new DefaultTimingWheel(interval, totalTicks, wheelTimeout, threadNumber, taskListSize);
         BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>(1);
         new Thread(new ScheduleExecutor(interval, blockingQueue)).start();
         new Thread(new TimingWheelExecutor(this.timingWheel, blockingQueue)).start();
@@ -70,7 +63,7 @@ public class LocalStarter {
      * @return 是否成功删除
      */
     public boolean remove(int taskID) {
-        return this.timingWheel.remove(taskID) == 1;
+        return this.timingWheel.remove(taskID);
     }
 
 }

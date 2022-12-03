@@ -54,8 +54,8 @@ public abstract class TimingWheel implements Rotatable {
      * 删除一个任务
      *
      * @param taskId 任务的id
-     * @return 任务是否删除成功（成功返回 1， 失败返回 0）
+     * @return 任务是否删除成功
      */
-    public abstract int remove(long taskId);
+    public abstract boolean remove(long taskId);
 
 }

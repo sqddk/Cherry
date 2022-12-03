@@ -26,26 +26,6 @@ public final class BaseUtils {
     }
 
     /**
-     * 创建一个具体执行任务的线程池
-     * <p>
-     * 这里拒绝策略应当被重写成，可以通知调用方任务无法被执行
-     *
-     * @param corePoolSize 核心线程数
-     * @param maximumPoolSize 最大线程数
-     * @param queueSize 任务缓冲队列长度
-     * @return 线程池
-     */
-    public static ExecutorService createWorkerThreadPool(int corePoolSize, int maximumPoolSize, int queueSize) {
-        return new ThreadPoolExecutor(
-                corePoolSize,
-                maximumPoolSize,
-                2L,
-                TimeUnit.MINUTES,
-                new LinkedBlockingQueue<>(queueSize),
-                (r, executor) -> {});
-    }
-
-    /**
      * 打印出cherry的logo！
      */
     public static void printLogo() {
