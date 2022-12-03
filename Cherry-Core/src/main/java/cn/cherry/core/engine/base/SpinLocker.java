@@ -22,7 +22,7 @@ public class SpinLocker {
      *
      * @return 是否获取锁成功
      */
-    private boolean lock() {
+    public boolean lock() {
         long endWaitingTime = System.nanoTime() + this.waitTimeout;
         AtomicBoolean monitor = this.monitor;
         while (!monitor.compareAndSet(false, true)) {
@@ -36,7 +36,7 @@ public class SpinLocker {
     /**
      * 无条件释放锁
      */
-    private void unLock() {
+    public void unLock() {
         this.monitor.set(false);
     }
 
