@@ -36,6 +36,19 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
     }
 
     /**
+     *在末端添加链表
+     */
+    public void add(DefaultPointerLinkedList<E> list2){
+        Node<E> list1Last = getLast();
+        Node<E> list2First = list2.getFirst();
+        list1Last.setNext(list2First);
+        list2First.setPrev(list1Last);
+        this.tail.setPrev(list2.getLast());
+        list2.head.setNext(null);
+        list2.tail.setPrev(null);
+        resetTail();
+    }
+    /**
      * 删除并弹出指针处的节点值
      */
     @Override
@@ -86,6 +99,18 @@ public class DefaultPointerLinkedList<E> implements PointerLinkedList<E> {
         }
     }
 
+    /**
+     *获取下标为0的节点
+     */
+    protected Node<E> getFirst(){
+        return this.head.getNext();
+    }
+    /**
+     *获取下标为size-1的节点
+     */
+    protected Node<E> getLast(){
+        return this.tail.getPrev();
+    }
     /**
      * @return 大小（有多少个{@link Node}节点加入了{@link PointerLinked}）
      */
