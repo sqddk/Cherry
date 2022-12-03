@@ -14,13 +14,14 @@ public class PointerLinkedRing<E> implements PointerLinked<E> {
 
     private final int size;
 
-    private Node<E> pointer;
+    private Node<E> pointer,first;
 
     public PointerLinkedRing(List<E> values) {
         if (values.size() == 0) {
             throw new IllegalArgumentException("至少要有一个节点值来完成初始化！");
         }
         Node<E> prev = new Node<>(values.get(0));
+        this.first=prev;
         Node<E> next;
         for (E value : values) {
             next = new Node<>(value);
@@ -28,7 +29,9 @@ public class PointerLinkedRing<E> implements PointerLinked<E> {
             next.setPrev(prev);
             prev = next;
         }
-        this.pointer = prev;
+        this.first.setPrev(prev);
+        prev.setNext(this.first);
+        this.pointer = this.first;
         this.size = values.size();
     }
 
@@ -64,6 +67,13 @@ public class PointerLinkedRing<E> implements PointerLinked<E> {
     @Override
     public int getSize() {
         return this.size;
+    }
+
+    /**
+     *返回下标为0的节点
+     */
+    protected Node<E> getFirst(){
+        return this.first;
     }
 
 }
