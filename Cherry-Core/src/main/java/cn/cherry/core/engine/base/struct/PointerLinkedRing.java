@@ -14,12 +14,12 @@ public class PointerLinkedRing<E> implements PointerLinked<E> {
 
     private final int size;
     private Node<E> pointer;
-    private Node<E> first;
+
     public PointerLinkedRing(List<E> values) {
         if (values.size() == 0) {
             throw new IllegalArgumentException("至少要有一个节点值来完成初始化！");
         }
-        first = new Node<>(values.get(0));
+        Node<E> first = new Node<>(values.get(0));
         Node<E> prev = first;
         Node<E> next;
         for (E value : values) {

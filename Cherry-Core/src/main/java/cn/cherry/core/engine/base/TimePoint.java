@@ -24,9 +24,9 @@ public class TimePoint {
         if (time == null || time.length() != 12 || (! BaseUtils.checkStringOfNumber(time))) {
             return null;
         }
-        int year, day, hour, minute;
+        int year, month, day, hour, minute;
         year = Integer.parseInt(time.substring(0, 4));
-        int month = TimeUtils.parseAndCheckMonth(time.substring(4, 6));
+        month = TimeUtils.parseAndCheckMonth(time.substring(4, 6));
         if (month == -1) {
             return null;
         }
