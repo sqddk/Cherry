@@ -24,14 +24,15 @@ public class DefaultTimingWheel extends TimingWheel {
     public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout) {
         super(interval, totalTicks, waitTimeout);
         List<TimeSlot> list = new ArrayList<>(getTotalTicks());
+        this.slotMap = new HashMap<>(getTotalTicks());
         for (int i = 0; i < getTotalTicks(); i++) {
             SpinLocker locker = new SpinLocker(getWaitTimeout());
             TimeSlot slot = new TimeSlot(locker);
+            this.slotMap.put(i, slot);
             list.add(slot);
         }
         this.position = 0;
         this.ring = new PointerLinkedRing<>(list);
-        this.slotMap = new HashMap<>(getTotalTicks());
     }
 
     /**

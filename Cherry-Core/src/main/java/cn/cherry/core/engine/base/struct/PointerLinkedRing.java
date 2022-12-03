@@ -67,11 +67,4 @@ public class PointerLinkedRing<E> implements PointerLinked<E> {
         return this.size;
     }
 
-    /**
-     *返回下标为0的节点
-     */
-    protected Node<E> getFirst(){
-        return this.first;
-    }
-
 }
