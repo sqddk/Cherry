@@ -1,6 +1,13 @@
 package cn.cherry.core.engine.base;
 
+import cn.cherry.core.engine.base.struct.PointerLinked;
+import cn.cherry.core.engine.base.struct.PointerLinkedRing;
 import cn.cherry.core.infra.Task;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 时间轮{@link Rotatable}和{@link TimingWheel}的默认具体实现
@@ -9,8 +16,15 @@ import cn.cherry.core.infra.Task;
  */
 public class DefaultTimingWheel extends TimingWheel {
 
+    private final PointerLinked<Map<Integer, TaskList>> ring;
+
     public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout) {
         super(interval, totalTicks, waitTimeout);
+        List<Map<Integer, TaskList>> list = new ArrayList<>(this.getTotalTicks());
+        for (int i = 0; i < this.getTotalTicks(); i++) {
+            list.add(new HashMap<>());
+        }
+        this.ring = new PointerLinkedRing<>(list);
     }
 
     /**
