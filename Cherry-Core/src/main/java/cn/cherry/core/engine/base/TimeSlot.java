@@ -52,20 +52,21 @@ public final class TimeSlot {
     public void decAndExecute() {
         Map<Integer, TaskList> map = this.map;
         TaskList taskList;
-        this.locker.lock();
-        for (int round : map.keySet()) {
-            taskList = map.get(round);
-            round--;
-            map.put(round, taskList);
-            if (round == 0 && taskList.getSize() > 0) {
-                taskList.resetTail();
-                for (int i = 0; i < taskList.getSize(); i++) {
-                    Task task = taskList.remove();
-                    this.executor.execute(task::execute);
+        if (this.locker.lock()) {
+            for (int round : map.keySet()) {
+                taskList = map.get(round);
+                round--;
+                map.put(round, taskList);
+                if (round == 0 && taskList.getSize() > 0) {
+                    taskList.resetTail();
+                    for (int i = 0; i < taskList.getSize(); i++) {
+                        Task task = taskList.remove();
+                        this.executor.execute(task::execute);
+                    }
                 }
             }
+            this.locker.unLock();
         }
-        this.locker.unLock();
     }
 
 }
