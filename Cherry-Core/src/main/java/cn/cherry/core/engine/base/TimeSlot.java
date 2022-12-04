@@ -4,7 +4,6 @@ import cn.cherry.core.infra.Task;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
 
 /**
  * 时间轮的槽位，被时间轮的默认实现{@link DefaultTimingWheel}所使用。
@@ -16,12 +15,12 @@ public final class TimeSlot {
 
     private final Map<Integer, TaskList> map;
     private final SpinLocker locker;
-    private final Executor executor;
+    private final TimingWheel timingWheel;
 
-    public TimeSlot(SpinLocker locker, Executor executor) {
+    public TimeSlot(TimingWheel timingWheel) {
         this.map = new HashMap<>();
-        this.locker = locker;
-        this.executor = executor;
+        this.timingWheel = timingWheel;
+        this.locker = new SpinLocker(this.timingWheel.getWaitTimeout());
     }
 
     /**
@@ -57,11 +56,11 @@ public final class TimeSlot {
                 taskList = map.get(round);
                 round--;
                 map.put(round, taskList);
-                if (round == 0 && taskList.getSize() > 0) {
+                if (round == 0 && taskList != null && taskList.getSize() > 0) {
                     taskList.resetTail();
                     for (int i = 0; i < taskList.getSize(); i++) {
                         Task task = taskList.remove();
-                        this.executor.execute(task::execute);
+                        this.timingWheel.executeTask(task);
                     }
                 }
             }

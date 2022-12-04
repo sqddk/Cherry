@@ -53,7 +53,7 @@ public class LocalStarter {
      * @return 任务的id
      */
     public long submit(Task task) {
-        return this.timingWheel.submit(task);
+        return this.timingWheel.submitTask(task);
     }
 
     /**
@@ -63,7 +63,7 @@ public class LocalStarter {
      * @return 是否成功删除
      */
     public boolean remove(int taskID) {
-        return this.timingWheel.remove(taskID);
+        return this.timingWheel.removeTask(taskID);
     }
 
 }

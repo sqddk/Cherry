@@ -11,14 +11,17 @@ import static cn.cherry.core.engine.utils.BaseUtils.*;
  */
 public abstract class TimingWheel implements Rotatable {
 
+    private long currentTimeValue; // 单位为毫秒（ms）
     private final long interval; // 单位为毫秒（ms）
     private final int totalTicks;
     private final long waitTimeout; // 单位为纳秒（ns）
+    private final int maxTaskSize;
 
-    public TimingWheel(long interval, int totalTicks, long waitTimeout) {
+    public TimingWheel(long interval, int totalTicks, long waitTimeout, int maxTaskSize) {
         this.interval = checkPositive(interval, "interval");
         this.totalTicks = checkPositive(totalTicks, "totalTicks");
         this.waitTimeout = checkPositive(waitTimeout, "waitTimeout");
+        this.maxTaskSize = maxTaskSize;
     }
 
     /**
@@ -43,12 +46,49 @@ public abstract class TimingWheel implements Rotatable {
     }
 
     /**
+     * @return 单次转动可以执行的最大任务数量
+     */
+    public final int getMaxTaskSize() {
+        return this.maxTaskSize;
+    }
+
+    /**
+     * 设置时间轮持有的绝对时间
+     *
+     * @param timeValue 绝对时间值
+     */
+    public final void setCurrentTimeValue(long timeValue) {
+        this.currentTimeValue = timeValue;
+    }
+
+    /**
+     * 增加时间轮持有的绝对时间值
+     */
+    public final void addCurrentTimeValue() {
+        this.currentTimeValue += this.interval;
+    }
+
+    /**
+     * @return 时间轮持有的绝对时间值
+     */
+    public final long getCurrentTimeValue() {
+        return this.currentTimeValue;
+    }
+
+    /**
+     * 执行一个任务
+     *
+     * @param task 任务
+     */
+    public abstract void executeTask(Task task);
+
+    /**
      * 提交一个任务
      *
      * @param task 任务
      * @return 任务的id（若提交失败则返回-1）
      */
-    public abstract long submit(Task task);
+    public abstract long submitTask(Task task);
 
     /**
      * 删除一个任务
@@ -56,6 +96,6 @@ public abstract class TimingWheel implements Rotatable {
      * @param taskId 任务的id
      * @return 任务是否删除成功
      */
-    public abstract boolean remove(long taskId);
+    public abstract boolean removeTask(long taskId);
 
 }
