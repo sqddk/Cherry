@@ -55,10 +55,12 @@ public class ServerStarter {
         int port = configLoader.getIntValue("port"),
                 interval = configLoader.getIntValue("interval"),
                 totalTicks = configLoader.getIntValue("totalTicks"),
-                wheelTimeout = configLoader.getIntValue("wheelTimeout");
+                wheelTimeout = configLoader.getIntValue("wheelTimeout"),
+                threadNumber = configLoader.getIntValue("threadNumber"),
+                taskListSize = configLoader.getIntValue("taskListSize");
 
         MessageAccepter.tryLoad(resolverPackageName, handlerPackageName);
-        LocalStarter.getInstance().initial(interval, totalTicks, wheelTimeout);
+        LocalStarter.getInstance().initial(interval, totalTicks, wheelTimeout, threadNumber, taskListSize);
 
         try {
             this.serverBootstrap
