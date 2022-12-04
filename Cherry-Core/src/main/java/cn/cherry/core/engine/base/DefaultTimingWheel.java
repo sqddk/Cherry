@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
 import static cn.cherry.core.engine.utils.BaseUtils.*;
 
 /**
- * 时间轮{@link TimingWheel}的默认具体实现。{@link DefaultTimingWheel}结合{@link SpinLocker}自旋锁，
- * 提供了{@link TimeSlot}槽位获取方法{@link #getSlot(int distance)}和转动方法{@link #turn()}实现
+ * 时间轮{@link TimingWheel}的默认具体实现。
+ * {@link DefaultTimingWheel}提供了{@link TimeSlot}槽位获取方法{@link #getSlot(int distance)}和转动方法{@link #turn()}实现
  *
  * @author realDragonKing
  */
