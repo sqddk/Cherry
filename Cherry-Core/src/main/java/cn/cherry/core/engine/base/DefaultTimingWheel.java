@@ -24,18 +24,26 @@ import static cn.cherry.core.engine.utils.BaseUtils.*;
 public class DefaultTimingWheel extends TimingWheel {
 
     private int position;
+    private final Executor executor;
     private final PointerLinked<TimeSlot> ring;
     private final Map<Integer, TimeSlot> slotMap;
 
     public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout, int threadNumber, int taskListSize) {
-        super(interval, totalTicks, waitTimeout);
+        super(interval, totalTicks, waitTimeout, taskListSize);
         this.position = 0;
         this.slotMap = new HashMap<>(getTotalTicks());
 
         List<TimeSlot> list = new ArrayList<>(getTotalTicks());
+        for (int i = 0; i < getTotalTicks(); i++) {
+            TimeSlot slot = new TimeSlot(this);
+            this.slotMap.put(i, slot);
+            list.add(slot);
+        }
+        this.ring = new PointerLinkedRing<>(list);
+
         int coreSize = Runtime.getRuntime().availableProcessors() << 1;
         checkPositive(threadNumber, "threadNumber");
-        Executor executor = new ThreadPoolExecutor(
+        this.executor = new ThreadPoolExecutor(
                 Math.min(coreSize, threadNumber),
                 Math.max(coreSize, threadNumber),
                 2L,
@@ -43,13 +51,18 @@ public class DefaultTimingWheel extends TimingWheel {
                 new LinkedBlockingQueue<>(taskListSize),
                 (r, executor1) -> {});
 
-        for (int i = 0; i < getTotalTicks(); i++) {
-            SpinLocker locker = new SpinLocker(getWaitTimeout());
-            TimeSlot slot = new TimeSlot(locker, executor);
-            this.slotMap.put(i, slot);
-            list.add(slot);
-        }
-        this.ring = new PointerLinkedRing<>(list);
+        final long currentTimeValue = System.currentTimeMillis();
+        this.setCurrentTimeValue(currentTimeValue);
+    }
+
+    /**
+     * 执行一个任务
+     *
+     * @param task 任务
+     */
+    @Override
+    public void executeTask(Task task) {
+        this.executor.execute(task::execute);
     }
 
     /**
@@ -59,7 +72,7 @@ public class DefaultTimingWheel extends TimingWheel {
      * @return 任务的id（提交失败返回-1）
      */
     @Override
-    public long submit(Task task) {
+    public long submitTask(Task task) {
         return 0;
     }
 
@@ -70,7 +83,7 @@ public class DefaultTimingWheel extends TimingWheel {
      * @return 任务是否删除成功
      */
     @Override
-    public boolean remove(long taskId) {
+    public boolean removeTask(long taskId) {
         return false;
     }
 
@@ -80,12 +93,13 @@ public class DefaultTimingWheel extends TimingWheel {
     @Override
     public void turn() {
         this.ring.moveNext();
-        this.position++;
-        if (this.position == getTotalTicks()) {
-            this.position = 0;
+        this.addCurrentTimeValue();
+        int position = this.position + 1;
+        if (position == getTotalTicks()) {
+            position = 0;
         }
-        TimeSlot slot = this.ring.getValue();
-        slot.decAndExecute();
+        this.position = position;
+        this.ring.getValue().decAndExecute();
     }
 
     /**
