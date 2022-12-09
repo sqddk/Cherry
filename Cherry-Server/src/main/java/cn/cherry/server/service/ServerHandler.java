@@ -3,7 +3,6 @@ package cn.cherry.server.service;
 import cn.cherry.core.engine.LocalStarter;
 import cn.cherry.core.engine.base.TimePoint;
 import cn.cherry.server.base.bucket.ChannelBucket;
-import cn.cherry.server.base.task.NotifyTask;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
@@ -74,11 +73,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
             case ADD:
                 this.logger.info(groupName + " 提交了一个定时任务！");
                 long result = this.localStarter
-                        .submit(new NotifyTask(
-                                groupName,
-                                timePoint,
-                                metaData == null ? null : metaData.toJSONString()
-                        ));
+                        .submit(null);
                 resProtocol.put("flag", ADD_RESULT);
                 if (result > -1) {
                     resProtocol.put("taskId", result);
