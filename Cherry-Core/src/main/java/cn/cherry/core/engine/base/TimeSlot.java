@@ -20,7 +20,8 @@ public final class TimeSlot {
     public TimeSlot(TimingWheel timingWheel) {
         this.map = new HashMap<>();
         this.timingWheel = timingWheel;
-        this.locker = new SpinLocker(this.timingWheel.getWaitTimeout());
+        long waitTimeout = timingWheel.getWaitTimeout();
+        this.locker = new SpinLocker(waitTimeout);
     }
 
     /**

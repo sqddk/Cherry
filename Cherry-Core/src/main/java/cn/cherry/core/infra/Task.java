@@ -1,56 +1,33 @@
 package cn.cherry.core.infra;
 
 import cn.cherry.core.engine.base.TimePoint;
+import com.alibaba.fastjson2.JSONObject;
 
 /**
  * 可被执行的定时任务的接口
  *
  * @author realDragonKing
  */
-public abstract class Task {
-
-    private TimePoint timePoint;
-    private int taskId;
+public interface Task {
 
     /**
-     * 设置执行的时间点
-     *
-     * @param timePoint 时间点
+     * @return 任务的类型标志
      */
-    public void setTimePoint(TimePoint timePoint) {
-        this.timePoint = timePoint;
-    }
+    TimePoint getFlag();
 
     /**
-     * 获取执行的时间点
-     *
-     * @return 时间点
+     * @return 任务的配置信息
      */
-    public TimePoint getTimePoint() {
-        return this.timePoint;
-    }
+    JSONObject getTaskConfig();
 
     /**
-     * 设置任务的ID
-     *
-     * @param taskId 任务ID
+     * @return 任务的元数据（由业务方来操作和保存临时数据）
      */
-    public void setTaskID(int taskId) {
-        this.taskId = taskId;
-    }
+    JSONObject getMetaData();
 
     /**
-     * 获取任务的ID
-     *
-     * @return 任务ID
+     * 任务的执行内容
      */
-    public int getTaskID() {
-        return this.taskId;
-    }
-
-    /**
-     * 执行任务
-     */
-    public abstract void execute();
+    void execute();
 
 }

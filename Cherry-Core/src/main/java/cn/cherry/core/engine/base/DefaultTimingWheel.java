@@ -1,13 +1,7 @@
 package cn.cherry.core.engine.base;
 
-import cn.cherry.core.engine.base.struct.PointerLinked;
-import cn.cherry.core.engine.base.struct.PointerLinkedRing;
 import cn.cherry.core.infra.Task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -25,21 +19,17 @@ public class DefaultTimingWheel extends TimingWheel {
 
     private int position;
     private final Executor executor;
-    private final PointerLinked<TimeSlot> ring;
-    private final Map<Integer, TimeSlot> slotMap;
+    private final TimeSlot[] slotMap;
 
     public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout, int threadNumber, int taskListSize) {
         super(interval, totalTicks, waitTimeout, taskListSize);
         this.position = 0;
-        this.slotMap = new HashMap<>(getTotalTicks());
+        this.slotMap = new TimeSlot[totalTicks];
 
-        List<TimeSlot> list = new ArrayList<>(getTotalTicks());
         for (int i = 0; i < getTotalTicks(); i++) {
             TimeSlot slot = new TimeSlot(this);
-            this.slotMap.put(i, slot);
-            list.add(slot);
+            this.slotMap[i] = slot;
         }
-        this.ring = new PointerLinkedRing<>(list);
 
         int coreSize = Runtime.getRuntime().availableProcessors() << 1;
         checkPositive(threadNumber, "threadNumber");
@@ -92,14 +82,13 @@ public class DefaultTimingWheel extends TimingWheel {
      */
     @Override
     public void turn() {
-        this.ring.moveNext();
         this.addCurrentTimeValue();
         int position = this.position + 1;
         if (position == getTotalTicks()) {
             position = 0;
         }
         this.position = position;
-        this.ring.getValue().decAndExecute();
+        this.slotMap[position].decAndExecute();
     }
 
     /**
@@ -111,7 +100,7 @@ public class DefaultTimingWheel extends TimingWheel {
     private TimeSlot getSlot(int distance) {
         int rawIndex = distance + this.position;
         int index = rawIndex >= getTotalTicks() ? rawIndex % getTotalTicks() : rawIndex;
-        return this.slotMap.get(index);
+        return this.slotMap[index];
     }
 
 }
