@@ -1,6 +1,5 @@
 package cn.cherry.core.infra;
 
-import cn.cherry.core.engine.base.TimePoint;
 import com.alibaba.fastjson2.JSONObject;
 
 /**
@@ -9,11 +8,6 @@ import com.alibaba.fastjson2.JSONObject;
  * @author realDragonKing
  */
 public interface Task {
-
-    /**
-     * @return 任务的类型标志
-     */
-    TimePoint getFlag();
 
     /**
      * @return 任务的配置信息
