@@ -1,5 +1,6 @@
 package cn.cherry.core.engine.base;
 
+import cn.cherry.core.engine.base.spec.TaskGroup;
 import cn.cherry.core.infra.Task;
 
 import java.util.HashMap;
@@ -7,19 +8,17 @@ import java.util.Map;
 
 /**
  * 时间轮的槽位，被时间轮的默认实现{@link DefaultTimingWheel}所使用。
- * {@link TimeSlot}结合{@link SpinLocker}自旋锁，提供了在单个槽位上的线程安全的读写{@link TaskList}的方法
+ * {@link TimeSlot}结合{@link SpinLocker}自旋锁，提供了在单个槽位上的线程安全的读写{@link TaskGroup}的方法
  *
  * @author realDragonKing
  */
 public final class TimeSlot {
 
-    private final Map<Integer, TaskList> map;
+    private final Map<Integer, TaskGroup> map;
     private final SpinLocker locker;
-    private final TimingWheel timingWheel;
 
     public TimeSlot(TimingWheel timingWheel) {
         this.map = new HashMap<>();
-        this.timingWheel = timingWheel;
         long waitTimeout = timingWheel.getWaitTimeout();
         this.locker = new SpinLocker(waitTimeout);
     }
@@ -45,24 +44,19 @@ public final class TimeSlot {
     }
 
     /**
-     * 在这个时间槽位上，通过{@link Map#keySet()}遍历所有的key和{@link TaskList}，对key也就是“还需要转多少圈”进行减 1 操作再放回，
-     * 若key为 0，则对这个{@link TaskList}上的所有{@link Task}调用{@link TaskList#remove()}，
-     * 对返回的{@link Task}调用{@link Task#execute()}执行（具体执行将移交线程池）
+     * 在这个时间槽位上，通过{@link Map#keySet()}遍历所有的key和{@link TaskGroup}，对key也就是“还需要转多少圈”进行减 1 操作再放回，
+     * 若key为 0，则对这个{@link TaskGroup}上的所有{@link Task}调用{@link Task#execute()}执行（具体执行将移交线程池）
      */
     public void decAndExecute() {
-        Map<Integer, TaskList> map = this.map;
-        TaskList taskList;
+        Map<Integer, TaskGroup> map = this.map;
+        TaskGroup group;
         if (this.locker.lock()) {
             for (int round : map.keySet()) {
-                taskList = map.get(round);
+                group = map.get(round);
                 round--;
-                map.put(round, taskList);
-                if (round == 0 && taskList != null && taskList.getSize() > 0) {
-                    taskList.resetTail();
-                    for (int i = 0; i < taskList.getSize(); i++) {
-                        Task task = taskList.remove();
-                        this.timingWheel.executeTask(task);
-                    }
+                map.put(round, group);
+                if (round == 0 && group != null) {
+                    group.executeAll();
                 }
             }
             this.locker.unLock();

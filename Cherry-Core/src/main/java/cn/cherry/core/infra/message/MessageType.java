@@ -1,23 +1,58 @@
 package cn.cherry.core.infra.message;
 
-import java.lang.annotation.*;
-
 /**
- * 给{@link MessageResolver}用的，加上后允许被
- * 消息解析器{@link MessageResolver#load()}和消息处理器{@link MessageHandler#load()}扫描和加载
- * 
- * @author realDragonKing 
+ * {@link Message}的类型标志位，静态字段集中地
+ *
+ * @since 2022/11/25
+ * @author realDragonKing
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface MessageType {
+public class MessageType {
+
+    private MessageType() {}
 
     /**
-     * 消息{@link Message}的类型标志位
-     *
-     * @return 类型标志位
+     * 来自客户端的心跳
      */
-    int flag();
+    public static final int PING = 1;
+
+    /**
+     * 来自服务端的心跳
+     */
+    public static final int PONG = 2;
+
+    /**
+     * 提交定时任务
+     */
+    public static final int ADD = 3;
+
+    /**
+     * 取消定时任务
+     */
+    public static final int REMOVE = 4;
+
+    /**
+     * 通知执行定时任务
+     */
+    public static final int NOTIFY = 5;
+
+    /**
+     * 汇报错误
+     */
+    public static final int ERROR = 6;
+
+    /**
+     * 执行提交操作的结果
+     */
+    public static final int ADD_RESULT = 7;
+
+    /**
+     * 执行删除操作的结果
+     */
+    public static final int REMOVE_RESULT = 8;
+
+    /**
+     * 进行通信信道注册
+     */
+    public static final int REGISTER = 9;
 
 }
