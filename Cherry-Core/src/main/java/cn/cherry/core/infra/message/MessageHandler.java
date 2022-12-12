@@ -37,7 +37,7 @@ public abstract class MessageHandler extends MessageAccepter {
     public void load() {
         Class<? extends MessageHandler> clazz = this.getClass();
         if (!Modifier.isAbstract(clazz.getModifiers())) {
-            MessageType tag = clazz.getAnnotation(MessageType.class);
+            MessageTypeTag tag = clazz.getAnnotation(MessageTypeTag.class);
             if (tag != null) {
                 HANDLER_MAP.put(tag.flag(), this);
             }

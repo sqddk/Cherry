@@ -2,13 +2,13 @@ package cn.cherry.client.base.message.resolver;
 
 import cn.cherry.client.base.message.AddResultMessage;
 import cn.cherry.core.infra.message.Message;
-import cn.cherry.core.infra.message.MessageFlag;
-import cn.cherry.core.infra.message.MessageResolver;
 import cn.cherry.core.infra.message.MessageType;
+import cn.cherry.core.infra.message.MessageResolver;
+import cn.cherry.core.infra.message.MessageTypeTag;
 import com.alibaba.fastjson2.JSONObject;
 
 
-@MessageType(flag = MessageFlag.ADD_RESULT)
+@MessageTypeTag(flag = MessageType.ADD_RESULT)
 public class AddResultMessageResolver extends MessageResolver {
 
     /**
