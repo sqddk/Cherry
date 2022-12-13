@@ -12,12 +12,14 @@ import cn.cherry.core.engine.base.task.TaskKeeper;
  */
 public class SpecNode<E> {
 
-    private final TaskKeeper keeper;
     private final E value;
+    private final TaskKeeper keeper;
+    private final SpecSelector<E> specSelector;
 
-    public SpecNode(E value, TaskKeeper keeper) {
+    public SpecNode(E value, TaskKeeper keeper, SpecSelector<E> specSelector) {
         this.value = value;
         this.keeper = keeper;
+        this.specSelector = specSelector;
     }
 
     /**
@@ -34,4 +36,10 @@ public class SpecNode<E> {
         return this.keeper;
     }
 
+    /**
+     * @return 特征搜寻者
+     */
+    public SpecSelector<E> getSpecSelector() {
+        return specSelector;
+    }
 }

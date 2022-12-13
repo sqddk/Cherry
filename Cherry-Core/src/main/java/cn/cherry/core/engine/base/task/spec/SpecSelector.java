@@ -53,21 +53,12 @@ public interface SpecSelector<E> {
     int selectSpecNode(E leftValue, E rightValue, Consumer<SpecNode<E>> consumer);
 
     /**
-     * 删除具体是某个值的{@link SpecNode}
+     * 移除一个{@link SpecNode}，如果在存储结构中没有搜索到这个{@link SpecNode}（我们采用比较内存地址的方法），那么返回错误结果
      *
-     * @param value 任务特征值
-     * @return 删除的任务特征节点数量
+     * @param specNode 任务特征节点
+     * @return 是否在存储结构中成功找到这个节点
      */
-    int removeSpecNode(E value);
-
-    /**
-     * 删除具体是某个区间的{@link SpecNode}
-     *
-     * @param leftValue 特征值左区间
-     * @param rightValue 特征值右区间
-     * @return 删除的任务特征节点数量
-     */
-    int removeSpecNode(E leftValue, E rightValue);
+    boolean removeSpecNode(SpecNode<E> specNode);
 
     /**
      * 清空自己的所有内容，还原到原始状态

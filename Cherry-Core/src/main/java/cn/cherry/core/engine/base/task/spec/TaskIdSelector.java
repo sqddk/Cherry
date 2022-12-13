@@ -19,8 +19,8 @@ public class TaskIdSelector implements SpecSelector<Long> {
     private int size;
 
     public TaskIdSelector() {
-        TaskIdNode head = new TaskIdNode(null, null);
-        TaskIdNode tail = new TaskIdNode(null, null);
+        TaskIdNode head = new TaskIdNode(null, null, this);
+        TaskIdNode tail = new TaskIdNode(null, null, this);
         head.next = tail;
         tail.prev = head;
 
@@ -54,7 +54,7 @@ public class TaskIdSelector implements SpecSelector<Long> {
         requireNonNull(value, "value:TaskId");
         requireNonNull(keeper, "keeper");
 
-        TaskIdNode node = new TaskIdNode(value, keeper);
+        TaskIdNode node = new TaskIdNode(value, keeper, this);
         TaskIdNode prev = this.head;
         TaskIdNode next;
 
@@ -120,7 +120,7 @@ public class TaskIdSelector implements SpecSelector<Long> {
         if (res == 0)
             return this.selectSpecNode(leftValue, consumer);
         if (res > 1)
-            throw new IllegalArgumentException("leftValue > rightValue");
+            throw new IllegalArgumentException("leftValue 大于 rightValue");
 
         TaskIdNode node = this.head;
 
@@ -140,43 +140,29 @@ public class TaskIdSelector implements SpecSelector<Long> {
     }
 
     /**
-     * 删除具体的{@link SpecNode}
+     * 移除一个{@link SpecNode}，如果在存储结构中没有搜索到这个{@link SpecNode}（我们采用比较内存地址的方法），那么返回错误结果
      *
      * @param specNode 任务特征节点
-     */
-    private void removeSpecNode(TaskIdNode specNode) {
-        requireNonNull(specNode, "remove null");
-
-        TaskIdNode prev = specNode.prev;
-        TaskIdNode next = specNode.next;
-
-        prev.next = next;
-        next.prev = prev;
-
-        this.size -= 1;
-    }
-
-    /**
-     * 删除具体是某个值的{@link SpecNode}
-     *
-     * @param value 任务特征值
-     * @return 删除的任务特征节点数量
+     * @return 是否在存储结构中成功找到这个节点
      */
     @Override
-    public int removeSpecNode(Long value) {
-        return this.selectSpecNode(value, specNode -> this.removeSpecNode((TaskIdNode) specNode));
-    }
+    public boolean removeSpecNode(SpecNode<Long> specNode) {
+        requireNonNull(specNode, "specNode");
 
-    /**
-     * 删除具体是某个区间的{@link SpecNode}
-     *
-     * @param leftValue  特征值左区间
-     * @param rightValue 特征值右区间
-     * @return 删除的任务特征节点数量
-     */
-    @Override
-    public int removeSpecNode(Long leftValue, Long rightValue) {
-        return this.selectSpecNode(leftValue, rightValue, specNode -> this.removeSpecNode((TaskIdNode) specNode));
+        TaskIdNode node = this.head;
+
+        for (int i = 0; i < this.size; i++) {
+            node = node.next;
+            if (node == specNode) {
+                TaskIdNode prev = node.prev;
+                TaskIdNode next = node.next;
+                prev.next = next;
+                next.prev = prev;
+                this.size -= 1;
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -194,8 +180,8 @@ public class TaskIdSelector implements SpecSelector<Long> {
         private TaskIdNode prev;
         private TaskIdNode next;
 
-        public TaskIdNode(Long spec, TaskKeeper keeper) {
-            super(spec, keeper);
+        public TaskIdNode(Long spec, TaskKeeper keeper, SpecSelector<Long> specSelector) {
+            super(spec, keeper, specSelector);
         }
 
     }
