@@ -1,6 +1,6 @@
 package cn.cherry.core.engine.base;
 
-import cn.cherry.core.infra.Task;
+import cn.cherry.core.engine.base.task.Task;
 
 import static cn.cherry.core.engine.utils.BaseUtils.*;
 

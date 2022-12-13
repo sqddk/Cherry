@@ -1,4 +1,4 @@
-package cn.cherry.core.infra;
+package cn.cherry.core.engine.base.task;
 
 import com.alibaba.fastjson2.JSONObject;
 
