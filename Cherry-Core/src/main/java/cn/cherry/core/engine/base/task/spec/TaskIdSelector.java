@@ -120,7 +120,7 @@ public class TaskIdSelector implements SpecSelector<Long> {
         if (res == 0)
             return this.selectSpecNode(leftValue, consumer);
         if (res > 1)
-            throw new IllegalArgumentException("leftValue > rightValue");
+            throw new IllegalArgumentException("leftValue 大于 rightValue");
 
         TaskIdNode node = this.head;
 
@@ -140,46 +140,6 @@ public class TaskIdSelector implements SpecSelector<Long> {
     }
 
     /**
-     * 删除具体的{@link SpecNode}
-     *
-     * @param specNode 任务特征节点
-     */
-    private void removeSpecNode(TaskIdNode specNode) {
-        requireNonNull(specNode, "remove null");
-
-        TaskIdNode prev = specNode.prev;
-        TaskIdNode next = specNode.next;
-
-        prev.next = next;
-        next.prev = prev;
-
-        this.size -= 1;
-    }
-
-    /**
-     * 删除具体是某个值的{@link SpecNode}
-     *
-     * @param value 任务特征值
-     * @return 删除的任务特征节点数量
-     */
-    @Override
-    public int removeSpecNode(Long value) {
-        return this.selectSpecNode(value, specNode -> this.removeSpecNode((TaskIdNode) specNode));
-    }
-
-    /**
-     * 删除具体是某个区间的{@link SpecNode}
-     *
-     * @param leftValue  特征值左区间
-     * @param rightValue 特征值右区间
-     * @return 删除的任务特征节点数量
-     */
-    @Override
-    public int removeSpecNode(Long leftValue, Long rightValue) {
-        return this.selectSpecNode(leftValue, rightValue, specNode -> this.removeSpecNode((TaskIdNode) specNode));
-    }
-
-    /**
      * 清空自己的所有内容，还原到原始状态
      */
     @Override
@@ -189,13 +149,29 @@ public class TaskIdSelector implements SpecSelector<Long> {
         this.size = 0;
     }
 
-    private static class TaskIdNode extends SpecNode<Long> {
+    private class TaskIdNode extends SpecNode<Long> {
 
         private TaskIdNode prev;
         private TaskIdNode next;
 
         public TaskIdNode(Long spec, TaskKeeper keeper) {
             super(spec, keeper);
+        }
+
+        /**
+         * 把自己从{@link SpecSelector}中删除
+         */
+        @Override
+        public void removeSelf() {
+            TaskIdNode prev = this.prev;
+            TaskIdNode next = this.next;
+            if (prev != null && next != null) {
+                prev.next = next;
+                next.prev = prev;
+                TaskIdSelector.this.size--;
+                this.prev = null;
+                this.next = null;
+            } else throw new NullPointerException("该节点已经被删除！");
         }
 
     }
