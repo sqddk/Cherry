@@ -1,5 +1,7 @@
 package cn.cherry.core.engine.base.task;
 
+import cn.cherry.core.engine.base.task.spec.Spec;
+
 import java.util.function.Consumer;
 
 /**

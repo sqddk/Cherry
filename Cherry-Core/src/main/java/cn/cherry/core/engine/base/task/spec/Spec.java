@@ -1,4 +1,6 @@
-package cn.cherry.core.engine.base.task;
+package cn.cherry.core.engine.base.task.spec;
+
+import cn.cherry.core.engine.base.task.Task;
 
 /**
  * 不同的{@link Task}任务特征

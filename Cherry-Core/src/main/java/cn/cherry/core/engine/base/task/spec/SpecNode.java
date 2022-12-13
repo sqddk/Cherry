@@ -1,4 +1,7 @@
-package cn.cherry.core.engine.base.task;
+package cn.cherry.core.engine.base.task.spec;
+
+import cn.cherry.core.engine.base.task.Task;
+import cn.cherry.core.engine.base.task.TaskKeeper;
 
 /**
  * 装载了{@link Task}任务一种特征的节点<br/>
@@ -10,18 +13,18 @@ package cn.cherry.core.engine.base.task;
 public class SpecNode<E> {
 
     private final TaskKeeper keeper;
-    private final E spec;
+    private final E value;
 
-    public SpecNode(E spec, TaskKeeper keeper) {
-        this.spec = spec;
+    public SpecNode(E value, TaskKeeper keeper) {
+        this.value = value;
         this.keeper = keeper;
     }
 
     /**
      * @return 任务特征值
      */
-    public final E getSpec() {
-        return spec;
+    public final E getSpecValue() {
+        return value;
     }
 
     /**
