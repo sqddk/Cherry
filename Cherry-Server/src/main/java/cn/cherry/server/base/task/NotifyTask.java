@@ -1,18 +1,10 @@
 package cn.cherry.server.base.task;
 
-import cn.cherry.core.infra.Task;
+import cn.cherry.core.engine.base.task.Task;
 import cn.cherry.core.engine.base.TimePoint;
 import com.alibaba.fastjson2.JSONObject;
 
 public class NotifyTask implements Task {
-
-    /**
-     * @return 任务的类型标志
-     */
-    @Override
-    public TimePoint getFlag() {
-        return null;
-    }
 
     /**
      * @return 任务的配置信息

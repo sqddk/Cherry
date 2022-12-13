@@ -1,7 +1,7 @@
 package cn.cherry.core.engine.base;
 
-import cn.cherry.core.engine.base.spec.TaskGroup;
-import cn.cherry.core.infra.Task;
+import cn.cherry.core.engine.base.task.TaskGroup;
+import cn.cherry.core.engine.base.task.Task;
 
 import java.util.HashMap;
 import java.util.Map;
