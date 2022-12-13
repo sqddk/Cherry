@@ -17,10 +17,10 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ScheduleExecutor implements Runnable {
 
-    private final int interval;
+    private final long interval;
     private final BlockingQueue<Integer> messageChannel;
 
-    public ScheduleExecutor(int interval, BlockingQueue<Integer> messageChannel) {
+    public ScheduleExecutor(long interval, BlockingQueue<Integer> messageChannel) {
         this.interval = interval;
         this.messageChannel = messageChannel;
     }

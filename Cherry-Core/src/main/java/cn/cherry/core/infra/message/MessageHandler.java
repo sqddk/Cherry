@@ -20,9 +20,9 @@ public abstract class MessageHandler extends MessageAccepter {
      * @return 响应的消息
      */
     public static Message tryHandle(Message message) {
-        int flag = message.getFlag();
+        int type = message.getType();
         Message callback = null;
-        MessageHandler handler = HANDLER_MAP.get(flag);
+        MessageHandler handler = HANDLER_MAP.get(type);
         if (handler != null) {
             callback = handler.handle(message);
         }
@@ -39,7 +39,7 @@ public abstract class MessageHandler extends MessageAccepter {
         if (!Modifier.isAbstract(clazz.getModifiers())) {
             MessageTypeTag tag = clazz.getAnnotation(MessageTypeTag.class);
             if (tag != null) {
-                HANDLER_MAP.put(tag.flag(), this);
+                HANDLER_MAP.put(tag.type(), this);
             }
         }
     }

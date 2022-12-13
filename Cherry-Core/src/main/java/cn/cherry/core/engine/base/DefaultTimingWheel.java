@@ -1,13 +1,14 @@
 package cn.cherry.core.engine.base;
 
+import cn.cherry.core.engine.base.executor.ScheduleExecutor;
+import cn.cherry.core.engine.base.executor.TimingWheelExecutor;
 import cn.cherry.core.engine.base.task.Task;
+import org.apache.logging.log4j.LogManager;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import static cn.cherry.core.engine.utils.BaseUtils.*;
+import static java.util.Objects.*;
 
 /**
  * 时间轮{@link TimingWheel}的默认具体实现。
@@ -41,8 +42,17 @@ public class DefaultTimingWheel extends TimingWheel {
                 new LinkedBlockingQueue<>(taskListSize),
                 (r, executor1) -> {});
 
+        BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>(1);
+        Thread scheduleThread = new Thread(new ScheduleExecutor(interval, blockingQueue));
+        Thread executorThread = new Thread(new TimingWheelExecutor(this, blockingQueue));
+
+        executorThread.start();
+        scheduleThread.start();
+
         final long currentTimeValue = System.currentTimeMillis();
         this.setCurrentTimeValue(currentTimeValue);
+
+        LogManager.getLogger("Cherry").info("定时任务调度引擎已经在本地成功启动并可提供服务！");
     }
 
     /**
@@ -52,29 +62,8 @@ public class DefaultTimingWheel extends TimingWheel {
      */
     @Override
     public void executeTask(Task task) {
+        requireNonNull(task, "task");
         this.executor.execute(task::execute);
-    }
-
-    /**
-     * 提交一个任务
-     *
-     * @param task 任务
-     * @return 任务的id（提交失败返回-1）
-     */
-    @Override
-    public long submitTask(Task task) {
-        return 0;
-    }
-
-    /**
-     * 删除一个任务
-     *
-     * @param taskId 任务的id
-     * @return 任务是否删除成功
-     */
-    @Override
-    public boolean removeTask(long taskId) {
-        return false;
     }
 
     /**
@@ -83,21 +72,22 @@ public class DefaultTimingWheel extends TimingWheel {
     @Override
     public void turn() {
         this.addCurrentTimeValue();
-        int position = this.position + 1;
+        this.position++;
         if (position == getTotalTicks()) {
             position = 0;
         }
-        this.position = position;
-        this.slotMap[position].decAndExecute();
+        TimeSlot slot = this.slotMap[position];
+        slot.decAndExecute();
     }
 
     /**
-     * 根据相对时间距离和interval计算得到，取到对应的槽位{@link TimeSlot}
+     * 根据相对时间距离取到对应的槽位{@link TimeSlot}
      *
      * @param distance 相对时间距离
      * @return 时间轮槽位
      */
-    private TimeSlot getSlot(int distance) {
+    @Override
+    public TimeSlot getSlot(int distance) {
         int rawIndex = distance + this.position;
         int index = rawIndex >= getTotalTicks() ? rawIndex % getTotalTicks() : rawIndex;
         return this.slotMap[index];

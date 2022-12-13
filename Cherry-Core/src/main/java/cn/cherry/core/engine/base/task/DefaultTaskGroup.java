@@ -4,12 +4,19 @@ import cn.cherry.core.engine.base.TimingWheel;
 import cn.cherry.core.engine.base.task.spec.Spec;
 import cn.cherry.core.engine.base.task.spec.SpecSelector;
 import cn.cherry.core.engine.base.task.spec.TaskIdSelector;
+import com.alibaba.fastjson2.JSONObject;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
+/**
+ * {@link TaskGroup}任务管理集群的默认实现
+ *
+ * @author realDragonKing
+ */
 public class DefaultTaskGroup implements TaskGroup{
 
-    private int count;
+    private long count;
     private final TimingWheel timingWheel;
     private final SpecSelector<Long> taskIdSelector;
 
@@ -23,10 +30,21 @@ public class DefaultTaskGroup implements TaskGroup{
      * 添加一个任务
      *
      * @param task 任务
+     * @return 任务的id
      */
     @Override
-    public void addTask(Task task) {
+    public long addTask(Task task) {
+        long taskId = this.count++;
 
+        JSONObject taskConfig = task.getTaskConfig();
+        taskConfig.put("taskId", taskId);
+
+        TaskKeeper keeper = new TaskKeeper(); // 这里以后要把TaskKeeper做成可以池化复用的，clear方法已经铺好路了
+        keeper.setTask(task);
+
+        this.taskIdSelector.addSpecNode(taskId, keeper);
+
+        return taskId;
     }
 
     /**
@@ -65,6 +83,12 @@ public class DefaultTaskGroup implements TaskGroup{
      */
     @Override
     public <E> int removeTask(Spec spec, E value) {
+        if (Objects.requireNonNull(spec) == Spec.TaskId) {
+            return this.taskIdSelector.selectSpecNode((Long) value, specNode -> {
+                TaskKeeper keeper = specNode.getTaskKeeper();
+                keeper.clear();
+            });
+        }
         return 0;
     }
 
@@ -86,7 +110,12 @@ public class DefaultTaskGroup implements TaskGroup{
      */
     @Override
     public void executeAll() {
-
+        TimingWheel timingWheel = this.timingWheel;
+        this.taskIdSelector.selectAllSpecNode(specNode -> {
+            TaskKeeper keeper = specNode.getTaskKeeper();
+            timingWheel.executeTask(keeper.getTask());
+        });
+        this.taskIdSelector.clear();
     }
 
 }

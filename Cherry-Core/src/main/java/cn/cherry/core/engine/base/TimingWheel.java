@@ -83,19 +83,11 @@ public abstract class TimingWheel implements Rotatable {
     public abstract void executeTask(Task task);
 
     /**
-     * 提交一个任务
+     * 根据相对时间距离取到对应的槽位{@link TimeSlot}
      *
-     * @param task 任务
-     * @return 任务的id（若提交失败则返回-1）
+     * @param distance 相对时间距离
+     * @return 时间轮槽位
      */
-    public abstract long submitTask(Task task);
-
-    /**
-     * 删除一个任务
-     *
-     * @param taskId 任务的id
-     * @return 任务是否删除成功
-     */
-    public abstract boolean removeTask(long taskId);
+    public abstract TimeSlot getSlot(int distance);
 
 }

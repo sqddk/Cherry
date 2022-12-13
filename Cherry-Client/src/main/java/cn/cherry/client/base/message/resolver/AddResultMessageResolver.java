@@ -8,7 +8,7 @@ import cn.cherry.core.infra.message.MessageTypeTag;
 import com.alibaba.fastjson2.JSONObject;
 
 
-@MessageTypeTag(flag = MessageType.ADD_RESULT)
+@MessageTypeTag(type = MessageType.ADD_RESULT)
 public class AddResultMessageResolver extends MessageResolver {
 
     /**

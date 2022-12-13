@@ -8,7 +8,7 @@ import cn.cherry.server.base.message.AddMessage;
 import com.alibaba.fastjson2.JSONObject;
 
 
-@MessageTypeTag(flag = MessageType.ADD)
+@MessageTypeTag(type = MessageType.ADD)
 public class AddMessageResolver extends MessageResolver {
 
     /**

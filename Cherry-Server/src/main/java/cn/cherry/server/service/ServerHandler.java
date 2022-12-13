@@ -1,6 +1,5 @@
 package cn.cherry.server.service;
 
-import cn.cherry.core.engine.LocalStarter;
 import cn.cherry.core.engine.base.TimePoint;
 import cn.cherry.server.base.bucket.ChannelBucket;
 import com.alibaba.fastjson2.JSONObject;
@@ -88,7 +87,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
                 this.logger.info(groupName + " 尝试删除一个定时任务！");
                 int taskId = reqProtocol.getIntValue("taskId");
                 resProtocol.put("flag", REMOVE_RESULT);
-                if (this.localStarter.remove(taskId)) {
+                if (this.localStarter.remove(null)) {
                     resProtocol.put("result", true);
                     this.logger.info(groupName + " 定时任务删除成功！");
                 } else {
