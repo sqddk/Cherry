@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 /**
  * 特征检索者，有着自己独特且高效的数据结构来保存{@link SpecNode}，可以检索特征为给定int值或是给定int区间范围的
- * {@link SpecNode}进而获取到{@link TaskKeeper}和{@link Task}
+ * {@link SpecNode}进而获取到其它{@link SpecNode}和{@link Task}
  *
  * @param <E> 任务特征值
  * @author realDragonKing
@@ -53,12 +53,11 @@ public interface SpecSelector<E> {
     int selectSpecNode(E leftValue, E rightValue, Consumer<SpecNode<E>> consumer);
 
     /**
-     * 移除一个{@link SpecNode}，如果在存储结构中没有搜索到这个{@link SpecNode}（我们采用比较内存地址的方法），那么返回错误结果
+     * 消费所有的{@link SpecNode}
      *
-     * @param specNode 任务特征节点
-     * @return 是否在存储结构中成功找到这个节点
+     * @param consumer 任务遍历消费者
      */
-    boolean removeSpecNode(SpecNode<E> specNode);
+    void selectAllSpecNode(Consumer<SpecNode<E>> consumer);
 
     /**
      * 清空自己的所有内容，还原到原始状态

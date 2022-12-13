@@ -5,8 +5,8 @@ import cn.cherry.core.engine.base.task.spec.Spec;
 import java.util.function.Consumer;
 
 /**
- * 被定义为管理{@link Task}的任务集群，通过{@link TaskKeeper}实现间接管理。
- * 提供根据不同的{@link Spec}、快速检索符合条件的{@link Task}的方法，和添加、删除{@link Task}的方法
+ * 被定义为管理{@link Task}的任务集群，提供根据不同的{@link Spec}、快速检索符合条件的{@link Task}的方法，和添加、删除{@link Task}的方法<br/>
+ * {@link TaskGroup}应当有一个基本容器和
  *
  * @author realDragonKing
  */
@@ -16,8 +16,9 @@ public interface TaskGroup {
      * 添加一个任务
      *
      * @param task 任务
+     * @return 任务的id
      */
-    void addTask(Task task);
+    long addTask(Task task);
 
     /**
      * 对于{@link Spec}检索项，检索具体是某个值的{@link Task}，提供一个{@link Consumer}来遍历消费每一个{@link Task}

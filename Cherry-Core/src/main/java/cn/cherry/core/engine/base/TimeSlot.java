@@ -2,9 +2,12 @@ package cn.cherry.core.engine.base;
 
 import cn.cherry.core.engine.base.task.TaskGroup;
 import cn.cherry.core.engine.base.task.Task;
+import cn.cherry.core.engine.base.task.spec.Spec;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.util.Objects.*;
 
 /**
  * 时间轮的槽位，被时间轮的默认实现{@link DefaultTimingWheel}所使用。
@@ -14,11 +17,16 @@ import java.util.Map;
  */
 public final class TimeSlot {
 
+    private final TimingWheel timingWheel;
     private final Map<Integer, TaskGroup> map;
     private final SpinLocker locker;
 
     public TimeSlot(TimingWheel timingWheel) {
+        requireNonNull(timingWheel, "timingWheel");
+
         this.map = new HashMap<>();
+        this.timingWheel = timingWheel;
+
         long waitTimeout = timingWheel.getWaitTimeout();
         this.locker = new SpinLocker(waitTimeout);
     }
@@ -27,20 +35,37 @@ public final class TimeSlot {
      * 在这个时间槽位上，线程安全地提交一个任务
      *
      * @param task 任务
+     * @param distance 已经处理好的相对时间距离
      * @return 任务的id（若提交失败则返回-1）
      */
-    public long invokeSubmit(Task task) {
-        return 0;
+    public long submitTask(Task task, int distance) {
+        int totalTicks = this.timingWheel.getTotalTicks();
+        int round = distance / totalTicks;
+
+        if (this.locker.lock()) {
+            TaskGroup group = this.map.get(round);
+            return group.addTask(task);
+        } else
+            return -1;
     }
 
     /**
      * 在这个时间槽位上，线程安全地删除一个任务
      *
      * @param taskId 任务的id
+     * @param distance 已经处理好的相对时间距离
      * @return 任务是否删除成功
      */
-    public boolean invokeRemove(long taskId) {
-        return false;
+    public boolean removeTask(long taskId, int distance) {
+        int totalTicks = this.timingWheel.getTotalTicks();
+        int round = distance / totalTicks;
+
+        if (this.locker.lock()) {
+            TaskGroup group = this.map.get(round);
+            int removeNum = group.removeTask(Spec.TaskId, taskId);
+            return removeNum > 0;
+        } else
+            return false;
     }
 
     /**

@@ -12,6 +12,6 @@ public interface Message {
      *
      * @return 类型标志位
      */
-    int getFlag();
+    int getType();
 
 }
