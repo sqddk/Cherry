@@ -19,8 +19,8 @@ public class TaskIdSelector implements SpecSelector<Long> {
     private int size;
 
     public TaskIdSelector() {
-        TaskIdNode head = new TaskIdNode(null, null);
-        TaskIdNode tail = new TaskIdNode(null, null);
+        TaskIdNode head = new TaskIdNode(null, null, this);
+        TaskIdNode tail = new TaskIdNode(null, null, this);
         head.next = tail;
         tail.prev = head;
 
@@ -54,7 +54,7 @@ public class TaskIdSelector implements SpecSelector<Long> {
         requireNonNull(value, "value:TaskId");
         requireNonNull(keeper, "keeper");
 
-        TaskIdNode node = new TaskIdNode(value, keeper);
+        TaskIdNode node = new TaskIdNode(value, keeper, this);
         TaskIdNode prev = this.head;
         TaskIdNode next;
 
@@ -140,6 +140,32 @@ public class TaskIdSelector implements SpecSelector<Long> {
     }
 
     /**
+     * 移除一个{@link SpecNode}，如果在存储结构中没有搜索到这个{@link SpecNode}（我们采用比较内存地址的方法），那么返回错误结果
+     *
+     * @param specNode 任务特征节点
+     * @return 是否在存储结构中成功找到这个节点
+     */
+    @Override
+    public boolean removeSpecNode(SpecNode<Long> specNode) {
+        requireNonNull(specNode, "specNode");
+
+        TaskIdNode node = this.head;
+
+        for (int i = 0; i < this.size; i++) {
+            node = node.next;
+            if (node == specNode) {
+                TaskIdNode prev = node.prev;
+                TaskIdNode next = node.next;
+                prev.next = next;
+                next.prev = prev;
+                this.size -= 1;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 清空自己的所有内容，还原到原始状态
      */
     @Override
@@ -149,29 +175,13 @@ public class TaskIdSelector implements SpecSelector<Long> {
         this.size = 0;
     }
 
-    private class TaskIdNode extends SpecNode<Long> {
+    private static class TaskIdNode extends SpecNode<Long> {
 
         private TaskIdNode prev;
         private TaskIdNode next;
 
-        public TaskIdNode(Long spec, TaskKeeper keeper) {
-            super(spec, keeper);
-        }
-
-        /**
-         * 把自己从{@link SpecSelector}中删除
-         */
-        @Override
-        public void removeSelf() {
-            TaskIdNode prev = this.prev;
-            TaskIdNode next = this.next;
-            if (prev != null && next != null) {
-                prev.next = next;
-                next.prev = prev;
-                TaskIdSelector.this.size--;
-                this.prev = null;
-                this.next = null;
-            } else throw new NullPointerException("该节点已经被删除！");
+        public TaskIdNode(Long spec, TaskKeeper keeper, SpecSelector<Long> specSelector) {
+            super(spec, keeper, specSelector);
         }
 
     }

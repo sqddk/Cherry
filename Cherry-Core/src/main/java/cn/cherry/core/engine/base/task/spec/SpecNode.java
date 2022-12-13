@@ -10,14 +10,16 @@ import cn.cherry.core.engine.base.task.TaskKeeper;
  *
  * @author realDragonKing
  */
-public abstract class SpecNode<E> {
+public class SpecNode<E> {
 
-    private final TaskKeeper keeper;
     private final E value;
+    private final TaskKeeper keeper;
+    private final SpecSelector<E> specSelector;
 
-    public SpecNode(E value, TaskKeeper keeper) {
+    public SpecNode(E value, TaskKeeper keeper, SpecSelector<E> specSelector) {
         this.value = value;
         this.keeper = keeper;
+        this.specSelector = specSelector;
     }
 
     /**
@@ -35,7 +37,9 @@ public abstract class SpecNode<E> {
     }
 
     /**
-     * 把自己从{@link SpecSelector}中删除，如果已经删除过了，则抛出错误信息
+     * @return 特征搜寻者
      */
-    public abstract void removeSelf();
+    public SpecSelector<E> getSpecSelector() {
+        return specSelector;
+    }
 }

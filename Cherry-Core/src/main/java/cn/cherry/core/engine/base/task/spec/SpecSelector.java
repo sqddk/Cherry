@@ -53,7 +53,14 @@ public interface SpecSelector<E> {
     int selectSpecNode(E leftValue, E rightValue, Consumer<SpecNode<E>> consumer);
 
     /**
+     * 移除一个{@link SpecNode}，如果在存储结构中没有搜索到这个{@link SpecNode}（我们采用比较内存地址的方法），那么返回错误结果
+     *
+     * @param specNode 任务特征节点
+     * @return 是否在存储结构中成功找到这个节点
+     */
+    boolean removeSpecNode(SpecNode<E> specNode);
 
+    /**
      * 清空自己的所有内容，还原到原始状态
      */
     void clear();
