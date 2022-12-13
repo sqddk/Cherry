@@ -53,6 +53,7 @@ public interface SpecSelector<E> {
     int selectSpecNode(E leftValue, E rightValue, Consumer<SpecNode<E>> consumer);
 
     /**
+
      * 清空自己的所有内容，还原到原始状态
      */
     void clear();

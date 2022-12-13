@@ -38,5 +38,4 @@ public abstract class SpecNode<E> {
      * 把自己从{@link SpecSelector}中删除，如果已经删除过了，则抛出错误信息
      */
     public abstract void removeSelf();
-
 }
