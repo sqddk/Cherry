@@ -53,23 +53,7 @@ public interface SpecSelector<E> {
     int selectSpecNode(E leftValue, E rightValue, Consumer<SpecNode<E>> consumer);
 
     /**
-     * 删除具体是某个值的{@link SpecNode}
-     *
-     * @param value 任务特征值
-     * @return 删除的任务特征节点数量
-     */
-    int removeSpecNode(E value);
 
-    /**
-     * 删除具体是某个区间的{@link SpecNode}
-     *
-     * @param leftValue 特征值左区间
-     * @param rightValue 特征值右区间
-     * @return 删除的任务特征节点数量
-     */
-    int removeSpecNode(E leftValue, E rightValue);
-
-    /**
      * 清空自己的所有内容，还原到原始状态
      */
     void clear();
