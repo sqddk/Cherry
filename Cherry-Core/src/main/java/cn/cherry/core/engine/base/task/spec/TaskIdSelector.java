@@ -183,19 +183,16 @@ public class TaskIdSelector implements SpecSelector<Long> {
          */
         @Override
         public void removeSelf() {
-            if (this.prev != null && this.next != null) {
-                TaskIdNode prev = this.prev;
-                TaskIdNode next = this.next;
+            TaskIdNode prev = this.prev;
+            TaskIdNode next = this.next;
 
-                prev.next = next;
-                next.prev = prev;
+            prev.next = next;
+            next.prev = prev;
 
-                this.prev = null;
-                this.next = null;
+            this.prev = null;
+            this.next = null;
 
-                TaskIdSelector.this.size--;
-            } else
-                throw new NullPointerException("该特征节点已经被删除！");
+            TaskIdSelector.this.size--;
         }
 
     }

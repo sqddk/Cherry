@@ -6,8 +6,9 @@ import cn.cherry.core.engine.base.task.spec.SpecSelector;
 import cn.cherry.core.engine.base.task.spec.TaskIdSelector;
 import com.alibaba.fastjson2.JSONObject;
 
-import java.util.Objects;
 import java.util.function.Consumer;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * {@link TaskGroup}任务管理集群的默认实现
@@ -83,7 +84,8 @@ public class DefaultTaskGroup implements TaskGroup{
      */
     @Override
     public <E> int removeTask(Spec spec, E value) {
-        if (Objects.requireNonNull(spec) == Spec.TaskId) {
+        requireNonNull(spec);
+        if (spec == Spec.TaskId) {
             return this.taskIdSelector.selectSpecNode((Long) value, specNode -> {
                 TaskKeeper keeper = specNode.getTaskKeeper();
                 keeper.clear();
