@@ -1,4 +1,7 @@
-package cn.cherry.core.engine.base.task;
+package cn.cherry.core.engine.base.task.spec;
+
+import cn.cherry.core.engine.base.task.Task;
+import cn.cherry.core.engine.base.task.TaskKeeper;
 
 import java.util.function.Consumer;
 
@@ -10,6 +13,17 @@ import java.util.function.Consumer;
  * @author realDragonKing
  */
 public interface SpecSelector<E> {
+
+    /**
+     * 如果 o1 > o2，返回 1<br/>
+     * 如果 o1 = o2，返回 0<br/>
+     * 如果 o1 < o2，返回 -1<br/>
+     *
+     * @param o1 比较者
+     * @param o2 被比较者
+     * @return 比较结果
+     */
+    int compare(E o1, E o2);
 
     /**
      * 添加一个任务特征节点
@@ -39,7 +53,7 @@ public interface SpecSelector<E> {
     int selectSpecNode(E leftValue, E rightValue, Consumer<SpecNode<E>> consumer);
 
     /**
-     * 删除检索具体是某个值的{@link SpecNode}
+     * 删除具体是某个值的{@link SpecNode}
      *
      * @param value 任务特征值
      * @return 删除的任务特征节点数量
@@ -47,7 +61,7 @@ public interface SpecSelector<E> {
     int removeSpecNode(E value);
 
     /**
-     * 删除检索具体是某个区间的{@link SpecNode}
+     * 删除具体是某个区间的{@link SpecNode}
      *
      * @param leftValue 特征值左区间
      * @param rightValue 特征值右区间
