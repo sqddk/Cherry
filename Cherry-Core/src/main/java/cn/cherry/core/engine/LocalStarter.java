@@ -4,7 +4,7 @@ import cn.cherry.core.engine.base.*;
 import cn.cherry.core.engine.base.executor.ScheduleExecutor;
 import cn.cherry.core.engine.base.executor.TimingWheelExecutor;
 import cn.cherry.core.engine.utils.BaseUtils;
-import cn.cherry.core.infra.Task;
+import cn.cherry.core.engine.base.task.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

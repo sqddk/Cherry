@@ -46,7 +46,7 @@ public abstract class MessageResolver extends MessageAccepter {
     public final void load() {
         Class<? extends MessageResolver> clazz = this.getClass();
         if (!Modifier.isAbstract(clazz.getModifiers())) {
-            MessageType tag = clazz.getAnnotation(MessageType.class);
+            MessageTypeTag tag = clazz.getAnnotation(MessageTypeTag.class);
             if (tag != null) {
                 RESOLVER_MAP.put(tag.flag(), this);
             }

@@ -1,6 +1,6 @@
 package cn.cherry.core.engine.base;
 
-import cn.cherry.core.infra.Task;
+import cn.cherry.core.engine.base.task.Task;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
