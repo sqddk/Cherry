@@ -3,7 +3,6 @@ package cn.cherry.core.engine.base;
 import cn.cherry.core.engine.base.executor.ScheduleExecutor;
 import cn.cherry.core.engine.base.executor.TimingWheelExecutor;
 import cn.cherry.core.engine.base.task.Task;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.concurrent.*;
 
@@ -63,8 +62,6 @@ public class DefaultTimingWheel extends TimingWheel {
 
         final long currentTimeValue = System.currentTimeMillis();
         this.setCurrentTimeValue(currentTimeValue);
-
-        LogManager.getLogger("Cherry").info("定时任务调度引擎已经在本地成功启动并可提供服务！");
     }
 
     /**
@@ -86,6 +83,7 @@ public class DefaultTimingWheel extends TimingWheel {
      */
     @Override
     public TimeSlot getSlot(long distance) {
+        checkPositive(distance, "distance");
         long rawIndex = distance + this.position;
         int index = (int) (rawIndex >= getTotalTicks() ? rawIndex % getTotalTicks() : rawIndex);
         return this.slotMap[index];

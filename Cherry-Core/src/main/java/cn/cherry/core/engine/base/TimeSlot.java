@@ -95,6 +95,7 @@ public final class TimeSlot {
                 round--;
                 if (round == 0 && group != null) {
                     group.executeAll();
+                    System.out.println(true);
                 } else
                     map.put(round, group);
             }
