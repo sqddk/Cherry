@@ -18,6 +18,6 @@ public @interface MessageTypeTag {
      *
      * @return 类型标志位
      */
-    int flag();
+    int type();
 
 }

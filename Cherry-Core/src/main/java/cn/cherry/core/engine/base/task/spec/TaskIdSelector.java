@@ -1,7 +1,7 @@
 package cn.cherry.core.engine.base.task.spec;
 
-import cn.cherry.core.engine.base.task.TaskKeeper;
 import cn.cherry.core.engine.base.task.Task;
+import cn.cherry.core.engine.base.task.TaskKeeper;
 
 import static java.util.Objects.*;
 import java.util.function.Consumer;
@@ -19,8 +19,8 @@ public class TaskIdSelector implements SpecSelector<Long> {
     private int size;
 
     public TaskIdSelector() {
-        TaskIdNode head = new TaskIdNode(null, null, this);
-        TaskIdNode tail = new TaskIdNode(null, null, this);
+        TaskIdNode head = new TaskIdNode(null, null);
+        TaskIdNode tail = new TaskIdNode(null, null);
         head.next = tail;
         tail.prev = head;
 
@@ -54,7 +54,9 @@ public class TaskIdSelector implements SpecSelector<Long> {
         requireNonNull(value, "value:TaskId");
         requireNonNull(keeper, "keeper");
 
-        TaskIdNode node = new TaskIdNode(value, keeper, this);
+        TaskIdNode node = new TaskIdNode(value, keeper);
+        keeper.addSpecNode(node);
+
         TaskIdNode prev = this.head;
         TaskIdNode next;
 
@@ -115,6 +117,7 @@ public class TaskIdSelector implements SpecSelector<Long> {
     public int selectSpecNode(Long leftValue, Long rightValue, Consumer<SpecNode<Long>> consumer) {
         requireNonNull(leftValue, "leftValue:TaskId");
         requireNonNull(rightValue, "rightValue:TaskId");
+        requireNonNull(consumer, "consumer");
 
         int res = compare(leftValue, rightValue);
         if (res == 0)
@@ -140,29 +143,20 @@ public class TaskIdSelector implements SpecSelector<Long> {
     }
 
     /**
-     * 移除一个{@link SpecNode}，如果在存储结构中没有搜索到这个{@link SpecNode}（我们采用比较内存地址的方法），那么返回错误结果
+     * 消费所有的{@link SpecNode}
      *
-     * @param specNode 任务特征节点
-     * @return 是否在存储结构中成功找到这个节点
+     * @param consumer 任务遍历消费者
      */
     @Override
-    public boolean removeSpecNode(SpecNode<Long> specNode) {
-        requireNonNull(specNode, "specNode");
+    public void selectAllSpecNode(Consumer<SpecNode<Long>> consumer) {
+        requireNonNull(consumer, "consumer");
 
         TaskIdNode node = this.head;
 
         for (int i = 0; i < this.size; i++) {
             node = node.next;
-            if (node == specNode) {
-                TaskIdNode prev = node.prev;
-                TaskIdNode next = node.next;
-                prev.next = next;
-                next.prev = prev;
-                this.size -= 1;
-                return true;
-            }
+            consumer.accept(node);
         }
-        return false;
     }
 
     /**
@@ -175,13 +169,30 @@ public class TaskIdSelector implements SpecSelector<Long> {
         this.size = 0;
     }
 
-    private static class TaskIdNode extends SpecNode<Long> {
+    private class TaskIdNode extends SpecNode<Long> {
 
         private TaskIdNode prev;
         private TaskIdNode next;
 
-        public TaskIdNode(Long spec, TaskKeeper keeper, SpecSelector<Long> specSelector) {
-            super(spec, keeper, specSelector);
+        public TaskIdNode(Long spec, TaskKeeper keeper) {
+            super(spec, keeper);
+        }
+
+        /**
+         * 把自己从保存自己的{@link SpecSelector}当中移除
+         */
+        @Override
+        public void removeSelf() {
+            TaskIdNode prev = this.prev;
+            TaskIdNode next = this.next;
+
+            prev.next = next;
+            next.prev = prev;
+
+            this.prev = null;
+            this.next = null;
+
+            TaskIdSelector.this.size--;
         }
 
     }
