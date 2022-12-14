@@ -83,7 +83,7 @@ public abstract class TimingWheel implements Rotatable {
     public abstract void executeTask(Task task);
 
     /**
-     * 根据相对时间距离取到对应的槽位{@link TimeSlot}
+     * 根据执行时间点和当前时间点的相对时间距离，取到对应的槽位{@link TimeSlot}
      *
      * @param distance 相对时间距离
      * @return 时间轮槽位
