@@ -53,7 +53,7 @@
 &emsp;&emsp;接下来，我们通过毫秒时间值和时间轮的interval参数，计算出相对时间距离。
 ```java
         long interval = timingWheel.getInterval();
-        long distance = timeValue / interval;
+        long distance = (timeValue - timingWheel.getCurrentTimeValue()) / interval;
 ```
 &emsp;&emsp;最后，通过相对时间距离，我们可以从TimingWheel里面取出对应的TimeSlot时间槽位，然后调用其API完成Task任务的发布（会返回Task的发布顺序）。
 ```java
