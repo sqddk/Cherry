@@ -92,10 +92,10 @@ public final class TimeSlot {
             for (int round : map.keySet()) {
                 group = map.get(round);
                 round--;
-                map.put(round, group);
                 if (round == 0 && group != null) {
                     group.executeAll();
-                }
+                } else
+                    map.put(round, group);
             }
             this.locker.unLock();
         }
