@@ -88,6 +88,6 @@ public abstract class TimingWheel implements Rotatable {
      * @param distance 相对时间距离
      * @return 时间轮槽位
      */
-    public abstract TimeSlot getSlot(int distance);
+    public abstract TimeSlot getSlot(long distance);
 
 }

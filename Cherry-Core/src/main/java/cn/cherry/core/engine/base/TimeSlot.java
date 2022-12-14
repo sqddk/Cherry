@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
 public final class TimeSlot {
 
     private final TimingWheel timingWheel;
-    private final Map<Integer, TaskGroup> map;
+    private final Map<Long, TaskGroup> map;
     private final SpinLocker locker;
 
     public TimeSlot(TimingWheel timingWheel) {
@@ -39,9 +39,9 @@ public final class TimeSlot {
      * @param distance 已经处理好的相对时间距离
      * @return 任务的id（若提交失败则返回-1）
      */
-    public long submitTask(Task task, int distance) {
+    public long submitTask(Task task, long distance) {
         int totalTicks = this.timingWheel.getTotalTicks();
-        int round = distance / totalTicks;
+        long round = distance / totalTicks;
 
         if (this.locker.lock()) {
             TaskGroup group = this.map.get(round);
@@ -64,9 +64,9 @@ public final class TimeSlot {
      * @param distance 已经处理好的相对时间距离
      * @return 任务是否删除成功
      */
-    public boolean removeTask(long taskId, int distance) {
+    public boolean removeTask(long taskId, long distance) {
         int totalTicks = this.timingWheel.getTotalTicks();
-        int round = distance / totalTicks;
+        long round = distance / totalTicks;
 
         if (this.locker.lock()) {
             TaskGroup group = this.map.get(round);
@@ -86,11 +86,11 @@ public final class TimeSlot {
      * 若key为 0，则对这个{@link TaskGroup}上的所有{@link Task}调用{@link Task#execute()}执行（具体执行将移交线程池）
      */
     public void decAndExecute() {
-        Map<Integer, TaskGroup> map = this.map;
+        Map<Long, TaskGroup> map = this.map;
         TaskGroup group;
 
         if (this.locker.lock()) {
-            for (int round : map.keySet()) {
+            for (long round : map.keySet()) {
                 group = map.remove(round);
                 round--;
                 if (round == 0 && group != null) {

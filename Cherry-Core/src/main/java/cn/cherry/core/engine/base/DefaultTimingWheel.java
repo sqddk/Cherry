@@ -12,7 +12,7 @@ import static java.util.Objects.*;
 
 /**
  * 时间轮{@link TimingWheel}的默认具体实现。
- * {@link DefaultTimingWheel}提供了{@link TimeSlot}槽位获取方法{@link #getSlot(int distance)}和转动方法{@link #turn()}实现
+ * {@link DefaultTimingWheel}提供了{@link TimeSlot}槽位获取方法{@link #getSlot(long distance)}和转动方法{@link #turn()}实现
  *
  * @author realDragonKing
  */
@@ -85,9 +85,9 @@ public class DefaultTimingWheel extends TimingWheel {
      * @return 时间轮槽位
      */
     @Override
-    public TimeSlot getSlot(int distance) {
-        int rawIndex = distance + this.position;
-        int index = rawIndex >= getTotalTicks() ? rawIndex % getTotalTicks() : rawIndex;
+    public TimeSlot getSlot(long distance) {
+        long rawIndex = distance + this.position;
+        int index = (int) (rawIndex >= getTotalTicks() ? rawIndex % getTotalTicks() : rawIndex);
         return this.slotMap[index];
     }
 
