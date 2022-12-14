@@ -22,7 +22,18 @@ public class DefaultTimingWheel extends TimingWheel {
     private final Executor executor;
     private final TimeSlot[] slotMap;
 
-    public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout, int threadNumber, int taskListSize) {
+    /**
+     * 默认构造函数
+     *
+     * @param interval 每次转动的间隔，单位为 ms
+     * @param totalTicks 一轮转动的次数，也就是{@link TimeSlot}的数量
+     * @param waitTimeout {@link TimeSlot}自旋锁竞争的超时时间
+     * @param taskListSize 单个转动点可以承载的最大任务数量
+     * @param minThreadNumber 任务执行线程池的核心线程数
+     * @param maxThreadNumber 任务执行线程池的最大线程数
+     */
+    public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout, int taskListSize,
+                              int minThreadNumber, int maxThreadNumber) {
         super(interval, totalTicks, waitTimeout, taskListSize);
         this.position = 0;
         this.slotMap = new TimeSlot[totalTicks];
@@ -33,10 +44,11 @@ public class DefaultTimingWheel extends TimingWheel {
         }
 
         int coreSize = Runtime.getRuntime().availableProcessors() << 1;
-        checkPositive(threadNumber, "threadNumber");
+        checkPositive(minThreadNumber, "minThreadNumber");
+        checkPositive(maxThreadNumber, "maxThreadNumber");
         this.executor = new ThreadPoolExecutor(
-                Math.min(coreSize, threadNumber),
-                Math.max(coreSize, threadNumber),
+                Math.min(coreSize, minThreadNumber),
+                Math.max(coreSize, maxThreadNumber),
                 2L,
                 TimeUnit.MINUTES,
                 new LinkedBlockingQueue<>(taskListSize),
