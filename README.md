@@ -11,3 +11,18 @@
 ```java
         TimingWheel timingWheel = new DefaultTimingWheel(100, 100, 20_000, 10_000, 4, 8);
 ```
+&emsp;&emsp;DefaultTimingWheel是我们提供的TimingWheel默认实现类，采用异步转动更新的方式，最小化误差。以下是DefaultTimingWheel的构造函数：
+```java
+    /**
+     * 默认构造函数
+     *
+     * @param interval 每次转动的间隔，单位为 ms
+     * @param totalTicks 一轮的转动点总数，也就是{@link TimeSlot}的总数
+     * @param waitTimeout {@link TimeSlot}自旋锁竞争的超时时间，单位为 ns
+     * @param taskSize 单个转动点可以承载的最大任务数量
+     * @param minThreadNumber 任务执行线程池的核心线程数
+     * @param maxThreadNumber 任务执行线程池的最大线程数
+     */
+    public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout, int taskListSize,
+                              int minThreadNumber, int maxThreadNumber)
+```
