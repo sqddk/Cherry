@@ -28,13 +28,13 @@ public class DefaultTimingWheel extends TimingWheel {
      * @param interval 每次转动的间隔，单位为 ms
      * @param totalTicks 一轮的转动点总数，也就是{@link TimeSlot}的总数
      * @param waitTimeout {@link TimeSlot}自旋锁竞争的超时时间，单位为 ns
-     * @param taskListSize 单个转动点可以承载的最大任务数量
+     * @param taskSize 单个转动点可以承载的最大任务数量
      * @param minThreadNumber 任务执行线程池的核心线程数
      * @param maxThreadNumber 任务执行线程池的最大线程数
      */
-    public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout, int taskListSize,
+    public DefaultTimingWheel(long interval, int totalTicks, long waitTimeout, int taskSize,
                               int minThreadNumber, int maxThreadNumber) {
-        super(interval, totalTicks, waitTimeout, taskListSize);
+        super(interval, totalTicks, waitTimeout, taskSize);
         this.position = 0;
         this.slotMap = new TimeSlot[totalTicks];
 
@@ -51,7 +51,7 @@ public class DefaultTimingWheel extends TimingWheel {
                 Math.max(coreSize, maxThreadNumber),
                 2L,
                 TimeUnit.MINUTES,
-                new LinkedBlockingQueue<>(taskListSize),
+                new LinkedBlockingQueue<>(taskSize),
                 (r, executor1) -> {});
 
         BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>(1);
