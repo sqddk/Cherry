@@ -88,9 +88,10 @@ public final class TimeSlot {
     public void decAndExecute() {
         Map<Integer, TaskGroup> map = this.map;
         TaskGroup group;
+
         if (this.locker.lock()) {
             for (int round : map.keySet()) {
-                group = map.get(round);
+                group = map.remove(round);
                 round--;
                 if (round == 0 && group != null) {
                     group.executeAll();
