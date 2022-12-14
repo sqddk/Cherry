@@ -4,8 +4,8 @@ import cn.cherry.core.engine.base.TimingWheel;
 import cn.cherry.core.engine.base.task.spec.Spec;
 import cn.cherry.core.engine.base.task.spec.SpecSelector;
 import cn.cherry.core.engine.base.task.spec.TaskIdSelector;
-import com.alibaba.fastjson2.JSONObject;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
@@ -38,7 +38,7 @@ public class DefaultTaskGroup implements TaskGroup{
         long taskId = this.count++;
         long publishTimeValue = System.currentTimeMillis();
 
-        JSONObject taskConfig = task.getTaskConfig();
+        Map<String, Object> taskConfig = task.getTaskConfig();
         taskConfig.put("taskId", taskId);
         taskConfig.put("publishTimeValue", publishTimeValue);
 
