@@ -1,14 +1,11 @@
 package cn.cherry.server.service;
 
-import cn.cherry.server.base.bucket.ChannelBucket;
+import cn.cherry.core.engine.base.TimingWheel;
+import cn.cherry.core.infra.message.Message;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Map;
-
-import static cn.cherry.core.infra.message.MessageType.*;
 
 
 /**
@@ -18,11 +15,10 @@ import static cn.cherry.core.infra.message.MessageType.*;
  * @since 2022/10/18
  * @author realDragonKing
  */
-public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
+public class ServerHandler extends SimpleChannelInboundHandler<Message> {
 
-    private final ChannelBucket bucket = ChannelBucket.INSTANCE;
     private final Logger logger = LogManager.getLogger("Cherry");
-    private final LocalStarter localStarter = LocalStarter.getInstance();
+    private final TimingWheel timingWheel = ServerStarter.getInstance().getTimingWheel();
 
     /**
      * Calls {@link ChannelHandlerContext#fireChannelActive()} to forward
@@ -42,60 +38,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
      *
      * @param ctx the {@link ChannelHandlerContext} which this {@link SimpleChannelInboundHandler}
      *            belongs to
-     * @param reqProtocol the message to handle
+     * @param message the message to handle
      */
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, JSONObject reqProtocol) {
-        TimePoint timePoint = TimePoint.parse(reqProtocol.getString("timePoint"));
-        if (timePoint == null) {
-            ctx.fireExceptionCaught(new Throwable("时间信息格式错误！"));
-            return;
-        }
+    protected void channelRead0(ChannelHandlerContext ctx, Message message) {
 
-        JSONObject resProtocol = new JSONObject();
-        String groupName = reqProtocol.getString("groupName");
-        JSONObject metaData = reqProtocol.getJSONObject("metaData");
-
-        resProtocol.put("metaData", metaData);
-        resProtocol.put("sendingId", reqProtocol.getIntValue("sendingId"));
-
-        if (groupName == null) {
-            ctx.fireExceptionCaught(new Throwable("未提交客户端名称！"));
-            return;
-        }
-        // TODO 这里以后应当考虑布隆过滤器
-        this.bucket.addChannel(groupName, ctx.channel());
-
-        switch (reqProtocol.getIntValue("flag")) {
-
-            case ADD:
-                this.logger.info(groupName + " 提交了一个定时任务！");
-                long result = this.localStarter
-                        .submit(null);
-                resProtocol.put("flag", ADD_RESULT);
-                if (result > -1) {
-                    resProtocol.put("taskId", result);
-                    this.logger.info(groupName + " 定时任务提交成功！");
-                } else {
-                    this.logger.info(groupName + " 定时任务提交失败！");
-                }
-                ctx.writeAndFlush(resProtocol);
-                break;
-
-            case REMOVE:
-                this.logger.info(groupName + " 尝试删除一个定时任务！");
-                int taskId = reqProtocol.getIntValue("taskId");
-                resProtocol.put("flag", REMOVE_RESULT);
-                if (this.localStarter.remove(null)) {
-                    resProtocol.put("result", true);
-                    this.logger.info(groupName + " 定时任务删除成功！");
-                } else {
-                    resProtocol.put("result", false);
-                    this.logger.info(groupName + " 定时任务删除失败！");
-                }
-                ctx.writeAndFlush(resProtocol);
-                break;
-        }
     }
 
     /**
@@ -109,12 +56,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<JSONObject> {
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        this.logger.error(cause.getMessage());
-        JSONObject protocol = new JSONObject(Map.of(
-                "flag", ERROR,
-                "errorMessage", cause.getMessage()
-        ));
-        ctx.writeAndFlush(protocol);
+
     }
 
 }

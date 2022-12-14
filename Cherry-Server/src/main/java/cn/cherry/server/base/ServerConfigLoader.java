@@ -34,18 +34,23 @@ public class ServerConfigLoader extends ConfigLoader {
         if (!configFile.exists()) {
             this.initialConfig(configFile);
         }
-        try (BufferedReader br = new BufferedReader(
-                     new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8))) {
+
+        try (InputStreamReader iReader = new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8);
+             BufferedReader bReader = new BufferedReader(iReader)) {
+
             String line, key, value;
             String[] setting;
-            while ((line = br.readLine()) != null) {
+
+            while ((line = bReader.readLine()) != null) {
                 if (line.startsWith("#")) {
                     continue;
                 }
+
                 setting = line.split("=");
                 if (setting.length != 2 || setting[0].length() == 0 || setting[1].length() == 0) {
                     continue;
                 }
+
                 key = setting[0].trim();
                 value = setting[1].trim();
                 this.configBucket.put(key, value);
@@ -64,17 +69,17 @@ public class ServerConfigLoader extends ConfigLoader {
         try (InputStream inputStream = ServerConfigLoader.class.getResourceAsStream(CONFIG_PATH);
              FileOutputStream fileOutputStream = new FileOutputStream(configFile)) {
             if (inputStream == null) {
-                this.logger.error("无法检测到内部备份的初始化配置文件！");
-                throw new RuntimeException();
+                throw new RuntimeException("无法检测到内部备份的初始化配置文件！");
             }
+
             byte[] b = new byte[1024];
             int length;
             while((length = inputStream.read(b)) > 0){
                 fileOutputStream.write(b, 0, length);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             this.logger.error(e.toString());
-            throw new RuntimeException();
+            System.exit(0);
         }
     }
 
@@ -88,7 +93,7 @@ public class ServerConfigLoader extends ConfigLoader {
     public int getIntValue(String key) {
         String value = this.configBucket.get(key);
         if (value == null) {
-            throw new RuntimeException();
+            throw new NullPointerException("这个值不存在！");
         }
         return Integer.parseInt(value);
     }
@@ -103,7 +108,7 @@ public class ServerConfigLoader extends ConfigLoader {
     public String getValue(String key) {
         String value = this.configBucket.get(key);
         if (value == null) {
-            throw new RuntimeException();
+            throw new NullPointerException("这个值不存在！");
         }
         return value;
     }

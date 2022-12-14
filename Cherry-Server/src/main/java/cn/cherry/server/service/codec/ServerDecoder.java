@@ -38,7 +38,8 @@ public class ServerDecoder extends MessageToMessageDecoder<ByteBuf> {
             Message message = MessageResolver.tryResolve(msg, charset);
             if (message != null) {
                 out.add(message);
-            } else ctx.fireExceptionCaught(new Throwable("无效协议！"));
+            } else
+                ctx.fireExceptionCaught(new Throwable("无效协议！"));
         } catch (Exception e) {
             ctx.fireExceptionCaught(e);
         }
