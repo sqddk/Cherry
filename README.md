@@ -83,7 +83,7 @@
         long timeValue = parser.time2TimeValue(time, TimeZone.getDefault());
 
         long interval = timingWheel.getInterval();
-        long distance = timeValue / interval;
+        long distance = (timeValue - timingWheel.getCurrentTimeValue()) / interval;
 
         TimeSlot slot = timingWheel.getSlot(distance);
         long taskId = slot.submitTask(task, distance);
