@@ -1,13 +1,14 @@
 package cn.cherry.core.engine.base;
 
-import cn.cherry.core.engine.base.task.TaskGroup;
+import cn.cherry.core.engine.base.task.DefaultTaskGroup;
 import cn.cherry.core.engine.base.task.Task;
+import cn.cherry.core.engine.base.task.TaskGroup;
 import cn.cherry.core.engine.base.task.spec.Spec;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Objects.*;
+import static java.util.Objects.requireNonNull;
 
 /**
  * 时间轮的槽位，被时间轮的默认实现{@link DefaultTimingWheel}所使用。
@@ -34,17 +35,20 @@ public final class TimeSlot {
     /**
      * 在这个时间槽位上，线程安全地提交一个任务
      *
-     * @param task 任务
+     * @param task     任务
      * @param distance 已经处理好的相对时间距离
      * @return 任务的id（若提交失败则返回-1）
      */
     public long submitTask(Task task, int distance) {
         int totalTicks = this.timingWheel.getTotalTicks();
         int round = distance / totalTicks;
-
         if (this.locker.lock()) {
+            if(!this.map.containsKey(round))
+                this.map.put(round,new DefaultTaskGroup(this.timingWheel));
             TaskGroup group = this.map.get(round);
-            return group.addTask(task);
+            long id = group.addTask(task);
+            this.locker.unLock();
+            return id;
         } else
             return -1;
     }
@@ -52,17 +56,19 @@ public final class TimeSlot {
     /**
      * 在这个时间槽位上，线程安全地删除一个任务
      *
-     * @param taskId 任务的id
+     * @param taskId   任务的id
      * @param distance 已经处理好的相对时间距离
      * @return 任务是否删除成功
      */
     public boolean removeTask(long taskId, int distance) {
         int totalTicks = this.timingWheel.getTotalTicks();
         int round = distance / totalTicks;
-
+        if(!this.map.containsKey(round))
+            return false;
         if (this.locker.lock()) {
             TaskGroup group = this.map.get(round);
             int removeNum = group.removeTask(Spec.TaskId, taskId);
+            this.locker.unLock();
             return removeNum > 0;
         } else
             return false;

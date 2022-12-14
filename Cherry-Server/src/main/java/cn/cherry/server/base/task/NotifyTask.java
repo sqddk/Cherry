@@ -1,7 +1,6 @@
 package cn.cherry.server.base.task;
 
 import cn.cherry.core.engine.base.task.Task;
-import cn.cherry.core.engine.base.TimePoint;
 import com.alibaba.fastjson2.JSONObject;
 
 public class NotifyTask implements Task {
