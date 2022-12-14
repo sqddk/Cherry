@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 /**
  * 被定义为管理{@link Task}的任务集群，提供根据不同的{@link Spec}、快速检索符合条件的{@link Task}的方法，和添加、删除{@link Task}的方法<br/>
- * {@link TaskGroup}应当有一个基本容器和
+ * {@link TaskGroup}应当有一个基本容器和许多不同维度的检索器
  *
  * @author realDragonKing
  */

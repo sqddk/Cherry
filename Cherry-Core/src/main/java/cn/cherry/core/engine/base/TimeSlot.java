@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
  * 时间轮的槽位，被时间轮的默认实现{@link DefaultTimingWheel}所使用。
  * {@link TimeSlot}结合{@link SpinLocker}自旋锁，提供了在单个槽位上的线程安全的读写{@link TaskGroup}的方法
  *
- * @author realDragonKing
+ * @author realDragonKing、liehu3
  */
 public final class TimeSlot {
 
@@ -42,10 +42,14 @@ public final class TimeSlot {
     public long submitTask(Task task, int distance) {
         int totalTicks = this.timingWheel.getTotalTicks();
         int round = distance / totalTicks;
+
         if (this.locker.lock()) {
-            if(!this.map.containsKey(round))
-                this.map.put(round,new DefaultTaskGroup(this.timingWheel));
             TaskGroup group = this.map.get(round);
+            if (group == null) {
+                group = new DefaultTaskGroup(this.timingWheel);
+                this.map.put(round, group);
+            }
+
             long id = group.addTask(task);
             this.locker.unLock();
             return id;
@@ -63,10 +67,13 @@ public final class TimeSlot {
     public boolean removeTask(long taskId, int distance) {
         int totalTicks = this.timingWheel.getTotalTicks();
         int round = distance / totalTicks;
-        if(!this.map.containsKey(round))
-            return false;
+
         if (this.locker.lock()) {
             TaskGroup group = this.map.get(round);
+            if (group == null) {
+                return false;
+            }
+
             int removeNum = group.removeTask(Spec.TaskId, taskId);
             this.locker.unLock();
             return removeNum > 0;
