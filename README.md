@@ -38,7 +38,7 @@
             }
 
             @Override
-            public void execute() {
+            public void run() {
                 System.out.println("任务执行成功！");
             }
         };
@@ -72,7 +72,7 @@
             }
 
             @Override
-            public void execute() {
+            public void run() {
                 System.out.println("任务执行成功！");
             }
         };
