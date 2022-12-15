@@ -1,7 +1,5 @@
 package cn.cherry.server.service;
 
-import cn.cherry.server.service.codec.ServerDecoder;
-import cn.cherry.server.service.codec.ServerEncoder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -25,8 +23,6 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) {
         ch.pipeline().addLast(new LineBasedFrameDecoder(4096));
-        ch.pipeline().addLast(new ServerEncoder());
-        ch.pipeline().addLast(new ServerDecoder());
         ch.pipeline().addLast(new ServerHandler());
     }
 }

@@ -1,10 +1,13 @@
 package cn.cherry.server.service;
 
-import cn.cherry.core.infra.message.Message;
+import cn.cherry.core.infra.message.MessageHandler;
 import com.alibaba.fastjson2.JSONObject;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.nio.charset.Charset;
 
 
 /**
@@ -14,9 +17,14 @@ import org.apache.logging.log4j.Logger;
  * @since 2022/10/18
  * @author realDragonKing
  */
-public class ServerHandler extends SimpleChannelInboundHandler<Message> {
+public class ServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
+    private final Charset charset;
     private final Logger logger = LogManager.getLogger("Cherry");
+
+    public ServerHandler() {
+        this.charset = Charset.defaultCharset();
+    }
 
     /**
      * Calls {@link ChannelHandlerContext#fireChannelActive()} to forward
@@ -39,8 +47,8 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
      * @param message the message to handle
      */
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Message message) {
-        message.handle();
+    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf byteBuf) {
+        MessageHandler.tryResolve(byteBuf, charset);
     }
 
     /**

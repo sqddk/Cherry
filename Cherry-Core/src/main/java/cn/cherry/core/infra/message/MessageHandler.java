@@ -14,16 +14,16 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * 消息解析器的顶层抽象类，能够把{@link ByteBuf}解析和转换为{@link Message}
+ * 消息处理器的顶层抽象类，能够把{@link ByteBuf}解析和转换为{@link JSONObject}后进行处理
  *
  * @author realDragonKing
  */
-public abstract class MessageResolver {
+public abstract class MessageHandler {
 
-    private static final Map<Integer, MessageResolver> RESOLVER_MAP = new HashMap<>();
+    private static final Map<Integer, MessageHandler> HANDLER_MAP = new HashMap<>();
 
     /**
-     * 扫描加载和实例化指定包名下的所有的{@link MessageResolver}实现类
+     * 扫描加载和实例化指定包名下的所有的{@link MessageHandler}实现类
      *
      * @param packageNameList 待扫描的包名列表
      */
@@ -34,12 +34,12 @@ public abstract class MessageResolver {
     }
 
     /**
-     * 扫描加载和实例化指定包名下的所有的{@link MessageResolver}实现类
+     * 扫描加载和实例化指定包名下的所有的{@link MessageHandler}实现类
      *
      * @param packageName 待扫描的包名
      */
     private static void tryLoad0(String packageName) {
-        String packagePath = Objects.requireNonNull(MessageResolver.class.getResource("/")).getPath()
+        String packagePath = Objects.requireNonNull(MessageHandler.class.getResource("/")).getPath()
                 + packageName.replace(".", File.separator);
         File pack = new File(packagePath);
         String name;
@@ -50,11 +50,11 @@ public abstract class MessageResolver {
                     try {
                         name = name.substring(0, name.length() - 6);
                         Class<?> clazz = Class.forName(packageName + "." + name);
-                        if (MessageResolver.class.isAssignableFrom(clazz)
+                        if (MessageHandler.class.isAssignableFrom(clazz)
                                 && ! Modifier.isAbstract(clazz.getModifiers())) {
                             Constructor<?> constructor = clazz.getConstructor();
                             constructor.setAccessible(true);
-                            MessageResolver resolver = (MessageResolver) constructor.newInstance();
+                            MessageHandler resolver = (MessageHandler) constructor.newInstance();
                             resolver.load();
                         }
                     } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
@@ -69,44 +69,40 @@ public abstract class MessageResolver {
     }
 
     /**
-     * 尝试对接收到、准备解码的数据传输对象{@link ByteBuf}进行消息解析器{@link MessageResolver}匹配，解析出{@link Message}
+     * 尝试对接收到、准备解码的数据传输对象{@link ByteBuf}进行消息处理器{@link MessageHandler}匹配，然后进行处理
      *
      * @param buf 数据传输对象
-     * @return {@link Message}（如果解析失败则返回null）
      */
-    public static Message tryResolve(ByteBuf buf, Charset charset) {
+    public static void tryResolve(ByteBuf buf, Charset charset) {
         try {
             JSONObject data = JSON.parseObject(buf.toString(charset));
             Integer flag = data.getInteger("flag");
             if (flag != null) {
-                MessageResolver resolver = RESOLVER_MAP.get(flag);
-                if (resolver != null) {
-                    return resolver.resolve(data);
-                }
+                MessageHandler resolver = HANDLER_MAP.get(flag);
+                if (resolver != null)
+                    resolver.resolve(data);
             }
         } catch (Exception ignored) {}
-        return null;
     }
 
     /**
-     * 用于装载消息解析器{@link MessageResolver}的实现子类
+     * 用于装载消息处理器{@link MessageHandler}的实现子类
      */
     public final void load() {
-        Class<? extends MessageResolver> clazz = this.getClass();
+        Class<? extends MessageHandler> clazz = this.getClass();
         if (!Modifier.isAbstract(clazz.getModifiers())) {
             MessageTypeTag tag = clazz.getAnnotation(MessageTypeTag.class);
             if (tag != null) {
-                RESOLVER_MAP.put(tag.type(), this);
+                HANDLER_MAP.put(tag.type(), this);
             }
         }
     }
 
     /**
-     * 对{@link JSONObject}对象进行解析，解析出{@link Message}
+     * 对{@link JSONObject}对象进行解析，然后进行处理
      *
      * @param data json数据
-     * @return {@link Message}（如果解析失败则返回null）
      */
-    protected abstract Message resolve(JSONObject data);
+    protected abstract void resolve(JSONObject data);
 
 }
