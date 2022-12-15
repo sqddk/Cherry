@@ -76,6 +76,16 @@ public abstract class TimingWheel implements Rotatable {
     }
 
     /**
+     * 结合当前的{@link #currentTimeValue}和{@link #interval}计算相对时间距离
+     *
+     * @param timeValue 绝对时间值
+     * @return 相对时间距离
+     */
+    public final long calDistance(long timeValue) {
+        return (timeValue - this.currentTimeValue) / this.interval;
+    }
+
+    /**
      * 执行一个任务
      *
      * @param task 任务

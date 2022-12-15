@@ -1,6 +1,5 @@
 package cn.cherry.server.service;
 
-import cn.cherry.core.engine.base.TimingWheel;
 import cn.cherry.core.infra.message.Message;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.*;
@@ -18,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 public class ServerHandler extends SimpleChannelInboundHandler<Message> {
 
     private final Logger logger = LogManager.getLogger("Cherry");
-    private final TimingWheel timingWheel = ServerStarter.getInstance().getTimingWheel();
 
     /**
      * Calls {@link ChannelHandlerContext#fireChannelActive()} to forward
@@ -42,7 +40,8 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message message) {
-
+        if (message.needHandle())
+            message.handle();
     }
 
     /**
@@ -56,7 +55,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-
+        this.logger.error(cause.getMessage());
     }
 
 }

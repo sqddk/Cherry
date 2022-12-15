@@ -3,8 +3,7 @@ package cn.cherry.core.infra.message;
 import java.lang.annotation.*;
 
 /**
- * 给{@link MessageResolver}用的，加上后允许被
- * 消息解析器{@link MessageResolver#load()}和消息处理器{@link MessageHandler#load()}扫描和加载
+ * 给{@link MessageResolver}用的，加上后允许被消息解析器{@link MessageResolver#load()}扫描和加载
  * 
  * @author realDragonKing 
  */

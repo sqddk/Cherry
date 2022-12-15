@@ -1,6 +1,7 @@
 package cn.cherry.client.service;
 
 import cn.cherry.client.base.Receiver;
+import cn.cherry.core.infra.message.Message;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +16,7 @@ import static cn.cherry.core.infra.message.MessageType.*;
  * @since 2022/10/19
  * @author realDragonKing
  */
-public class ClientHandler extends SimpleChannelInboundHandler<JSONObject> {
+public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 
     private final Receiver receiver;
     private final ClientStarter clientStarter;
@@ -44,40 +45,11 @@ public class ClientHandler extends SimpleChannelInboundHandler<JSONObject> {
      *
      * @param ctx the {@link ChannelHandlerContext} which this {@link SimpleChannelInboundHandler}
      *            belongs to
-     * @param protocol the message to handle
+     * @param message the message to handle
      */
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, JSONObject protocol) {
-        switch (protocol.getIntValue("flag")) {
-            case NOTIFY:
-                TimePoint timePoint = TimePoint.parse(protocol.getString("timePoint"));
-                if (timePoint == null) {
-                    ctx.fireExceptionCaught(new Throwable("时间信息格式错误！"));
-                    return;
-                }
-                this.receiver.receiveNotify(
-                        timePoint,
-                        protocol.getJSONObject("metaData"),
-                        protocol.getIntValue("taskId"));
-                break;
-            case ERROR:
-                this.receiver.receiveError(protocol.getString("errorMessage"));
-                break;
-            case ADD_RESULT:
-                this.clientStarter.receiveInvokeResult(
-                        ADD_RESULT,
-                        protocol.getIntValue("sendingId"),
-                        protocol.getIntValue("taskId"),
-                        null);
-                break;
-            case REMOVE_RESULT:
-                this.clientStarter.receiveInvokeResult(
-                        REMOVE_RESULT,
-                        protocol.getIntValue("sendingId"),
-                        null,
-                        protocol.getBooleanValue("result"));
-                break;
-        }
+    protected void channelRead0(ChannelHandlerContext ctx, Message message) {
+        message.handle();
     }
 
     /**

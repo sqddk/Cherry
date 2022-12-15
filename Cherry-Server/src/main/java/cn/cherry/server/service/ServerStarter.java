@@ -3,7 +3,7 @@ package cn.cherry.server.service;
 import cn.cherry.core.engine.base.DefaultTimingWheel;
 import cn.cherry.core.engine.base.TimingWheel;
 import cn.cherry.core.infra.ConfigLoader;
-import cn.cherry.core.infra.message.MessageAccepter;
+import cn.cherry.core.infra.message.MessageResolver;
 import cn.cherry.server.base.ServerConfigLoader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -32,7 +32,6 @@ public class ServerStarter {
     }
 
     private static final String resolverPackageName = "cn.cherry.server.base.message.resolver";
-    private static final String handlerPackageName = "cn.cherry.server.base.message.handler";
     private final Logger logger = LogManager.getLogger("Cherry");
     private TimingWheel timingWheel;
 
@@ -57,8 +56,8 @@ public class ServerStarter {
         this.timingWheel = new DefaultTimingWheel(interval, totalTicks, waitTimeout, taskSize, minThreadNumber, maxThreadNumber);
         this.logger.info("Cherry-Core调度引擎已经在本地成功启动并可提供服务！");
 
-        MessageAccepter.tryLoad(resolverPackageName, handlerPackageName);
-        this.logger.info("消息解析器和消息执行器已经被全部加载！");
+        MessageResolver.tryLoad(resolverPackageName);
+        this.logger.info("消息解析器已经被全部加载！");
 
         ServerBootstrap bootstrap = new ServerBootstrap();
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
@@ -74,7 +73,7 @@ public class ServerStarter {
             ChannelFuture future = bootstrap.bind(localAddress).sync();
 
             this.logger.info("服务端已经在 " + localAddress + " 上成功启动并可提供服务！");
-            this.logger.info("等待cherry客户端连接接入本服务端！");
+            this.logger.info("等待Cherry客户端连接接入本服务端！");
 
             future.channel().closeFuture().sync();
 

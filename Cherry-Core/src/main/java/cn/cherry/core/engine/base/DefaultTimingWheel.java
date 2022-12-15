@@ -72,7 +72,7 @@ public class DefaultTimingWheel extends TimingWheel {
     @Override
     public void executeTask(Task task) {
         requireNonNull(task, "task");
-        this.executor.execute(task::execute);
+        this.executor.execute(task);
     }
 
     /**

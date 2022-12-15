@@ -14,18 +14,10 @@ public class NotifyTask implements Task {
     }
 
     /**
-     * @return 任务的元数据（由业务方来操作和保存临时数据）
-     */
-    @Override
-    public JSONObject getMetaData() {
-        return null;
-    }
-
-    /**
      * 执行任务
      */
     @Override
-    public void execute() {
+    public void run() {
 
     }
 

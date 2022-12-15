@@ -7,7 +7,7 @@ import java.util.Map;
  *
  * @author realDragonKing
  */
-public interface Task {
+public interface Task extends Runnable {
 
     /**
      * @return 任务的配置信息
@@ -17,6 +17,6 @@ public interface Task {
     /**
      * 任务的执行内容
      */
-    void execute();
+    void run();
 
 }
