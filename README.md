@@ -38,7 +38,7 @@
             }
 
             @Override
-            public void execute() {
+            public void run() {
                 System.out.println("任务执行成功！");
             }
         };
@@ -50,10 +50,9 @@
         TimeParser parser = new TimeParser();
         long timeValue = parser.time2TimeValue(time, TimeZone.getDefault());
 ```
-&emsp;&emsp;接下来，我们通过毫秒时间值和时间轮的interval参数，计算出相对时间距离。
+&emsp;&emsp;接下来，我们通过TimingWheel提供的api，计算出相对时间距离。
 ```java
-        long interval = timingWheel.getInterval();
-        long distance = (timeValue - timingWheel.getCurrentTimeValue()) / interval;
+        long distance = timingWheel.calDistance(timeValue);
 ```
 &emsp;&emsp;最后，通过相对时间距离，我们可以从TimingWheel里面取出对应的TimeSlot时间槽位，然后调用其API完成Task任务的发布（会返回Task的发布顺序）。
 ```java
@@ -73,7 +72,7 @@
             }
 
             @Override
-            public void execute() {
+            public void run() {
                 System.out.println("任务执行成功！");
             }
         };
@@ -82,8 +81,7 @@
         TimeParser parser = new TimeParser();
         long timeValue = parser.time2TimeValue(time, TimeZone.getDefault());
 
-        long interval = timingWheel.getInterval();
-        long distance = (timeValue - timingWheel.getCurrentTimeValue()) / interval;
+        long distance = timingWheel.calDistance(timeValue);
 
         TimeSlot slot = timingWheel.getSlot(distance);
         long taskId = slot.submitTask(task, distance);
