@@ -40,8 +40,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message message) {
-        if (message.needHandle())
-            message.handle();
+        message.handle();
     }
 
     /**

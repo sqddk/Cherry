@@ -7,7 +7,6 @@ import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static cn.cherry.core.infra.message.MessageType.*;
 
 /**
  * cherry网络通信层面的客户端处理器
@@ -19,12 +18,10 @@ import static cn.cherry.core.infra.message.MessageType.*;
 public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 
     private final Receiver receiver;
-    private final ClientStarter clientStarter;
     private final Logger logger = LogManager.getLogger("Cherry");
 
     public ClientHandler(Receiver receiver) {
         this.receiver = receiver;
-        this.clientStarter = ClientStarter.getInstance();
     }
 
     /**

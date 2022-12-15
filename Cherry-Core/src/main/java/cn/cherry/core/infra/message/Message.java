@@ -8,13 +8,6 @@ package cn.cherry.core.infra.message;
 public interface Message {
 
     /**
-     * 获取到{@link Message}的类型标志位
-     *
-     * @return 类型标志位
-     */
-    int getType();
-
-    /**
      * 处理{@link Message}消息体的待执行任务
      */
     void handle();
