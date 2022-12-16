@@ -10,12 +10,12 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface MessageTypeTag {
+public @interface HandlerTag {
 
     /**
-     * 消息{@link Message}的类型标志位
+     * 消息的类型标志
      *
-     * @return 类型标志位
+     * @return 类型标志
      */
     int type();
 

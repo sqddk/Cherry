@@ -40,7 +40,7 @@ public class DefaultTaskGroup implements TaskGroup{
 
         Map<String, Object> taskConfig = task.getTaskConfig();
         taskConfig.put("taskId", taskId);
-        taskConfig.put("publishTimeValue", publishTimeValue);
+        taskConfig.put("publishTime", publishTimeValue);
 
         TaskKeeper keeper = new TaskKeeper(); // 这里以后要把TaskKeeper做成可以池化复用的，clear方法已经铺好路了
         keeper.setTask(task);

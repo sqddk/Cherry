@@ -11,36 +11,6 @@ public final class BaseUtils {
     private BaseUtils(){}
 
     /**
-     * 检查字符串是否全为数字
-     *
-     * @param s 待检查的字符串
-     * @return 是否全为数字
-     */
-    public static boolean checkStringOfNumber(String s){
-        for(char c : s.toCharArray()){
-            if(c < 48 || c > 57) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 打印出cherry的logo！
-     */
-    public static void printLogo() {
-        System.out.println("\n" +
-                "   _____   _                                  \n" +
-                "  / ____| | |                                 \n" +
-                " | |      | |__     ___   _ __   _ __   _   _ \n" +
-                " | |      | '_ \\   / _ \\ | '__| | '__| | | | |\n" +
-                " | |____  | | | | |  __/ | |    | |    | |_| |\n" +
-                "  \\_____| |_| |_|  \\___| |_|    |_|     \\__, |\n" +
-                "                                         __/ |\n" +
-                "                                        |___/ \n");
-    }
-
-    /**
      * 获取当前程序运行路径
      *
      * @return 程序运行路径

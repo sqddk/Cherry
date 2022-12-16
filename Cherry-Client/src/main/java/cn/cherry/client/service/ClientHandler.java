@@ -48,7 +48,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf byteBuf) {
-        MessageHandler.tryResolve(byteBuf, this.charset);
+        MessageHandler.tryResolve(ctx.channel(), byteBuf, this.charset);
     }
 
     /**

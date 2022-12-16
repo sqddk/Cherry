@@ -4,6 +4,7 @@ import cn.cherry.core.engine.base.DefaultTimingWheel;
 import cn.cherry.core.engine.base.TimingWheel;
 import cn.cherry.core.infra.ConfigLoader;
 import cn.cherry.core.infra.message.MessageHandler;
+import cn.cherry.server.ServerUtils;
 import cn.cherry.server.base.ServerConfigLoader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -41,6 +42,8 @@ public class ServerStarter {
      * 初始化和启动 Netty socket 服务端
      */
     public void initial() {
+        this.logger.info(ServerUtils.createLogo());
+
         ConfigLoader configLoader = ConfigLoader.getInstance(ServerConfigLoader.class);
         this.logger.info("配置文件初始化完成！");
 

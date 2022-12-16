@@ -44,11 +44,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
      *
      * @param ctx the {@link ChannelHandlerContext} which this {@link SimpleChannelInboundHandler}
      *            belongs to
-     * @param message the message to handle
+     * @param byteBuf the message to handle
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf byteBuf) {
-        MessageHandler.tryResolve(byteBuf, charset);
+        MessageHandler.tryResolve(ctx.channel(), byteBuf, charset);
     }
 
     /**

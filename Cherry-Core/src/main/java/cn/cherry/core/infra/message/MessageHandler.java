@@ -3,6 +3,7 @@ package cn.cherry.core.infra.message;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -12,6 +13,8 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * 消息处理器的顶层抽象类，能够把{@link ByteBuf}解析和转换为{@link JSONObject}后进行处理
@@ -20,6 +23,7 @@ import java.util.Objects;
  */
 public abstract class MessageHandler {
 
+    private static final Logger logger = LogManager.getLogManager().getLogger("Cherry");
     private static final Map<Integer, MessageHandler> HANDLER_MAP = new HashMap<>();
 
     /**
@@ -69,20 +73,24 @@ public abstract class MessageHandler {
     }
 
     /**
-     * 尝试对接收到、准备解码的数据传输对象{@link ByteBuf}进行消息处理器{@link MessageHandler}匹配，然后进行处理
+     * 尝试对接收到、准备解码的数据传输对象{@link ByteBuf}进行消息处理器{@link MessageHandler}匹配和处理
      *
-     * @param buf 数据传输对象
+     * @param channel 通信信道
+     * @param byteBuf 数据传输对象
+     * @param charset 解码字符集
      */
-    public static void tryResolve(ByteBuf buf, Charset charset) {
+    public static void tryResolve(Channel channel, ByteBuf byteBuf, Charset charset) {
         try {
-            JSONObject data = JSON.parseObject(buf.toString(charset));
+            JSONObject data = JSON.parseObject(byteBuf.toString(charset));
             Integer flag = data.getInteger("flag");
             if (flag != null) {
                 MessageHandler resolver = HANDLER_MAP.get(flag);
                 if (resolver != null)
-                    resolver.resolve(data);
+                    resolver.resolve(channel, data);
             }
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            MessageHandler.logger.warning(e.toString());
+        }
     }
 
     /**
@@ -91,7 +99,7 @@ public abstract class MessageHandler {
     public final void load() {
         Class<? extends MessageHandler> clazz = this.getClass();
         if (!Modifier.isAbstract(clazz.getModifiers())) {
-            MessageTypeTag tag = clazz.getAnnotation(MessageTypeTag.class);
+            HandlerTag tag = clazz.getAnnotation(HandlerTag.class);
             if (tag != null) {
                 HANDLER_MAP.put(tag.type(), this);
             }
@@ -101,8 +109,9 @@ public abstract class MessageHandler {
     /**
      * 对{@link JSONObject}对象进行解析，然后进行处理
      *
+     * @param channel 通信信道
      * @param data json数据
      */
-    protected abstract void resolve(JSONObject data);
+    protected abstract void resolve(Channel channel, JSONObject data);
 
 }
