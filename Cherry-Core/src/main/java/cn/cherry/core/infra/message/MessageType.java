@@ -1,9 +1,8 @@
 package cn.cherry.core.infra.message;
 
 /**
- * {@link Message}的类型标志位，静态字段集中地
+ * 通信消息的类型标志，静态字段集中地
  *
- * @since 2022/11/25
  * @author realDragonKing
  */
 public class MessageType {

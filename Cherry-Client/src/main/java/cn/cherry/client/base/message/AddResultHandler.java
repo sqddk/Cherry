@@ -1,12 +1,9 @@
 package cn.cherry.client.base.message;
 
-import cn.cherry.core.infra.message.MessageType;
 import cn.cherry.core.infra.message.MessageHandler;
-import cn.cherry.core.infra.message.HandlerTag;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.Channel;
 
-@HandlerTag(type = MessageType.ADD_RESULT)
 public class AddResultHandler extends MessageHandler {
 
     /**

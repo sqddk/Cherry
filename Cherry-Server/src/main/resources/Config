@@ -20,4 +20,4 @@ taskSize = 10000
 minThreadNumber = 4
 
 #任务执行线程池的最大线程数
-minThreadNumber = 8
+maxThreadNumber = 8

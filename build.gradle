@@ -10,8 +10,10 @@ subprojects {
         archiveClassifier.set("sources")
     }
 
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.encoding = "UTF-8"
+        }
     }
 
     artifacts {

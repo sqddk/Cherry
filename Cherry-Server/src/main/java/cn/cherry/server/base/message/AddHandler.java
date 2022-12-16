@@ -4,20 +4,19 @@ import cn.cherry.core.engine.base.TimeSlot;
 import cn.cherry.core.engine.base.TimingWheel;
 import cn.cherry.core.infra.message.MessageType;
 import cn.cherry.core.infra.message.MessageHandler;
-import cn.cherry.core.infra.message.HandlerTag;
 import cn.cherry.server.base.task.NotifyTask;
-import cn.cherry.server.service.ServerStarter;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.Channel;
+import org.apache.logging.log4j.Logger;
 
-
-@HandlerTag(type = MessageType.ADD)
 public class AddHandler extends MessageHandler {
 
     private final TimingWheel timingWheel;
+    private final Logger logger;
 
-    public AddHandler() {
-         this.timingWheel = ServerStarter.getInstance().getTimingWheel();
+    public AddHandler(TimingWheel timingWheel, Logger logger) {
+         this.timingWheel = timingWheel;
+         this.logger = logger;
     }
 
     /**
@@ -37,15 +36,19 @@ public class AddHandler extends MessageHandler {
 
         long taskId = slot.submitTask(new NotifyTask(channel, data), distance);
 
-        JSONObject result = new JSONObject(4);
+        JSONObject result = new JSONObject();
         result.put("flag", MessageType.ADD_RESULT);
         result.put("publishId", publishId);
+
         if (taskId == -1) {
             result.put("result", false);
+            this.logger.error(channel.remoteAddress() + " 任务提交失败！");
         } else {
             result.put("result", true);
             result.put("taskId", taskId);
+            this.logger.info(channel.remoteAddress() + " 任务提交成功！");
         }
+
         channel.writeAndFlush(result.toJSONString() + '\n');
     }
 
