@@ -7,9 +7,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 
 /**
- * Netty Client 流水线初始化器
+ * CherryClient 流水线初始化器
  *
- * @since 2022/10/19
  * @author realDragonKing
  */
 public class ClientInitializer extends ChannelInitializer<SocketChannel> {

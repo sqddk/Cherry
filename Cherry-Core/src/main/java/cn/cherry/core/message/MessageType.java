@@ -1,4 +1,4 @@
-package cn.cherry.core.infra.message;
+package cn.cherry.core.message;
 
 /**
  * 通信消息的类型标志，静态字段集中地

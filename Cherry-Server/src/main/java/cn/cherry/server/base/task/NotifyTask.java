@@ -1,19 +1,19 @@
 package cn.cherry.server.base.task;
 
 import cn.cherry.core.engine.base.task.Task;
-import cn.cherry.core.infra.message.MessageType;
+import cn.cherry.core.message.MessageType;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.Channel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 public class NotifyTask implements Task {
 
     private final Channel channel;
     private final JSONObject config;
-    private final Logger logger = LogManager.getLogManager().getLogger("Cherry");
+    private final Logger logger = LogManager.getLogger("Cherry");
 
     public NotifyTask(Channel channel, JSONObject config) {
         this.channel = channel;
@@ -41,7 +41,7 @@ public class NotifyTask implements Task {
         if (channel.isActive())
             channel.writeAndFlush(data.toJSONString() + '\n');
         else
-            this.logger.warning(channel.remoteAddress() + " 通信信道无效！无法执行回调通知！");
+            this.logger.error(channel.remoteAddress() + " 通信信道无效！无法执行回调通知！");
     }
 
 }

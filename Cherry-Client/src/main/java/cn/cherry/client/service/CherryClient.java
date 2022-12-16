@@ -1,6 +1,5 @@
 package cn.cherry.client.service;
 
-import cn.cherry.client.base.Receiver;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -16,32 +15,25 @@ import java.util.concurrent.*;
 /**
  * cherry定时任务调度引擎的 socket 网络服务客户端启动引导类
  *
- * @since 2022/10/19
  * @author realDragonKing
  */
-public class ClientStarter {
+public class CherryClient {
 
-    private final static class ClientStarterHolder {
-        private final static ClientStarter INSTANCE = new ClientStarter();
-    }
-    public static ClientStarter getInstance() {
-        return ClientStarterHolder.INSTANCE;
-    }
-    private final Logger logger = LogManager.getLogger("Cherry");
+    private final Logger logger;
     private Channel channel;
 
-    private ClientStarter() {}
+    public CherryClient(String host, int port) {
+        this.logger = LogManager.getLogger("Cherry");
+        this.connect(host, port);
+    }
 
     /**
      * 通过提供的host地址和端口，初始化客户端，尝试连接目标服务端
      *
-     * @param channelName 客户端名称，用于消费任务通知
      * @param host host地址
      * @param port port端口
-     * @param receiver 响应接收/执行者
-     * @return this
      */
-    public ClientStarter initial(String channelName, String host, int port, Receiver receiver) {
+    private void connect(String host, int port) {
         CompletableFuture<Boolean> waiter = new CompletableFuture<>();
 
         new Thread(() -> {
@@ -70,9 +62,8 @@ public class ClientStarter {
 
         try {
             waiter.get(500, TimeUnit.MILLISECONDS);
-            return this;
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            throw new RuntimeException(e);
+            this.logger.error("连接目标服务端超时失败！");
         }
     }
 

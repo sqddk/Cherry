@@ -2,10 +2,9 @@ package cn.cherry.server.service;
 
 import cn.cherry.core.engine.base.DefaultTimingWheel;
 import cn.cherry.core.engine.base.TimingWheel;
-import cn.cherry.core.infra.ConfigLoader;
-import cn.cherry.core.infra.message.MessageType;
+import cn.cherry.core.message.MessageType;
 import cn.cherry.server.ServerUtils;
-import cn.cherry.server.base.ServerConfigLoader;
+import cn.cherry.server.base.ConfigLoader;
 import cn.cherry.server.base.message.AddHandler;
 import cn.cherry.server.base.message.RemoveHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -20,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
-import static cn.cherry.core.infra.message.MessageHandler.registerHandler;
+import static cn.cherry.core.message.MessageHandler.registerHandler;
 
 /**
  * cherry定时任务调度引擎的 socket 网络服务启动引导类
@@ -46,7 +45,7 @@ public class ServerStarter {
         logger.info(ServerUtils.createLogo());
 
         // 初始化读取配置
-        ConfigLoader configLoader = ConfigLoader.getInstance(ServerConfigLoader.class);
+        ConfigLoader configLoader = ConfigLoader.getInstance();
         logger.info("配置文件初始化完成！");
 
         String host = configLoader.getValue("host");

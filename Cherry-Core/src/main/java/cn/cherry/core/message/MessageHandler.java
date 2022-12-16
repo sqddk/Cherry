@@ -1,4 +1,4 @@
-package cn.cherry.core.infra.message;
+package cn.cherry.core.message;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;

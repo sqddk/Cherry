@@ -1,6 +1,5 @@
 package cn.cherry.server.base;
 
-import cn.cherry.core.infra.ConfigLoader;
 import cn.cherry.core.engine.utils.BaseUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,25 +10,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 配置加载器的服务端实现
+ * 服务端的配置加载器
  *
- * @since 2022/11/06
  * @author realDragonKing
  */
-public class ServerConfigLoader extends ConfigLoader {
+public class ConfigLoader {
 
     private static final String CONFIG_PATH = "/Config";
-    private final String filePath = BaseUtils.getFilePath();
-    private final Map<String, String> configBucket = new HashMap<>();
-    private final Logger logger = LogManager.getLogger("Cherry");
+    private final Map<String, String> configBucket;
+    private final String filePath;
+    private final Logger logger;
 
-    private ServerConfigLoader() {}
+    private ConfigLoader() {
+        this.configBucket = new HashMap<>();
+        this.filePath = BaseUtils.getFilePath();
+        this.logger = LogManager.getLogger("Cherry");
+    }
+
+    private static ConfigLoader configLoader;
+
+    /**
+     * 获取配置加载器全局唯一实例（如果没有初始化过则进行初始化）。通过这种方式让客户端和服务端有不同的配置加载实现方式
+     *
+     * @return 配置加载器
+     */
+    public static ConfigLoader getInstance() {
+        if (configLoader == null) {
+            synchronized (ConfigLoader.class) {
+                configLoader = new ConfigLoader();
+                configLoader.loadConfig();
+            }
+        }
+        return configLoader;
+    }
 
     /**
      * 读取已经加载的外部配置文件
      */
-    @Override
-    public void loadConfig() {
+    private void loadConfig() {
         File configFile = new File(this.filePath + CONFIG_PATH);
         if (!configFile.exists()) {
             this.initialConfig(configFile);
@@ -66,7 +84,7 @@ public class ServerConfigLoader extends ConfigLoader {
      * @param configFile 外部配置文件
      */
     private void initialConfig(File configFile) {
-        try (InputStream inputStream = ServerConfigLoader.class.getResourceAsStream(CONFIG_PATH);
+        try (InputStream inputStream = ConfigLoader.class.getResourceAsStream(CONFIG_PATH);
              FileOutputStream fileOutputStream = new FileOutputStream(configFile)) {
             if (inputStream == null) {
                 throw new RuntimeException("无法检测到内部备份的初始化配置文件！");
@@ -89,7 +107,6 @@ public class ServerConfigLoader extends ConfigLoader {
      * @param key 键
      * @return 值
      */
-    @Override
     public int getIntValue(String key) {
         String value = this.configBucket.get(key);
         if (value == null) {
@@ -104,7 +121,6 @@ public class ServerConfigLoader extends ConfigLoader {
      * @param key 键
      * @return 值
      */
-    @Override
     public String getValue(String key) {
         String value = this.configBucket.get(key);
         if (value == null) {

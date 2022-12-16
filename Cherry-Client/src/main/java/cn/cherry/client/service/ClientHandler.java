@@ -1,6 +1,6 @@
 package cn.cherry.client.service;
 
-import cn.cherry.core.infra.message.MessageHandler;
+import cn.cherry.core.message.MessageHandler;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
@@ -9,12 +9,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.Charset;
 
-
 /**
- * cherry网络通信层面的客户端处理器
- * 用来处理网络定时任务的执行通知
+ * 处理网络通信
  *
- * @since 2022/10/19
  * @author realDragonKing
  */
 public class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
@@ -44,7 +41,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
      *
      * @param ctx the {@link ChannelHandlerContext} which this {@link SimpleChannelInboundHandler}
      *            belongs to
-     * @param message the message to handle
+     * @param byteBuf the message to handle
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf byteBuf) {

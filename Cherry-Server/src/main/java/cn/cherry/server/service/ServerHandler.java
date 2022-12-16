@@ -1,6 +1,6 @@
 package cn.cherry.server.service;
 
-import cn.cherry.core.infra.message.MessageHandler;
+import cn.cherry.core.message.MessageHandler;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
