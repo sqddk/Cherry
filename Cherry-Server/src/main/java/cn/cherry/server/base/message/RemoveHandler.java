@@ -1,7 +1,7 @@
 package cn.cherry.server.base.message;
 
-import cn.cherry.core.engine.base.TimeSlot;
-import cn.cherry.core.engine.base.TimingWheel;
+import cn.cherry.core.engine.TimeSlot;
+import cn.cherry.core.engine.TimingWheel;
 import cn.cherry.core.message.MessageHandler;
 import cn.cherry.core.message.MessageType;
 import com.alibaba.fastjson2.JSONObject;

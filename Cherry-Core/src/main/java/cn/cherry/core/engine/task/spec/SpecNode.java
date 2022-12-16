@@ -1,7 +1,7 @@
-package cn.cherry.core.engine.base.task.spec;
+package cn.cherry.core.engine.task.spec;
 
-import cn.cherry.core.engine.base.task.Task;
-import cn.cherry.core.engine.base.task.TaskKeeper;
+import cn.cherry.core.engine.task.Task;
+import cn.cherry.core.engine.task.TaskKeeper;
 
 /**
  * 装载了{@link Task}任务一种特征的节点<br/>

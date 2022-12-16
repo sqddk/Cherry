@@ -1,6 +1,6 @@
-package cn.cherry.core.engine.base.task;
+package cn.cherry.core.engine.task;
 
-import cn.cherry.core.engine.base.task.spec.SpecNode;
+import cn.cherry.core.engine.task.spec.SpecNode;
 
 import java.util.LinkedList;
 import java.util.List;

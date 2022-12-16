@@ -1,6 +1,6 @@
 package cn.cherry.server.base.task;
 
-import cn.cherry.core.engine.base.task.Task;
+import cn.cherry.core.engine.task.Task;
 import cn.cherry.core.message.MessageType;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.channel.Channel;

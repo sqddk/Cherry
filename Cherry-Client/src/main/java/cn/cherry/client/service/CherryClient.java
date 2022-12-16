@@ -12,6 +12,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.*;
 
+import static io.netty.util.internal.ObjectUtil.checkPositive;
+
 /**
  * cherry定时任务调度引擎的 socket 网络服务客户端启动引导类
  *
@@ -22,9 +24,9 @@ public class CherryClient {
     private final Logger logger;
     private Channel channel;
 
-    public CherryClient(String host, int port) {
+    public CherryClient(String host, int port, long timeout) {
         this.logger = LogManager.getLogger("Cherry");
-        this.connect(host, port);
+        this.connect(host, port, timeout);
     }
 
     /**
@@ -32,8 +34,11 @@ public class CherryClient {
      *
      * @param host host地址
      * @param port port端口
+     * @param timeout 连接超时时间
      */
-    private void connect(String host, int port) {
+    private void connect(String host, int port, long timeout) {
+        checkPositive(timeout, "timeout");
+
         CompletableFuture<Boolean> waiter = new CompletableFuture<>();
 
         new Thread(() -> {
@@ -61,7 +66,7 @@ public class CherryClient {
         }).start();
 
         try {
-            waiter.get(500, TimeUnit.MILLISECONDS);
+            waiter.get(timeout, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             this.logger.error("连接目标服务端超时失败！");
         }

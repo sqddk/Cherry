@@ -1,6 +1,6 @@
-package cn.cherry.core.engine.base.executor;
+package cn.cherry.core.engine.executor;
 
-import cn.cherry.core.engine.base.Rotatable;
+import cn.cherry.core.engine.Rotatable;
 
 import java.util.concurrent.BlockingQueue;
 

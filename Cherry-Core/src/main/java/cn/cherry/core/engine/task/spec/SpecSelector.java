@@ -1,7 +1,7 @@
-package cn.cherry.core.engine.base.task.spec;
+package cn.cherry.core.engine.task.spec;
 
-import cn.cherry.core.engine.base.task.Task;
-import cn.cherry.core.engine.base.task.TaskKeeper;
+import cn.cherry.core.engine.task.Task;
+import cn.cherry.core.engine.task.TaskKeeper;
 
 import java.util.function.Consumer;
 

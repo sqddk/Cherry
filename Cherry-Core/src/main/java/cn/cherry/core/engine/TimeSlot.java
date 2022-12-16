@@ -1,9 +1,9 @@
-package cn.cherry.core.engine.base;
+package cn.cherry.core.engine;
 
-import cn.cherry.core.engine.base.task.DefaultTaskGroup;
-import cn.cherry.core.engine.base.task.Task;
-import cn.cherry.core.engine.base.task.TaskGroup;
-import cn.cherry.core.engine.base.task.spec.Spec;
+import cn.cherry.core.engine.task.DefaultTaskGroup;
+import cn.cherry.core.engine.task.Task;
+import cn.cherry.core.engine.task.TaskGroup;
+import cn.cherry.core.engine.task.spec.Spec;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,7 +83,7 @@ public final class TimeSlot {
 
     /**
      * 在这个时间槽位上，通过{@link Map#keySet()}遍历所有的key和{@link TaskGroup}，对key也就是“还需要转多少圈”进行减 1 操作再放回，
-     * 若key为 0，则对这个{@link TaskGroup}上的所有{@link Task}调用{@link Task#execute()}执行（具体执行将移交线程池）
+     * 若key为 0，则对这个{@link TaskGroup}上的所有{@link Task}进行执行（具体执行将移交线程池）
      */
     public void decAndExecute() {
         Map<Long, TaskGroup> map = this.map;

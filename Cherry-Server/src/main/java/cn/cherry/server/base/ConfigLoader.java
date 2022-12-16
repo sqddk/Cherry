@@ -1,6 +1,6 @@
 package cn.cherry.server.base;
 
-import cn.cherry.core.engine.utils.BaseUtils;
+import cn.cherry.server.ServerUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,7 +23,7 @@ public class ConfigLoader {
 
     private ConfigLoader() {
         this.configBucket = new HashMap<>();
-        this.filePath = BaseUtils.getFilePath();
+        this.filePath = ServerUtils.getFilePath();
         this.logger = LogManager.getLogger("Cherry");
     }
 
