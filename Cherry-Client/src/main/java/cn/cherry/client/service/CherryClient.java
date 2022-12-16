@@ -15,7 +15,7 @@ import java.util.concurrent.*;
 import static io.netty.util.internal.ObjectUtil.checkPositive;
 
 /**
- * cherry定时任务调度引擎的 socket 网络服务客户端启动引导类
+ * 与远程cherry定时任务调度服务端进行交互的客户端
  *
  * @author realDragonKing
  */

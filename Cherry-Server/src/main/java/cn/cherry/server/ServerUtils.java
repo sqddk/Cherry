@@ -1,7 +1,5 @@
 package cn.cherry.server;
 
-import cn.cherry.core.engine.utils.BaseUtils;
-
 import java.io.File;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -34,7 +32,7 @@ public class ServerUtils {
      * @return 程序运行路径
      */
     public static String getFilePath() {
-        URL url = BaseUtils.class.getProtectionDomain().getCodeSource().getLocation();
+        URL url = ServerUtils.class.getProtectionDomain().getCodeSource().getLocation();
         String filePath = null;
         try {
             filePath = URLDecoder.decode(url.getPath(), StandardCharsets.UTF_8);
