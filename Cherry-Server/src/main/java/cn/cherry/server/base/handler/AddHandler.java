@@ -1,4 +1,4 @@
-package cn.cherry.server.base.message;
+package cn.cherry.server.base.handler;
 
 import cn.cherry.core.engine.TimeSlot;
 import cn.cherry.core.engine.TimingWheel;
@@ -27,29 +27,25 @@ public class AddHandler extends MessageHandler {
      */
     @Override
     protected void resolve(Channel channel, JSONObject data) {
+        JSONObject metaData = data.getJSONObject("metaData");
         long executeTimeValue = data.getLongValue("executeTime");
-        long publishId = data.getLongValue("publishId");
 
         TimingWheel timingWheel = this.timingWheel;
         long distance = timingWheel.calDistance(executeTimeValue);
         TimeSlot slot = timingWheel.getSlot(distance);
 
-        long taskId = slot.submitTask(new NotifyTask(channel, data), distance);
+        long taskId = slot.submitTask(new NotifyTask(channel, metaData), distance);
 
-        JSONObject result = new JSONObject();
-        result.put("flag", MessageType.ADD_RESULT);
-        result.put("publishId", publishId);
+        data.put("type", MessageType.ADD_RESULT);
+        data.put("taskId", taskId);
 
         if (taskId == -1) {
-            result.put("result", false);
             this.logger.error(channel.remoteAddress() + " 任务提交失败！");
         } else {
-            result.put("result", true);
-            result.put("taskId", taskId);
             this.logger.info(channel.remoteAddress() + " 任务提交成功！");
         }
 
-        channel.writeAndFlush(result.toJSONString() + '\n');
+        channel.writeAndFlush(data.toJSONString() + '\n');
     }
 
 }

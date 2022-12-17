@@ -45,9 +45,9 @@ public abstract class MessageHandler {
     public static void tryResolve(Channel channel, ByteBuf byteBuf, Charset charset) {
         try {
             JSONObject data = JSON.parseObject(byteBuf.toString(charset));
-            Integer flag = data.getInteger("flag");
-            if (flag != null) {
-                MessageHandler resolver = HANDLER_MAP.get(flag);
+            Integer type = data.getInteger("type");
+            if (type != null) {
+                MessageHandler resolver = HANDLER_MAP.get(type);
                 if (resolver != null)
                     resolver.resolve(channel, data);
             }

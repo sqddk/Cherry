@@ -1,4 +1,4 @@
-package cn.cherry.server.base.message;
+package cn.cherry.server.base.handler;
 
 import cn.cherry.core.engine.TimeSlot;
 import cn.cherry.core.engine.TimingWheel;
@@ -36,7 +36,7 @@ public class RemoveHandler extends MessageHandler {
 
         boolean isRemove = slot.removeTask(taskId, distance);
 
-        data.put("flag", MessageType.REMOVE_RESULT);
+        data.put("type", MessageType.REMOVE_RESULT);
         data.put("result", isRemove);
         data.remove("taskId");
         data.remove("executeTime");

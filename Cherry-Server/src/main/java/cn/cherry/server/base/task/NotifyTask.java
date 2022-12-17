@@ -12,12 +12,12 @@ import java.util.Map;
 public class NotifyTask implements Task {
 
     private final Channel channel;
-    private final JSONObject config;
-    private final Logger logger = LogManager.getLogger("Cherry");
+    private final JSONObject metaData;
+    private static final Logger logger = LogManager.getLogger("Cherry");
 
-    public NotifyTask(Channel channel, JSONObject config) {
+    public NotifyTask(Channel channel, JSONObject metaData) {
         this.channel = channel;
-        this.config = config;
+        this.metaData = metaData;
     }
 
     /**
@@ -25,7 +25,7 @@ public class NotifyTask implements Task {
      */
     @Override
     public Map<String, Object> getTaskConfig() {
-        return this.config;
+        return this.metaData;
     }
 
     /**
@@ -33,15 +33,22 @@ public class NotifyTask implements Task {
      */
     @Override
     public void run() {
-        JSONObject data = this.config;
         Channel channel = this.channel;
+        if (channel.isActive()) {
 
-        data.put("flag", MessageType.NOTIFY);
+            JSONObject data = new JSONObject();
+            JSONObject metaData =
+                    this.metaData == null
+                            ? new JSONObject()
+                            : this.metaData;
 
-        if (channel.isActive())
+            data.put("type", MessageType.NOTIFY);
+            data.put("metaData", metaData);
+
             channel.writeAndFlush(data.toJSONString() + '\n');
+        }
         else
-            this.logger.error(channel.remoteAddress() + " 通信信道无效！无法执行回调通知！");
+            logger.error(channel.remoteAddress() + " 通信信道无效！无法执行回调通知！");
     }
 
 }

@@ -4,13 +4,13 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import static io.netty.util.internal.ObjectUtil.checkPositive;
 import static java.util.Calendar.*;
 import static java.util.Objects.*;
 
 /**
  * 时间转换器，内部封装了{@link Calendar}，用来把 "yyyyMMddhhmmSSsss" + 时区 格式的时间转换成距1970年格林尼治时间的绝对时间值，或者是反过来<br/>
- * {@link TimeParser}通过synchornized关键字实现了线程安全（在intel-i5的速度下，一次时间转换的开销在50-100微秒间）。
- * 以后可以考虑优化并发模型
+ * {@link TimeParser}是非线程安全的，以后可以考虑优化资源复用模型和增加并发控制（在intel-i5的速度下，一次时间转换的开销在50-100微秒间）。
  *
  * @author realDragonKing
  */
@@ -25,13 +25,13 @@ public class TimeParser {
     /**
      * 把 "yyyyMMddhhmmSSsss" + 时区 格式的时间转换成距1970年格林尼治时间的绝对时间值
      *
+     * @param timeZone 时区
      * @param time 格式时间
-     * @param zone 时区
      * @return 绝对时间值
      */
-    public synchronized long time2TimeValue(String time, TimeZone zone) throws IllegalArgumentException {
+    public long time2timeValue(TimeZone timeZone, String time) throws IllegalArgumentException {
         requireNonNull(time, "time");
-        requireNonNull(zone, "zone");
+        requireNonNull(timeZone, "timeZone");
 
         char[] chars = time.toCharArray();
         if (chars.length != 17) {
@@ -39,7 +39,7 @@ public class TimeParser {
         }
 
         Calendar calendar = this.calendar;
-        calendar.setTimeZone(zone);
+        calendar.setTimeZone(timeZone);
         calendar.set(YEAR, this.char2Int(chars, 0, 4));
         calendar.set(MONTH, this.char2Int(chars, 4, 6) - 1);
         calendar.set(DAY_OF_MONTH, this.char2Int(chars, 6, 8));
@@ -52,13 +52,51 @@ public class TimeParser {
     }
 
     /**
+     * 把 "yyyyMMddhhmmSSsss" + 时区 格式的时间转换成距1970年格林尼治时间的绝对时间值
+     *
+     * @param timeZone 时区
+     * @param year 年份
+     * @param month 月份（1月为1）
+     * @param dayOfMonth 月内日期
+     * @param hourOfDay 小时
+     * @param minute 分钟
+     * @param second 秒
+     * @param millisecond 毫秒
+     * @return 绝对时间值
+     */
+    public long time2timeValue(TimeZone timeZone, int year, int month, int dayOfMonth,
+                               int hourOfDay, int minute, int second, int millisecond) {
+        requireNonNull(timeZone, "timeZone");
+
+        checkPositive(year, "year");
+        checkPositive(month, "month");
+        checkPositive(dayOfMonth, "dayOfMonth");
+        checkPositive(hourOfDay, "hourOfDay");
+        checkPositive(minute, "minute");
+        checkPositive(second, "second");
+        checkPositive(millisecond, "millisecond");
+
+        Calendar calendar = this.calendar;
+        calendar.setTimeZone(timeZone);
+        calendar.set(YEAR, year);
+        calendar.set(MONTH, month - 1);
+        calendar.set(DAY_OF_MONTH, dayOfMonth);
+        calendar.set(HOUR_OF_DAY, hourOfDay);
+        calendar.set(MINUTE, minute);
+        calendar.set(SECOND, second);
+        calendar.set(MILLISECOND, millisecond);
+
+        return calendar.getTimeInMillis();
+    }
+
+    /**
      * 把距1970年格林尼治时间的绝对时间值转换成 "yyyyMMddhhmmSSsss" + 时区 格式的时间
      *
      * @param timeValue 绝对时间值
      * @param zone 时区
      * @return 格式时间
      */
-    public synchronized String timeValue2Time(long timeValue, TimeZone zone) {
+    public String timeValue2time(long timeValue, TimeZone zone) {
         requireNonNull(zone, "zone");
 
         Calendar calendar = this.calendar;
