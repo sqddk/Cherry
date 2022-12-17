@@ -47,7 +47,7 @@ public class RemoveHandler extends MessageHandler {
             this.logger.info(channel.remoteAddress() + " 任务删除失败！");
         }
 
-        channel.writeAndFlush(data.toJSONString() + '\n');
+        channel.writeAndFlush(data.toJSONString() + "\r\n");
     }
 
 }

@@ -28,7 +28,7 @@ public class RemoveResultHandler extends MessageHandler {
         boolean isRemove = jsonData.getBooleanValue("isRemove");
 
         Map<Long, RemoveResultReceiver> receiverMap = this.REMOVE_RESULT_MAP.get(clientName);
-        RemoveResultReceiver addResultReceiver = receiverMap.get(publishId);
+        RemoveResultReceiver addResultReceiver = receiverMap.remove(publishId);
         addResultReceiver.doReceive(isRemove);
     }
 }

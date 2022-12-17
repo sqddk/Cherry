@@ -7,7 +7,6 @@ import io.netty.channel.Channel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,17 +38,16 @@ public abstract class MessageHandler {
      * 尝试对接收到、准备解码的数据传输对象{@link ByteBuf}进行消息处理器{@link MessageHandler}匹配和处理
      *
      * @param channel 通信信道
-     * @param byteBuf 数据传输对象
-     * @param charset 解码字符集
+     * @param data 数据
      */
-    public static void tryResolve(Channel channel, ByteBuf byteBuf, Charset charset) {
+    public static void tryResolve(Channel channel, String data) {
         try {
-            JSONObject data = JSON.parseObject(byteBuf.toString(charset));
-            Integer type = data.getInteger("type");
+            JSONObject jsonData = JSON.parseObject(data);
+            Integer type = jsonData.getInteger("type");
             if (type != null) {
                 MessageHandler resolver = HANDLER_MAP.get(type);
                 if (resolver != null)
-                    resolver.resolve(channel, data);
+                    resolver.resolve(channel, jsonData);
             }
         } catch (Exception e) {
             MessageHandler.logger.error(e.toString());

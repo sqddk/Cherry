@@ -28,7 +28,7 @@ public class AddResultHandler extends MessageHandler {
         long taskId = jsonData.getLongValue("taskId");
 
         Map<Long, AddResultReceiver> receiverMap = this.ADD_RESULT_MAP.get(clientName);
-        AddResultReceiver addResultReceiver = receiverMap.get(publishId);
+        AddResultReceiver addResultReceiver = receiverMap.remove(publishId);
         addResultReceiver.doReceive(taskId);
     }
 

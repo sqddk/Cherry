@@ -84,8 +84,12 @@ public class DefaultTimingWheel extends TimingWheel {
     @Override
     public TimeSlot getSlot(long distance) {
         checkPositive(distance, "distance");
-        long rawIndex = distance + this.position;
-        int index = (int) (rawIndex >= getTotalTicks() ? rawIndex % getTotalTicks() : rawIndex);
+
+        int totalTicks = this.getTotalTicks();
+        int rawIndex = (int) (distance % totalTicks) + this.position;
+        int index = rawIndex >= totalTicks
+                ? rawIndex % totalTicks
+                : rawIndex;
         return this.slotMap[index];
     }
 

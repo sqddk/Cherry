@@ -1,7 +1,6 @@
 package cn.cherry.server.service;
 
 import cn.cherry.core.message.MessageHandler;
-import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
@@ -11,18 +10,17 @@ import java.nio.charset.Charset;
 
 
 /**
- * cherry网络通信层面的服务端处理器，
- * 用来处理网络定时任务提交和回执提醒通信
+ * cherry网络通信层面的服务端处理器，来处理网络定时任务提交和回执提醒通信
  *
- * @since 2022/10/18
  * @author realDragonKing
  */
 public class ServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
+    private final Logger logger;
     private final Charset charset;
-    private final Logger logger = LogManager.getLogger("Cherry");
 
     public ServerHandler() {
+        this.logger = LogManager.getLogger("Cherry");
         this.charset = Charset.defaultCharset();
     }
 
@@ -40,7 +38,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
     }
 
     /**
-     * Is called for each message of type {@link JSONObject}.
+     * Is called for each message of type {@link ByteBuf}.
      *
      * @param ctx the {@link ChannelHandlerContext} which this {@link SimpleChannelInboundHandler}
      *            belongs to
@@ -48,7 +46,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf byteBuf) {
-        MessageHandler.tryResolve(ctx.channel(), byteBuf, charset);
+        MessageHandler.tryResolve(ctx.channel(), byteBuf.toString(this.charset));
     }
 
     /**

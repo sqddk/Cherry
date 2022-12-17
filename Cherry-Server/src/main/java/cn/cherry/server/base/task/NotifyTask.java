@@ -45,7 +45,7 @@ public class NotifyTask implements Task {
             data.put("type", MessageType.NOTIFY);
             data.put("metaData", metaData);
 
-            channel.writeAndFlush(data.toJSONString() + '\n');
+            channel.writeAndFlush(data.toJSONString() + "\r\n");
         }
         else
             logger.error(channel.remoteAddress() + " 通信信道无效！无法执行回调通知！");

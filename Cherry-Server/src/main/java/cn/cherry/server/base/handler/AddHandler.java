@@ -45,7 +45,7 @@ public class AddHandler extends MessageHandler {
             this.logger.info(channel.remoteAddress() + " 任务提交成功！");
         }
 
-        channel.writeAndFlush(data.toJSONString() + '\n');
+        channel.writeAndFlush(data.toJSONString() + "\r\n");
     }
 
 }

@@ -68,13 +68,13 @@ public class CherryClient {
      * @param port port端口
      */
     public void connect(String host, int port) {
-        CompletableFuture<Boolean> waiter = new CompletableFuture<>();
+        CompletableFuture<Channel> waiter = new CompletableFuture<>();
 
         Thread thread = new Thread(() -> connect0(host, port, waiter));
         thread.start();
 
         try {
-            waiter.get(this.timeout, TimeUnit.MILLISECONDS);
+            this.channel = waiter.get(this.timeout, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             this.logger.error("连接目标服务端因超时失败！");
         }
@@ -87,7 +87,7 @@ public class CherryClient {
      * @param port port端口
      * @param waiter 超时等候器
      */
-    private void connect0(String host, int port, CompletableFuture<Boolean> waiter) {
+    private void connect0(String host, int port, CompletableFuture<Channel> waiter) {
         Bootstrap bootstrap = new Bootstrap();
         EventLoopGroup workerGroup = new NioEventLoopGroup(2);
 
@@ -99,11 +99,11 @@ public class CherryClient {
 
             ChannelFuture future = bootstrap.connect(host, port).sync();
 
-            this.channel = future.channel();
-            waiter.complete(true);
-            this.logger.info("与远程cherry服务端 " + this.channel.remoteAddress() + " 的连接已经建立！");
+            Channel channel = future.channel();
+            waiter.complete(channel);
+            this.logger.info("与远程cherry服务端 " + channel.remoteAddress() + " 的连接已经建立！");
 
-            this.channel.closeFuture().sync();
+            channel.closeFuture().sync();
         } catch (Exception e) {
             this.logger.error(e.toString());
         } finally {
@@ -141,7 +141,7 @@ public class CherryClient {
      */
     private long sendMessage(JSONObject jsonData) {
         Channel channel = this.channel;
-        if (channel == null || channel.isActive()) {
+        if (channel == null || !channel.isActive()) {
             throw new NullPointerException("与目标服务端的通信信道不可用！");
         }
 
@@ -151,7 +151,7 @@ public class CherryClient {
         jsonData.put("clientName", clientName);
         jsonData.put("publishId", publishId);
 
-        channel.writeAndFlush(jsonData.toJSONString() + '\n');
+        channel.writeAndFlush(jsonData.toJSONString() + "\r\n");
         return publishId;
     }
 

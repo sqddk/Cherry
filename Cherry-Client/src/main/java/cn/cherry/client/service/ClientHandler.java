@@ -1,13 +1,13 @@
 package cn.cherry.client.service;
 
 import cn.cherry.core.message.MessageHandler;
-import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.Charset;
+
 
 /**
  * 处理网络通信
@@ -16,10 +16,11 @@ import java.nio.charset.Charset;
  */
 public class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
+    private final Logger logger;
     private final Charset charset;
-    private final Logger logger = LogManager.getLogger("Cherry");
 
     public ClientHandler() {
+        this.logger = LogManager.getLogger("Cherry");
         this.charset = Charset.defaultCharset();
     }
 
@@ -37,7 +38,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     }
 
     /**
-     * Is called for each message of type {@link JSONObject}.
+     * Is called for each message of type {@link String}.
      *
      * @param ctx the {@link ChannelHandlerContext} which this {@link SimpleChannelInboundHandler}
      *            belongs to
@@ -45,7 +46,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf byteBuf) {
-        MessageHandler.tryResolve(ctx.channel(), byteBuf, this.charset);
+        MessageHandler.tryResolve(ctx.channel(), byteBuf.toString(this.charset));
     }
 
     /**

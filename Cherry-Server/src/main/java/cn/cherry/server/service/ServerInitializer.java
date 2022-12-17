@@ -5,6 +5,8 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 /**
  * Netty ServerStarter 流水线初始化器
@@ -22,7 +24,9 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
      */
     @Override
     protected void initChannel(SocketChannel ch) {
-        ch.pipeline().addLast(new LineBasedFrameDecoder(4096));
-        ch.pipeline().addLast(new ServerHandler());
+        ChannelPipeline pipeline = ch.pipeline();
+        pipeline.addLast(new LineBasedFrameDecoder(2048));
+        pipeline.addLast(new StringEncoder());
+        pipeline.addLast(new ServerHandler());
     }
 }
