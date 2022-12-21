@@ -23,8 +23,8 @@ public class SpinLocker {
      * @return 是否获取锁成功
      */
     public boolean lock() {
+        final AtomicBoolean monitor = this.monitor;
         long endWaitingTime = System.nanoTime() + this.waitTimeout;
-        AtomicBoolean monitor = this.monitor;
         while (!monitor.compareAndSet(false, true)) {
             if (System.nanoTime() > endWaitingTime) {
                 return false;

@@ -2,6 +2,7 @@ package cn.cherry.server.base.handler;
 
 import cn.cherry.core.engine.TimeSlot;
 import cn.cherry.core.engine.TimingWheel;
+import cn.cherry.core.engine.task.Task;
 import cn.cherry.core.message.MessageType;
 import cn.cherry.core.message.MessageHandler;
 import cn.cherry.server.base.task.NotifyTask;
@@ -27,14 +28,19 @@ public class AddHandler extends MessageHandler {
      */
     @Override
     protected void resolve(Channel channel, JSONObject data) {
-        JSONObject metaData = data.getJSONObject("metaData");
-        long executeTimeValue = data.getLongValue("executeTime");
-
         TimingWheel timingWheel = this.timingWheel;
+
+        JSONObject metaData = data.getJSONObject("metaData");
+        if (metaData == null) {
+            metaData = new JSONObject();
+        }
+
+        long executeTimeValue = data.getLongValue("executeTime");
         long distance = timingWheel.calDistance(executeTimeValue);
         TimeSlot slot = timingWheel.getSlot(distance);
 
-        long taskId = slot.submitTask(new NotifyTask(channel, metaData), distance);
+        Task task = new NotifyTask(channel, metaData);
+        long taskId = (slot != null) ? slot.submitTask(task, distance) : -1;
 
         data.put("type", MessageType.ADD_RESULT);
         data.put("taskId", taskId);

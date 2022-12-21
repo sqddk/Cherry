@@ -2,6 +2,8 @@ package cn.cherry.core.engine;
 
 import cn.cherry.core.engine.task.Task;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import static io.netty.util.internal.ObjectUtil.checkPositive;
 
 /**
@@ -11,13 +13,14 @@ import static io.netty.util.internal.ObjectUtil.checkPositive;
  */
 public abstract class TimingWheel implements Rotatable {
 
-    private long currentTimeValue; // 单位为毫秒（ms）
+    private final AtomicLong monitor; // 单位为毫秒（ms）
     private final long interval; // 单位为毫秒（ms）
     private final int totalTicks;
     private final long waitTimeout; // 单位为纳秒（ns）
     private final int maxTaskSize;
 
     public TimingWheel(long interval, int totalTicks, long waitTimeout, int maxTaskSize) {
+        this.monitor = new AtomicLong();
         this.interval = checkPositive(interval, "interval");
         this.totalTicks = checkPositive(totalTicks, "totalTicks");
         this.waitTimeout = checkPositive(waitTimeout, "waitTimeout");
@@ -58,31 +61,33 @@ public abstract class TimingWheel implements Rotatable {
      * @param timeValue 绝对时间值
      */
     public final void setCurrentTimeValue(long timeValue) {
-        this.currentTimeValue = timeValue;
+        this.monitor.set(timeValue);
     }
 
     /**
      * 增加时间轮持有的绝对时间值
      */
     public final void addCurrentTimeValue() {
-        this.currentTimeValue += this.interval;
+        AtomicLong monitor = this.monitor;
+        long interval = this.interval;
+        monitor.addAndGet(interval);
     }
 
     /**
      * @return 时间轮持有的绝对时间值
      */
     public final long getCurrentTimeValue() {
-        return this.currentTimeValue;
+        return this.monitor.get();
     }
 
     /**
-     * 结合当前的{@link #currentTimeValue}和{@link #interval}计算相对时间距离
+     * 结合时间轮内保存的当前时间，和{@link #interval}计算相对时间距离
      *
      * @param timeValue 绝对时间值
      * @return 相对时间距离
      */
     public final long calDistance(long timeValue) {
-        return (timeValue - this.currentTimeValue) / this.interval;
+        return (timeValue - this.monitor.get()) / this.interval;
     }
 
     /**

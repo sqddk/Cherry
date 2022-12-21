@@ -4,8 +4,6 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +18,6 @@ import static java.util.Objects.requireNonNull;
  */
 public abstract class MessageHandler {
 
-    private static final Logger logger = LogManager.getLogger("Cherry");
     private static final Map<Integer, MessageHandler> HANDLER_MAP = new HashMap<>();
 
     /**
@@ -50,7 +47,7 @@ public abstract class MessageHandler {
                     resolver.resolve(channel, jsonData);
             }
         } catch (Exception e) {
-            MessageHandler.logger.error(e.toString());
+            e.printStackTrace();
         }
     }
 

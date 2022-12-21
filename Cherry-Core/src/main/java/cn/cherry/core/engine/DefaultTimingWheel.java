@@ -37,9 +37,8 @@ public class DefaultTimingWheel extends TimingWheel {
         this.position = 0;
         this.slotMap = new TimeSlot[totalTicks];
 
-        for (int i = 0; i < getTotalTicks(); i++) {
-            TimeSlot slot = new TimeSlot(this);
-            this.slotMap[i] = slot;
+        for (int i = 0; i < totalTicks; i++) {
+            this.slotMap[i] = new TimeSlot(this);
         }
 
         int coreSize = Runtime.getRuntime().availableProcessors() << 1;
@@ -83,13 +82,12 @@ public class DefaultTimingWheel extends TimingWheel {
      */
     @Override
     public TimeSlot getSlot(long distance) {
-        checkPositive(distance, "distance");
-
+        if (distance <= 0) {
+            return null;
+        }
         int totalTicks = this.getTotalTicks();
         int rawIndex = (int) (distance % totalTicks) + this.position;
-        int index = rawIndex >= totalTicks
-                ? rawIndex % totalTicks
-                : rawIndex;
+        int index = rawIndex % totalTicks;
         return this.slotMap[index];
     }
 
@@ -99,12 +97,14 @@ public class DefaultTimingWheel extends TimingWheel {
     @Override
     public void turn() {
         this.addCurrentTimeValue();
-        this.position++;
+        int position = this.position;
+        position++;
         if (position == getTotalTicks()) {
             position = 0;
         }
         TimeSlot slot = this.slotMap[position];
         slot.decAndExecute();
+        this.position = position;
     }
 
 }

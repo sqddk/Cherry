@@ -12,20 +12,20 @@ import java.util.Map;
 public class NotifyTask implements Task {
 
     private final Channel channel;
-    private final JSONObject metaData;
+    private final JSONObject taskData;
     private static final Logger logger = LogManager.getLogger("Cherry");
 
-    public NotifyTask(Channel channel, JSONObject metaData) {
+    public NotifyTask(Channel channel, JSONObject taskData) {
         this.channel = channel;
-        this.metaData = metaData;
+        this.taskData = taskData;
     }
 
     /**
      * @return 任务的配置信息
      */
     @Override
-    public Map<String, Object> getTaskConfig() {
-        return this.metaData;
+    public Map<String, Object> getTaskData() {
+        return this.taskData;
     }
 
     /**
@@ -35,13 +35,12 @@ public class NotifyTask implements Task {
     public void run() {
         Channel channel = this.channel;
         if (channel.isActive()) {
-
             JSONObject data = new JSONObject();
-            JSONObject metaData =
-                    this.metaData == null
-                            ? new JSONObject()
-                            : this.metaData;
+            JSONObject metaData = this.taskData.getJSONObject("metaData");
 
+            if (metaData == null) {
+                metaData = new JSONObject();
+            }
             data.put("type", MessageType.NOTIFY);
             data.put("metaData", metaData);
 

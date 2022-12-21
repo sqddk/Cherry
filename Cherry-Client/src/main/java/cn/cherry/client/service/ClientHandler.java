@@ -60,7 +60,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        this.logger.error(cause.getMessage());
+        cause.printStackTrace();
     }
 
 }

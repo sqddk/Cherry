@@ -105,7 +105,7 @@ public class CherryClient {
 
             channel.closeFuture().sync();
         } catch (Exception e) {
-            this.logger.error(e.toString());
+            e.printStackTrace();
         } finally {
             workerGroup.shutdownGracefully();
         }
@@ -117,9 +117,12 @@ public class CherryClient {
      * @param jsonData 待发送数据
      */
     public void addTask(JSONObject jsonData, AddResultReceiver addResultReceiver) {
-        long publishId = this.sendMessage(jsonData);
+        long publishId = this.processMessage(jsonData);
         Map<Long, AddResultReceiver> receiverMap = CherryClient.ADD_RESULT_MAP.get(clientName);
         receiverMap.put(publishId, addResultReceiver);
+
+        String msg = jsonData.toJSONString() + "\r\n";
+        this.checkChannel().writeAndFlush(msg);
     }
 
     /**
@@ -128,31 +131,38 @@ public class CherryClient {
      * @param jsonData 待发送数据
      */
     public void removeTask(JSONObject jsonData, RemoveResultReceiver removeResultReceiver) {
-        long publishId = this.sendMessage(jsonData);
+        long publishId = this.processMessage(jsonData);
         Map<Long, RemoveResultReceiver> receiverMap = CherryClient.REMOVE_RESULT_MAP.get(clientName);
         receiverMap.put(publishId, removeResultReceiver);
+
+        String msg = jsonData.toJSONString() + "\r\n";
+        this.checkChannel().writeAndFlush(msg);
     }
 
     /**
-     * 发送待响应信息（临时api，等待更好的实现）
+     * 对消息进行加工，注入客户端名称和发布顺序id
      *
      * @param jsonData 待发送数据
      * @return 发布顺序id
      */
-    private long sendMessage(JSONObject jsonData) {
-        Channel channel = this.channel;
-        if (channel == null || !channel.isActive()) {
-            throw new NullPointerException("与目标服务端的通信信道不可用！");
-        }
-
+    private long processMessage(JSONObject jsonData) {
         String clientName = this.clientName;
         long publishId = this.publishMonitor.getAndIncrement();
-
         jsonData.put("clientName", clientName);
         jsonData.put("publishId", publishId);
-
-        channel.writeAndFlush(jsonData.toJSONString() + "\r\n");
         return publishId;
+    }
+
+    /**
+     * 对通信信道进行检查
+     * @return 通信信道
+     */
+    private Channel checkChannel() {
+        Channel channel = this.channel;
+        if (channel == null || !channel.isActive())
+            throw new NullPointerException("与服务端的通信信道不可用！");
+        else
+            return channel;
     }
 
 }

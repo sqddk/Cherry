@@ -12,7 +12,7 @@ public interface Task extends Runnable {
     /**
      * @return 任务的配置信息
      */
-    Map<String, Object> getTaskConfig();
+    Map<String, Object> getTaskData();
 
     /**
      * 任务的执行内容
