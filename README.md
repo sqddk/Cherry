@@ -48,7 +48,7 @@
 ```java
         String time = "2022" + "12" + "14" + "17" + "30" + "00" + "000";
         TimeParser parser = new TimeParser();
-        long timeValue = parser.time2TimeValue(TimeZone.getDefault(), time);
+        long timeValue = parser.time2timeValue(TimeZone.getDefault(), time);
 ```
 &emsp;&emsp;接下来，我们通过TimingWheel提供的api，计算出相对时间距离。
 ```java
@@ -79,7 +79,7 @@
 
         String time = "2022" + "12" + "14" + "17" + "30" + "00" + "000";
         TimeParser parser = new TimeParser();
-        long timeValue = parser.time2TimeValue(TimeZone.getDefault(), time);
+        long timeValue = parser.time2timeValue(TimeZone.getDefault(), time);
 
         long distance = timingWheel.calDistance(timeValue);
 
