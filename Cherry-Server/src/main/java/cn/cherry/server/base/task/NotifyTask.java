@@ -36,13 +36,8 @@ public class NotifyTask implements Task {
         Channel channel = this.channel;
         if (channel.isActive()) {
             JSONObject data = new JSONObject();
-            JSONObject metaData = this.taskData.getJSONObject("metaData");
-
-            if (metaData == null) {
-                metaData = new JSONObject();
-            }
             data.put("type", MessageType.NOTIFY);
-            data.put("metaData", metaData);
+            data.put("metaData", this.taskData);
 
             channel.writeAndFlush(data.toJSONString() + "\r\n");
         }

@@ -45,6 +45,8 @@ public abstract class MessageHandler {
                 MessageHandler resolver = HANDLER_MAP.get(type);
                 if (resolver != null)
                     resolver.resolve(channel, jsonData);
+                else
+                    throw new NullPointerException();
             }
         } catch (Exception e) {
             e.printStackTrace();
