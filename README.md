@@ -30,11 +30,11 @@
 ```java
         Task task = new Task() {
         
-            private final Map<String, Object> taskConfig = new JSONObject();
+            private final Map<String, Object> taskData = new HashMap<>();
             
             @Override
-            public Map<String, Object> getTaskConfig() {
-                return taskConfig;
+            public Map<String, Object> getTaskData() {
+                return taskData;
             }
 
             @Override
@@ -48,7 +48,7 @@
 ```java
         String time = "2022" + "12" + "14" + "17" + "30" + "00" + "000";
         TimeParser parser = new TimeParser();
-        long timeValue = parser.time2TimeValue(time, TimeZone.getDefault());
+        long timeValue = parser.time2TimeValue(TimeZone.getDefault(), time);
 ```
 &emsp;&emsp;接下来，我们通过TimingWheel提供的api，计算出相对时间距离。
 ```java
@@ -63,12 +63,12 @@
 ```java
         TimingWheel timingWheel = new DefaultTimingWheel(100, 100, 20_000, 10_000, 4, 8);
         Task task = new Task() {
-
-            private final Map<String, Object> taskConfig = new JSONObject();
-
+        
+            private final Map<String, Object> taskData = new HashMap<>();
+            
             @Override
-            public Map<String, Object> getTaskConfig() {
-                return taskConfig;
+            public Map<String, Object> getTaskData() {
+                return taskData;
             }
 
             @Override
@@ -79,7 +79,7 @@
 
         String time = "2022" + "12" + "14" + "17" + "30" + "00" + "000";
         TimeParser parser = new TimeParser();
-        long timeValue = parser.time2TimeValue(time, TimeZone.getDefault());
+        long timeValue = parser.time2TimeValue(TimeZone.getDefault(), time);
 
         long distance = timingWheel.calDistance(timeValue);
 
