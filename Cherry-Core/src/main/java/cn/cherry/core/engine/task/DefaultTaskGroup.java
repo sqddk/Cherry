@@ -41,8 +41,7 @@ public class DefaultTaskGroup implements TaskGroup{
         Map<String, Object> taskData = task.getTaskData();
         taskData.put("publishTime", publishTimeValue);
 
-        TaskKeeper keeper = new TaskKeeper(); // 这里以后要把TaskKeeper做成可以池化复用的，clear方法已经铺好路了
-        keeper.setTask(task);
+        TaskKeeper keeper = new TaskKeeper(task);
 
         this.taskIdSelector.addSpecNode(taskId, keeper);
 
@@ -89,7 +88,7 @@ public class DefaultTaskGroup implements TaskGroup{
         if (spec == Spec.TaskId) {
             return this.taskIdSelector.selectSpecNode((Long) value, specNode -> {
                 TaskKeeper keeper = specNode.getTaskKeeper();
-                keeper.clear();
+                keeper.remove();
             });
         }
         return 0;

@@ -40,7 +40,11 @@ public class AddHandler extends MessageHandler {
         TimeSlot slot = timingWheel.getSlot(distance);
 
         Task task = new NotifyTask(channel, metaData);
-        long taskId = (slot != null) ? slot.submitTask(task, distance) : -1;
+
+        long taskId = -1;
+        if (slot != null) {
+            taskId = slot.submitTask(task, distance);
+        }
 
         data.put("type", MessageType.ADD_RESULT);
         data.put("taskId", taskId);

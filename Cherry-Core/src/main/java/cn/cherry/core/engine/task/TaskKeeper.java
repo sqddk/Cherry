@@ -2,7 +2,7 @@ package cn.cherry.core.engine.task;
 
 import cn.cherry.core.engine.task.spec.SpecNode;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.*;
@@ -14,27 +14,20 @@ import static java.util.Objects.*;
  */
 public class TaskKeeper {
 
-    private Task task;
+    private final Task task;
     private final List<SpecNode<?>> specNodeList;
 
-    public TaskKeeper() {
-        this.specNodeList = new LinkedList<>();
+    public TaskKeeper(Task task) {
+        requireNonNull(task, "Task");
+        this.task = task;
+        this.specNodeList = new ArrayList<>();
     }
 
     /**
-     * @return 获取保存的任务
+     * @return 持有的任务
      */
     public Task getTask() {
-        return task;
-    }
-
-    /**
-     * 设置保存的{@link Task}任务
-     *
-     * @param task 任务
-     */
-    public void setTask(Task task) {
-        this.task = task;
+        return this.task;
     }
 
     /**
@@ -43,19 +36,17 @@ public class TaskKeeper {
      * @param specNode 任务特征节点
      */
     public void addSpecNode(SpecNode<?> specNode) {
-        requireNonNull(specNode, "specNode");
+        requireNonNull(specNode, "SpecNode");
         this.specNodeList.add(specNode);
     }
 
     /**
      * 移除全体{@link SpecNode}和{@link Task}
      */
-    public void clear() {
+    public void remove() {
         for (SpecNode<?> specNode : this.specNodeList) {
             specNode.removeSelf();
         }
-        this.specNodeList.clear();
-        this.task = null;
     }
 
 }

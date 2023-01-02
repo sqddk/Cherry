@@ -57,15 +57,15 @@ public class TaskIdSelector implements SpecSelector<Long> {
         TaskIdNode node = new TaskIdNode(value, keeper);
         keeper.addSpecNode(node);
 
-        TaskIdNode prev = this.head;
-        TaskIdNode next;
+        TaskIdNode prev;
+        TaskIdNode next = this.head.next;
 
         for (int i = 0; i < this.size; i++) {
-            prev = prev.next;
-            if (compare(value, prev.getSpecValue()) > -1)
+            if (compare(next.getSpecValue(), value) > -1)
                 break;
+            next = next.next;
         }
-        next = prev.next;
+        prev = next.prev;
 
         next.prev = node;
         node.next = next;
@@ -95,9 +95,9 @@ public class TaskIdSelector implements SpecSelector<Long> {
             if (compare(value, node.getSpecValue()) == 0) {
                 int sum = 0;
                 while (node != this.tail && compare(value, node.getSpecValue()) == 0) {
-                    node = node.next;
                     sum += 1;
                     consumer.accept(node);
+                    node = node.next;
                 }
                 return sum;
             }
@@ -131,10 +131,10 @@ public class TaskIdSelector implements SpecSelector<Long> {
             node = node.next;
             if (compare(leftValue, node.getSpecValue()) == 0) {
                 int sum = 0;
-                while (node != this.tail && compare(rightValue, node.getSpecValue()) < 0) {
-                    node = node.next;
+                while (node != this.tail && compare(rightValue, node.getSpecValue()) > 0) {
                     sum += 1;
                     consumer.accept(node);
+                    node = node.next;
                 }
                 return sum;
             }
@@ -188,9 +188,6 @@ public class TaskIdSelector implements SpecSelector<Long> {
 
             prev.next = next;
             next.prev = prev;
-
-            this.prev = null;
-            this.next = null;
 
             TaskIdSelector.this.size--;
         }
